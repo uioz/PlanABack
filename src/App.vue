@@ -12,8 +12,5 @@
 }
 
 /* hack css */
-.mu-appbar .mu-flat-button{
-  
-}
 
 </style>
