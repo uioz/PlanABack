@@ -8,7 +8,7 @@ Random.extend({
   ISODateStr() {
     return new Date(Random.datetime()).toJSON();
   }
-})
+});
 
 mock('/api/server/base', {
   notice:'@cparagraph',
@@ -16,7 +16,7 @@ mock('/api/server/base', {
   brand:'@url',
   logo:'@url',
   bg:'@url',
-  // TODO add assets publicpath
+  pubilc:'/public'
 }); 
 
 mock('/api/state',{
@@ -24,5 +24,5 @@ mock('/api/state',{
   lastLoginTime:'@ISODateStr',
   startTime:'@ISODateStr',
   endTime:'@ISODateStr',
-  'runingTime|1000-10000000000':0
+  'runingTime|1000-10000000000':0,
 });
