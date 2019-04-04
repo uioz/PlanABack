@@ -19,6 +19,12 @@
         <font-awesome-icon icon="bars"/>
       </mu-button>
     </template>
+    <mu-tabs class="button-group" :value.sync="active">
+      <mu-tab>模型构建</mu-tab>
+      <mu-tab>数据处理</mu-tab>
+      <mu-tab>全局处理</mu-tab>
+      <mu-tab>权限管理</mu-tab>
+    </mu-tabs>
     <template #right>
       <mu-button color="info">登录</mu-button>
       <font-awesome-icon style="margin:0 2px;" icon="slash" :transform="{ rotate: 53 }"/>
@@ -27,6 +33,7 @@
   </mu-appbar>
 </template>
 <script>
+
 export default {
   name: "i-navbar",
   props: {
@@ -34,22 +41,14 @@ export default {
   },
   data() {
     return {
-      items: [
-        {
-          text: "Dashboard",
-          disabled: false
-        },
-        {
-          text: "Link 1",
-          disabled: false
-        },
-        {
-          text: "Link 2",
-          disabled: true
-        }
-      ]
+      active:0
     };
   }
 };
 </script>
+<style>
+.i-navbar .button-group{
+  height: 64px;
+}
+</style>
 

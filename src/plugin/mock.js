@@ -17,7 +17,7 @@ mock('/api/server/base', {
   logo:'@url',
   bg:'@url',
   pubilc:'/public'
-}); 
+});
 
 mock('/api/state',{
   nickName:'@csentence(2,10)',
