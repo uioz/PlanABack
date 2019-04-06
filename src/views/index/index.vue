@@ -21,7 +21,6 @@ export default {
   },
   methods:{
     handleNavbarClick(){
-      console.log('123')
       this.drawerOpen = !this.drawerOpen;
     }
   }

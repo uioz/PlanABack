@@ -13,6 +13,7 @@
     "@fortawesome/vue-fontawesome": "^0.1.6",
     "axios": "^0.18.0",
     "muse-ui": "^3.0.2",
+    "muse-ui-progress": "^0.1.0",
     "normalize.css": "^8.0.1",
     "vue": "^2.6.6",
     "vue-router": "^3.0.1",

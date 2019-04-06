@@ -10,6 +10,10 @@ Random.extend({
   }
 });
 
+mock('/api/login',{
+
+});
+
 mock('/api/server/base', {
   notice:'@cparagraph',
   appname:'@csentence(2,10)',
