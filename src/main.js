@@ -31,8 +31,8 @@ new Vue({
       this.$progress.start();
       // 没有本地数据则请求服务器基本信息
       this.$store.dispatch('get', {
-        url: 'base',
-      }).then(result => this.$store.commit('initState', result))
+        target: 'base',
+      }).then(({ data }) => this.$store.commit('initState', data))
         .catch(() => this.$router.replace('/error/1000'))
         .finally(() => this.$progress.done());
     }

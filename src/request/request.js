@@ -1,20 +1,22 @@
 import Axios from "axios";
-import { urlRouter } from "./url.js";
+import { urls, routeExp, UrlRouterGenerator } from "./url.js";
 
-const instance = Axios.create();
+const
+  AxiosInstance = Axios.create(),
+  urlRouter = UrlRouterGenerator(urls, routeExp);
 
 /**
  * 默认拦截器组
  */
 const intercepts = {
-  request(data,vuexContext){
+  request(data, vuexContext) {
     console.log(data);
   },
-  response(data, response, vuexContext){
-    console.log(data,response);
+  response(data, response, vuexContext) {
+    console.log(data, response);
   },
-  error(data, error, vuexContext){
-    console.log(data,error);
+  error(data, error, vuexContext) {
+    console.log(data, error);
   }
 }
 
@@ -27,12 +29,14 @@ const intercepts = {
  * @param {Object} source 用户请求的源数据
  * @param  {...any} rest 任意参数将传递给拦截器
  */
-const autoIntercept = (name,source,...rest) => {
-  const data = source.data;
-  if (typeof data[name] === 'function') {
-    data[name](data, ...rest);
-  } else if (data[name] === true || data[name] === undefined){
-    intercepts[name](data,...rest);
+const autoIntercept = (name, source, ...rest) => {
+  const isFun = source[name];
+
+  if (typeof isFun === 'function') {
+    isFun(source.data, ...rest);
+  } else if (isFun === undefined || isFun === true) {
+
+    intercepts[name](source.data, ...rest);
   }
 }
 
@@ -43,18 +47,18 @@ const autoIntercept = (name,source,...rest) => {
  * @param {Object} source 请求时候提供的配置
  * @param  {...any} rest 任意参数将交由拦截器
  */
-const request = (method, url, source, ...rest)=>{
+const request = async (method, url, source, ...rest) => {
 
   try {
     autoIntercept('request', source, ...rest);
-    // TODO error
-    const result = await instance.request({
+    const result = await AxiosInstance.request({
       url,
       method,
       params: method === 'get' ? source.data : undefined,
       data: method === 'post' ? source.data : undefined,
       ...source.config
     });
+    ;
     autoIntercept('response', source, result, ...rest);
     return result;
   } catch (error) {
@@ -63,24 +67,39 @@ const request = (method, url, source, ...rest)=>{
 }
 
 /**
- * source
- * - data 请求的数据
- * - target 请求的目标
- * - config axios 请求配置
- * - request 请求拦截器
- * - response 响应拦截器
- * - error 错误拦截器
+ * 用于生成请求方法
+ * @param  {...String} methods 方法名称
  */
-
-const generatorRequestMethods = (...methods)=>{
+const generatorRequestMethods = (...methods) => {
   const result = {};
   for (const method of methods) {
-    result[method] = async function (vuexContext,source) {
-      request(method,urlRouter(source.target),source,vuexContext);
+    result[method] = async (vuexContext, source) => {
+      return await request(method, urlRouter(source.target), source, vuexContext);
     }
   }
+  return result;
 };
 
+/**
+ * 说明:
+ * 添加的actions都支持传入一个payload(Object).  
+ * 格式如下:
+ * - data:object 请求的数据
+ * - target:string 请求的目标
+ * - config:object axios请求的配置
+ * - request:function|boolean 请求拦截器
+ * - response:function|boolean 响应拦截器
+ * - error:function|boolean 错误拦截器
+ * 
+ * 拦截器定义:
+ * request(source:object,vuex:object)  
+ * response(source:object,response:object,vuex:object)  
+ * error(source:object,error:Error,vuex:object)  
+ * 
+ * 方法响应:
+ * get():Promise<undefined|object> // 如果拦截器代理了所有的处理则then返回undefined
+ */
+
 export default {
-  ...generatorRequestMethods('get','post')
+  ...generatorRequestMethods('get', 'post')
 }
