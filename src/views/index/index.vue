@@ -1,7 +1,6 @@
 <template>
   <div class="index">
-    <i-navbar @drawerClick="handleNavbarClick" ></i-navbar>
-    <i-drawer :open.sync="drawerOpen" ></i-drawer>
+    index
   </div>
 </template>
 <script>
