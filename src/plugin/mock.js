@@ -22,6 +22,7 @@ mock('/api/server/base', {
   bg:'@url',
   pubilc:'/public'
 });
+// TODO add info about system and school name
 
 mock('/api/state',{
   nickName:'@csentence(2,10)',

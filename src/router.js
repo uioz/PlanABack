@@ -1,23 +1,31 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from "./views/index/index";
+import Store from "./store/store.js";
 
 Vue.use(Router);
 
-export default new Router({
-  mode:'history',
+const router = new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
       component: Index
     },
     {
-      path:'/error/:code',
+      path: '/login',
+      meta: {
+        fullContent: true
+      },
+      component: () => import(/* webpackChunkName: "login" */ './views/login/login.vue')
+    },
+    {
+      path: '/error/:code',
       component: () => import(/* webpackChunkName: "error" */ './views/error/error.vue')
     },
     {
-      path:'/login',
-      component: () => import(/* webpackChunkName: "login" */ './views/auth/login.vue')
+      path: '/auth/login',
+      component: () => import(/* webpackChunkName: "auth-login" */ './views/auth/login.vue')
     },
     {
       path: '/test',
@@ -27,4 +35,24 @@ export default new Router({
       component: () => import(/* webpackChunkName: "test" */ './views/test/test.vue')
     }
   ]
-})
+});
+
+router.beforeEach((to,from,next)=>{
+
+  Store.commit('progressStart');
+
+  if(to.meta.fullContent){
+    if(!from.meta.fullContent){
+      Store.commit('fullContent', to.meta.fullContent);
+    }
+  }
+
+  next();
+
+});
+
+router.afterEach(() => {
+  Store.commit('progressDone');
+});
+
+export default router;

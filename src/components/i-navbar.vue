@@ -19,7 +19,7 @@
         <font-awesome-icon icon="bars"/>
       </mu-button>
     </template>
-    <mu-tabs v-show="isLogin" class="button-group" :value.sync="active">
+    <mu-tabs v-show="info.isLogin" class="button-group" :value.sync="active">
       <mu-tab>模型构建</mu-tab>
       <mu-tab>数据处理</mu-tab>
       <mu-tab>全局处理</mu-tab>
@@ -28,7 +28,7 @@
     <template #right>
         <mu-button color="secondary">注销</mu-button>
         <font-awesome-icon style="margin:0 2px;" icon="slash" :transform="{ rotate: 53 }"/>
-        <mu-paper v-if="isLogin" class="welcome" :z-depth="0">
+        <mu-paper v-if="info.isLogin" class="welcome" :z-depth="0">
           <font-awesome-icon
             style="margin-right:10px"
             class="mu-primary-text-color"
@@ -37,7 +37,7 @@
           />
           <span>{{info.appname}}</span>
         </mu-paper>
-        <mu-button v-if="!isLogin" color="info">登录</mu-button>
+        <mu-button v-if="!info.isLogin" color="info">登录</mu-button>
     </template>
   </mu-appbar>
 </template>
@@ -50,7 +50,7 @@ export default {
     drawerClick: Boolean
   },
   computed: {
-    ...mapState(["isLogin", "info"])
+    ...mapState(["info"])
   },
   data() {
     return {
