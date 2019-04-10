@@ -8,6 +8,11 @@
   methods:
 
   slots:
+  title // 标题内容
+  subTitle // 子标题内容
+  notice // 通知内容
+  version // 版本号码
+  form // 表单区域
 
   process:
 
@@ -16,20 +21,27 @@
   <div class="login-layout">
     <mu-card class="container" :raised="true">
       <mu-row class="row">
-        <mu-col span="7">
+        <mu-col span="7"  md="6" sm="12">
           <div class="left-area">
-            <h1
-              class="title i-single-row"
-            >Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam dolore fugiat, hic aspernatur at veniam atque similique. Omnis odio ducimus, molestiae, ad deserunt voluptatibus delectus hic iusto quidem, magnam ratione.</h1>
-            <p class="sub-title">pre-choice classification system V0.1.0.</p>
+            <h1 class="title i-single-row">
+              <slot name="title"></slot>
+            </h1>
+            <p class="sub-title">
+              <slot name="sub-title"></slot>
+            </p>
             <div class="notice">
               <h4>通知</h4>
-              <!-- TODO shadown -->
+              <pre><slot name="notice">暂无</slot></pre>
             </div>
+            <div
+              class="footer i-single-row"
+            >--<slot name="version"></slot></div>
           </div>
         </mu-col>
-        <mu-col span="5">
-          <div class="right-area"></div>
+        <mu-col span="5" md="6" sm="12">
+          <div class="right-area">
+            <slot name="form"></slot>
+          </div>
         </mu-col>
       </mu-row>
     </mu-card>
@@ -53,19 +65,18 @@ export default {
 
 .login-layout > .container {
   padding: 0;
-  width: 60%;
-  height: 90%;
-  min-height: 90%;
+  min-width: 60%;
+  max-width: 1400px;
 }
 
 .login-layout > .container > .row,
 .login-layout > .container > .row > .col,
-.login-layout > .container > .row > .col > .left-area {
-  height: 100%;
+.login-layout > .container > .row > .col .left-area,
+.login-layout > .container > .row > .col .right-area {
+  height: 90vh;
 }
 
-.login-layout > .container > .row > .col > .left-area {
-  position: relative;
+.login-layout > .container > .row > .col .left-area {
   background: #ff5252;
   padding: 0 20px;
   overflow: hidden;
@@ -90,7 +101,7 @@ export default {
 
 .login-layout div.notice {
   margin-top: 100px;
-  min-width: 200px;
+  min-width: 300px;
   max-width: 60%;
   height: 300px;
   box-sizing: border-box;
@@ -98,12 +109,32 @@ export default {
   border-radius: 4px;
   background-color: rgb(255, 250, 235);
   box-shadow: 2px 2px 12px -2px #0000003b;
+  overflow-y: scroll;
+  padding: 0 10px;
 }
 
 .login-layout div.notice h4 {
-  text-indent: 2em;
   color: #424242;
 }
+
+.login-layout div.footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin: 10px;
+  padding-left: 10px;
+  color: #eee;
+  width: 10em;
+  border-left: 1px solid #ffc107;
+}
+
+.login-layout > .container > .row > .col .right-area{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+}
+
 </style>
 
 

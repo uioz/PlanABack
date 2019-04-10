@@ -2,6 +2,7 @@ import Vue from "vue";
 import MuseUI from 'muse-ui';
 import 'muse-ui/dist/muse-ui.css';
 import theme from 'muse-ui/lib/theme';
+// import Helpers from 'muse-ui/lib/Helpers';
 // import * as colors from 'muse-ui/lib/theme/colors';
 
 theme.add('my-theme',{
@@ -16,3 +17,4 @@ theme.add('my-theme',{
 theme.use('my-theme');
 
 Vue.use(MuseUI);
+// Vue.use(Helpers);
