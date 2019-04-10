@@ -22,13 +22,13 @@ const vue = new Vue({
     // 获取本地保存的对外公开的信息
     const hasState = localInfo.get('localInfo');
     if (hasState) {
-      this.$store.commit('initState', hasState);
+      this.$store.dispatch('initState', hasState);
     } else {
       this.$store.commit('progressStart');
       // 没有本地数据则请求服务器基本信息
       this.$store.dispatch('get', {
         target: 'base',
-      }).then(({ data }) => this.$store.commit('initState', data))
+      }).then(({ data }) => this.$store.dispatch('initState', data))
         .catch(() => this.$router.replace('/error/1000'))
         .finally(() => this.$store.commit('progressDone'));
     }

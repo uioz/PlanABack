@@ -10,23 +10,21 @@ export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production', // see https://vuex.vuejs.org/zh/guide/strict.html#%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%8F%91%E5%B8%83%E7%8E%AF%E5%A2%83
   state: {
     info: {
-      isLogin: true, // 是否登录
+      isLogin: false, // 是否已经登录过
     },
+    user: {// 用户信息
+      nickName:'',
+      controlArea:[],
+      level:0,
+      levelCodeRaw:123,
+    }, 
     fullContent: false, // 屏蔽导航和侧边栏
     Progressing: false, // 是否在progress状态
     errorCode: 0,
   },
   mutations: {
-    /**
-     * 合并服务器公开信息到内部状态  
-     * 并且写入缓存
-     * **注意**:该方法有副作用
-     * @param {Object} state 
-     * @param {Object} initDataFromLocalStorage 需要被初始化的对象
-     */
-    initState(state, initDataFromLocalStorage) {
-      state.info = Object.assign({}, state.info, initDataFromLocalStorage);
-      Storage.set('localInfo', state.info);
+    compareData(state,{target,data}){
+      state[target] = Object.assign({},state[target],data);
     },
     /**
      * 清空保存的服务器公开信息  
@@ -82,6 +80,55 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    ...requests
+    ...requests,
+    /**
+     * 合并服务器公开信息到内部状态  
+     * 并且写入缓存
+     * **注意**:该方法有副作用
+     * @param {Object} state 
+     * @param {Object} initDataFromLocalStorage 需要被初始化的对象
+     */
+    initState({state,commit}, initDataFromLocalStorage) {
+      commit('compareData',{
+        target:'info',
+        data:initDataFromLocalStorage
+      });
+      Storage.set('localInfo', state.info);
+    },
+    /**
+     * 发送一个登录请求到服务器,如果登录成功这个actions会自动合并状态  
+     * 如果失败则自动拦截错误  
+     * 返回一个布尔值,表示登录是否成功
+     * @param {*} param0 
+     * @param {Object} data 登录需要数据
+     * @returns {Boolean} 是否登录成功
+     */
+    async requestLogin({dispatch,commit},data){
+
+      const result = await dispatch('post', {
+        target: 'login',
+        data,
+        response() {
+          // TODO intercept stateCode from server
+        }
+      });
+
+      if(result){
+        commit('compareData', {
+          target: 'user',
+          data: result.data
+        });
+        commit('compareData',{
+          target:'info',
+          data:{
+            isLogin:true
+          }
+        });
+        return true;
+      }else{
+        return false;
+      }
+
+    },
   }
 });

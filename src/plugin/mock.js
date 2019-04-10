@@ -10,8 +10,11 @@ Random.extend({
   }
 });
 
-mock('/api/login',{
-
+mock('/login',{
+  nickName:'@csentence(2,10)',
+  level:'@integer(1, 68)',
+  levelCodeRaw:'@string("number", 1, 3)',
+  'controlArea|1-10': ['@word']
 });
 
 mock('/api/server/base', {

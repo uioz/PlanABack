@@ -43,7 +43,7 @@ router.beforeEach((to,from,next)=>{
 
   if(to.meta.fullContent){
     if(!from.meta.fullContent){
-      Store.commit('fullContent', to.meta.fullContent);
+      Store.commit('fullContent', true);
     }
   }
 
@@ -51,8 +51,14 @@ router.beforeEach((to,from,next)=>{
 
 });
 
-router.afterEach(() => {
+router.afterEach((to,from) => {
+
   Store.commit('progressDone');
+
+  if(from.meta.fullContent && !to.meta.fullContent){
+    Store.commit('fullContent',false);
+  }
+
 });
 
 export default router;

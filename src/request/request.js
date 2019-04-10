@@ -73,8 +73,8 @@ const request = async (method, url, source, ...rest) => {
 const generatorRequestMethods = (...methods) => {
   const result = {};
   for (const method of methods) {
-    result[method] = async (vuexContext, source) => {
-      return await request(method, urlRouter(source.target), source, vuexContext);
+    result[method] = (vuexContext, source) => {
+      return request(method, urlRouter(source.target), source, vuexContext);
     }
   }
   return result;
