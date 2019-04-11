@@ -10,6 +10,9 @@ const router = new Router({
   routes: [
     {
       path: '/',
+      meta: {
+        isLogin: true
+      },
       component: Index
     },
     {
@@ -42,11 +45,10 @@ router.beforeEach((to, from, next) => {
 
   const meta = to.meta;
 
-  
-  if ('isLogin' in meta && meta.isLogin !== Store.state.info.isLogin){
-    return next(false);
+  if ('isLogin' in meta && meta.isLogin !== Store.state.info.isLogin) {
+    return next('/auth/login');
   }
-  
+
   if (meta.fullContent) {
     if (!from.meta.fullContent) {
       Store.commit('fullContent', true);
@@ -56,7 +58,7 @@ router.beforeEach((to, from, next) => {
   Store.commit('progressStart');
 
   return next();
-  
+
 });
 
 router.afterEach((to, from) => {

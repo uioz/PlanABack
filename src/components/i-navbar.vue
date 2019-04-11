@@ -10,6 +10,10 @@
   slots:
 
   process:
+  1. 监听路由地址变化
+    1.2 根据地址转换出对于的下标用于高亮tabs的下标
+  2. 利用数据渲染tabs
+    2.1 点击标签后跳转到对应路由
 
 </docs>
 <template>
@@ -19,30 +23,40 @@
         <font-awesome-icon icon="bars"/>
       </mu-button>
     </template>
-    <mu-tabs v-show="info.isLogin" class="button-group" :value.sync="active">
-      <mu-tab>模型构建</mu-tab>
-      <mu-tab>数据处理</mu-tab>
-      <mu-tab>全局处理</mu-tab>
-      <mu-tab>权限管理</mu-tab>
+    <mu-tabs v-show="info.isLogin" class="button-group" :value="activeIndex">
+      <mu-tab v-for="item of tabsList" :key="item.tabActiveIndex" :to="item.route">{{item.label}}</mu-tab>
     </mu-tabs>
     <template #right>
-        <mu-button v-if="info.isLogin" color="secondary" @click="handleLogout">注销</mu-button>
-        <font-awesome-icon v-show="info.isLogin" style="margin:0 2px;" icon="slash" :transform="{ rotate: 53 }"/>
-        <mu-paper v-if="info.isLogin" class="welcome" :z-depth="0">
-          <font-awesome-icon
-            style="margin-right:10px"
-            class="mu-primary-text-color"
-            size="lg"
-            icon="user-circle"
-          />
-          <span>{{info.appname}}</span>
-        </mu-paper>
-        <mu-button v-if="!info.isLogin" :disabled="logoutLock" color="info" to="/login">登录</mu-button>
+      <mu-button v-if="info.isLogin" color="secondary" @click="handleLogout">注销</mu-button>
+      <font-awesome-icon
+        v-show="info.isLogin"
+        style="margin:0 2px;"
+        icon="slash"
+        :transform="{ rotate: 53 }"
+      />
+      <mu-paper v-if="info.isLogin" class="welcome" :z-depth="0">
+        <font-awesome-icon
+          style="margin-right:10px"
+          class="mu-primary-text-color"
+          size="lg"
+          icon="user-circle"
+        />
+        <span>{{info.appname}}</span>
+      </mu-paper>
+      <mu-button v-if="!info.isLogin" :disabled="logoutLock" color="info" to="/login">登录</mu-button>
     </template>
   </mu-appbar>
 </template>
 <script>
-import { mapState,mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
+
+const tabsMap = {
+  "/": 0,
+  "/build": 1,
+  "/data": 2,
+  "/config": 3,
+  "/privilege": 4
+};
 
 export default {
   name: "i-navbar",
@@ -50,20 +64,35 @@ export default {
     drawerClick: Boolean
   },
   computed: {
-    ...mapState(["info"])
+    ...mapState(["info"]),
+    params() {
+      return this.$route.path;
+    }
+  },
+  watch: {
+    params(path) {
+      this.activeIndex = tabsMap[path];
+    }
   },
   data() {
     return {
-      active: 0,
-      logoutLock:false,
+      activeIndex: tabsMap[this.$route.path],
+      tabsList: [
+        { label: "首页", route: "/", activeIndex: 0 },
+        { label: "模型构建", route: "/build", activeIndex: 1 },
+        { label: "数据处理", route: "/data", activeIndex: 2 },
+        { label: "全局控制", route: "/config", activeIndex: 3 },
+        { label: "权限控制", route: "/privilege", activeIndex: 4 }
+      ],
+      logoutLock: false
     };
   },
-  methods:{
-    ...mapActions(['requestLogout']),
-    async handleLogout(){
+  methods: {
+    ...mapActions(["requestLogout"]),
+    async handleLogout() {
       this.logoutLock = true;
-      if(await this.requestLogout()){
-        this.$router.replace('/login');
+      if (await this.requestLogout()) {
+        this.$router.replace("/login");
       }
       this.logoutLock = false;
     }
