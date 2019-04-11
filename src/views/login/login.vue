@@ -13,10 +13,10 @@
 </docs>
 <template>
   <login-layout class="login">
-    <template #title>title</template>
-    <template #sub-title>sub-title</template>
-    <template #notice>notice</template>
-    <template #version>version</template>
+    <template #title>{{info.appname}}</template>
+    <template #sub-title>{{info.school}}</template>
+    <template #notice>{{info.notice}}</template>
+    <template #version>0.1.0</template>
     <template #form>
       <login-form></login-form>
     </template>
@@ -25,6 +25,7 @@
 <script>
 import loginLayout from "./login-layout";
 import loginForm from "./login-form";
+import { mapState } from "vuex";
 
 export default {
   name: "login",
@@ -32,10 +33,11 @@ export default {
     loginLayout,
     loginForm
   },
+  computed:{
+    ...mapState(['info'])
+  }
 };
 </script>
-<style>
-</style>
 
 
 

@@ -1,5 +1,6 @@
 export const urls = {
   login: '/login',
+  logout:'/logout',
   base: '/api/server/base',
   state:'/api/state'
 }

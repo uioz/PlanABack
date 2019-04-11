@@ -15,7 +15,8 @@ const router = new Router({
     {
       path: '/login',
       meta: {
-        fullContent: true
+        fullContent: true,
+        isLogin: false
       },
       component: () => import(/* webpackChunkName: "login" */ './views/login/login.vue')
     },
@@ -37,26 +38,33 @@ const router = new Router({
   ]
 });
 
-router.beforeEach((to,from,next)=>{
+router.beforeEach((to, from, next) => {
 
-  Store.commit('progressStart');
+  const meta = to.meta;
 
-  if(to.meta.fullContent){
-    if(!from.meta.fullContent){
+  
+  if ('isLogin' in meta && meta.isLogin !== Store.state.info.isLogin){
+    return next(false);
+  }
+  
+  if (meta.fullContent) {
+    if (!from.meta.fullContent) {
       Store.commit('fullContent', true);
     }
   }
 
-  next();
+  Store.commit('progressStart');
 
+  return next();
+  
 });
 
-router.afterEach((to,from) => {
+router.afterEach((to, from) => {
 
   Store.commit('progressDone');
 
-  if(from.meta.fullContent && !to.meta.fullContent){
-    Store.commit('fullContent',false);
+  if (from.meta.fullContent && !to.meta.fullContent) {
+    Store.commit('fullContent', false);
   }
 
 });

@@ -35,7 +35,7 @@
             </div>
             <div
               class="footer i-single-row"
-            >--<slot name="version"></slot></div>
+            >--v <slot name="version"></slot></div>
           </div>
         </mu-col>
         <mu-col span="5" md="6" sm="12">

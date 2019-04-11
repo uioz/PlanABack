@@ -26,6 +26,9 @@ export default new Vuex.Store({
     compareData(state,{target,data}){
       state[target] = Object.assign({},state[target],data);
     },
+    updateUserInfo(state,data){
+
+    },
     /**
      * 清空保存的服务器公开信息  
      * 且清空本地缓存
@@ -33,6 +36,12 @@ export default new Vuex.Store({
     clearInfo(state) {
       state.info = {};
       Storage.set('localInfo', state.info);
+    },
+    /**
+     * 清空内部保存的用户信息
+     */
+    clearUser(state){
+      state.user = {};
     },
     /**
      * 设置跳转码
@@ -114,15 +123,12 @@ export default new Vuex.Store({
       });
 
       if(result){
-        commit('compareData', {
-          target: 'user',
-          data: result.data
+        dispatch('initState',{
+          isLogin:true,
         });
         commit('compareData',{
-          target:'info',
-          data:{
-            isLogin:true
-          }
+          target:'user',
+          data:result
         });
         return true;
       }else{
@@ -130,5 +136,25 @@ export default new Vuex.Store({
       }
 
     },
+    /**
+     * 发送登出请求,  
+     * 登出成功返回true,  
+     * 反之返回false.  
+     * 如果有其他呢绒出现
+     */
+    async requestLogout({dispatch,commit}){
+      
+      const result = await dispatch('get',{
+        target:'logout'
+      });
+
+      if(result){
+        commit('clearUser');
+        return true;
+      }else{
+        return false;
+      }
+
+    }
   }
 });

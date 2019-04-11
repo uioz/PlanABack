@@ -26,8 +26,8 @@
       <mu-tab>权限管理</mu-tab>
     </mu-tabs>
     <template #right>
-        <mu-button color="secondary">注销</mu-button>
-        <font-awesome-icon style="margin:0 2px;" icon="slash" :transform="{ rotate: 53 }"/>
+        <mu-button v-if="info.isLogin" color="secondary" @click="handleLogout">注销</mu-button>
+        <font-awesome-icon v-show="info.isLogin" style="margin:0 2px;" icon="slash" :transform="{ rotate: 53 }"/>
         <mu-paper v-if="info.isLogin" class="welcome" :z-depth="0">
           <font-awesome-icon
             style="margin-right:10px"
@@ -37,12 +37,12 @@
           />
           <span>{{info.appname}}</span>
         </mu-paper>
-        <mu-button v-if="!info.isLogin" color="info">登录</mu-button>
+        <mu-button v-if="!info.isLogin" :disabled="logoutLock" color="info" to="/login">登录</mu-button>
     </template>
   </mu-appbar>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState,mapActions } from "vuex";
 
 export default {
   name: "i-navbar",
@@ -54,8 +54,19 @@ export default {
   },
   data() {
     return {
-      active: 0
+      active: 0,
+      logoutLock:false,
     };
+  },
+  methods:{
+    ...mapActions(['requestLogout']),
+    async handleLogout(){
+      this.logoutLock = true;
+      if(await this.requestLogout()){
+        this.$router.replace('/login');
+      }
+      this.logoutLock = false;
+    }
   }
 };
 </script>

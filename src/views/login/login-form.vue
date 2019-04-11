@@ -57,10 +57,8 @@ export default {
       if(await this.$refs.form.validate()){
         this.lock = true;
         if(await this.requestLogin(this.FormData)){
-          console.log('ok')
           this.$router.push('/');
         }
-        console.log('not ok')
         this.lock = false;
       }
     },
