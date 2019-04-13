@@ -12,7 +12,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.8.1",
     "@fortawesome/vue-fontawesome": "^0.1.6",
     "axios": "^0.18.0",
-    "muse-ui": "^3.0.2",
+    "muse-ui": "git+https://github.com/uioz/muse-ui.git",
     "muse-ui-progress": "^0.1.0",
     "normalize.css": "^8.0.1",
     "sha1": "^1.1.1",

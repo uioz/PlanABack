@@ -24,6 +24,34 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "login" */ './views/login/login.vue')
     },
     {
+      path:'/build',
+      component: () => import(/* webpackChunkName: "build" */ './views/build/build.vue'),
+      redirect:'/build/model',
+      children:[
+        {
+          path:'model',
+          meta:{
+            activeTabName:'model'
+          },
+          component: () => import(/* webpackChunkName: "build-model" */ './views/build/build-model.vue')  
+        },
+        {
+          path:'notice',
+          meta: {
+            activeTabName: 'notice'
+          },
+          component: () => import(/* webpackChunkName: "build-notice" */ './views/build/build-notice.vue')  
+        },
+        {
+          path:'preview',
+          meta: {
+            activeTabName: 'preview'
+          },
+          component: () => import(/* webpackChunkName: "build-preview" */ './views/build/build-preview.vue')  
+        },
+      ]
+    },
+    {
       path: '/error/:code',
       component: () => import(/* webpackChunkName: "error" */ './views/error/error.vue')
     },
