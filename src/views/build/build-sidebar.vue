@@ -1,6 +1,6 @@
 <template>
   <mu-paper class="build-sidebar" :z-depth="2" >
-    <mu-list :value="active">
+    <mu-list :value="activeName">
       <mu-list-item button v-for="item of soruce" :key="item.label" :to="item.to" :value="item.activeName">
         <mu-list-item-action>
           <font-awesome-icon :icon="item.icon"></font-awesome-icon>
@@ -8,7 +8,6 @@
         <mu-list-item-title>{{item.label}}</mu-list-item-title>
       </mu-list-item>
     </mu-list>
-    <mu-button @click="handleClick">tes</mu-button>
   </mu-paper>
 </template>
 <script>
@@ -49,11 +48,6 @@ export default {
       return this.active ? this.active : this.soruce[0] ? this.soruce[0].activeName : '';
     }
   },
-  methods:{
-    handleClick(){
-      this.$router.push('/build/notice')
-    }
-  }
 };
 </script>
 <style>

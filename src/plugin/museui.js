@@ -10,7 +10,7 @@ theme.add('my-theme',{
   secondary:'rgb(251,53,105)',
   // success,
   warning:'rgb(255,157,118)',
-  info:'rgb(81,234,234)',
+  // info:'rgb(81,234,234)',
   // error
 });
 

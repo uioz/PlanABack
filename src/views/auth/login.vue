@@ -12,7 +12,7 @@
 
 </docs>
 <template>
-  <mu-flex class="login" justify-content="center">
+  <mu-flex class="auth-login" justify-content="center">
     <mu-flex class="row" justify-content="center">
       <mu-card class="container">
         <div class="up mu-primary-color">
@@ -39,18 +39,18 @@ export default {
 };
 </script>
 <style>
-.login {
+.auth-login {
   /* screen height minus navbar-height */
   height: calc(100vh - 64px);
   background-color: #eee;
 }
 
-.login > .row {
+.auth-login > .row {
   width: 100%;
   height: 90%;
 }
 
-.login .container {
+.auth-login .container {
   margin: 20px 0;
   padding: 0;
   width: 80%;
@@ -58,7 +58,7 @@ export default {
 }
 
 
-.login .container > .up {
+.auth-login .container > .up {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -66,11 +66,11 @@ export default {
   height: 80%;
 }
 
-.login .container > .up > .warning {
+.auth-login .container > .up > .warning {
   color: #fff;
 }
 
-.login .container > .up > .info {
+.auth-login .container > .up > .info {
   align-self: flex-start;
   margin-right: -20px;
   width: auto;
@@ -80,7 +80,7 @@ export default {
   text-align: right;
 }
 
-.login .container > .down {
+.auth-login .container > .down {
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;

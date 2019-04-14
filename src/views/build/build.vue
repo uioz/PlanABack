@@ -1,8 +1,7 @@
 <template>
   <build-layout class="build">
     <template #sidebar-area>
-      <build-sidebar></build-sidebar>
-      <mu-button @click="handleClick">test</mu-button>
+      <build-sidebar :active="activeTab"></build-sidebar>
     </template>
     <template #content-area>
       <router-view></router-view>

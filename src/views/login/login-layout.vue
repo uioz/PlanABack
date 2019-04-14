@@ -55,7 +55,6 @@ export default {
 <style>
 .login-layout {
   display: flex;
-  width: 100vw;
   height: 100vh;
   justify-content: center;
   align-items: center;
@@ -69,11 +68,10 @@ export default {
   max-width: 1400px;
 }
 
-.login-layout > .container > .row,
-.login-layout > .container > .row > .col,
 .login-layout > .container > .row > .col .left-area,
 .login-layout > .container > .row > .col .right-area {
   height: 90vh;
+  box-sizing: border-box;
 }
 
 .login-layout > .container > .row > .col .left-area {

@@ -13,7 +13,7 @@
  * 切换组件的高亮.  
  * 当路由地址改变后内部的切换组件的激活状态会随之改变.  
  * # 接口需求
- * - 使用vueRouter,使用beforeRouteEnter钩子
+ * - 本组件使用了created和beforeRouteUpdate钩子,要求实现者提供VueRouter
  * - 该接口会获取路由守卫中的meta.activeTabName键,如果不存在则不会修改内部状态
  * - data添加了一个activeTab字段
  */
@@ -24,14 +24,15 @@ export const autoTabIndex = {
     }
   },
   beforeRouteEnter(to,from,next){
-
-    const result = to.meta.activeTabName || false;
-
-    if(result){
-      next(vm=>vm.activeTab = result);
-    }else{
-      next(true);
+    next(vm => vm.autoTabIndex(to));
+  },
+  beforeRouteUpdate(to,from,next){
+    this.autoTabIndex(to);
+    next();
+  },
+  methods:{
+    autoTabIndex(to){
+      this.activeTab = to.meta.activeTabName || '';
     }
-
   }
 }
