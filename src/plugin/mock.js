@@ -34,3 +34,28 @@ mock('/api/state',{
   endTime:'@ISODateStr',
   'runingTime|1000-10000000000':0,
 });
+
+mock('/model',{
+  '信息工程系':{
+    '计算机应用技术':['这个技术','哪个技术'],
+    'deepdark':{
+      'hello':['world','C++'],
+      'deepdark':['fantasy']
+    }
+  },
+  '新的系':{
+    'java':{
+      'android':{
+        'sqllite':['3.0','4.0','5.0']
+      }
+    },
+    'node':{
+      'express':['egg','koa','xxx.js']
+    }
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": ['7', '8', '9'],
+    "@vue/cli-plugin-eslint": ['4', '5', '6'],
+    "@vue/cli-service": ['1', '2', '3']
+  }
+});

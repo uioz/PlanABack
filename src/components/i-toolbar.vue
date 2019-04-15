@@ -17,10 +17,10 @@
 
 </docs>
 <template>
-  <mu-appbar color="grey800">
+  <mu-appbar class="i-boolbar" color="grey800">
     <template #right>
-      <mu-container>
-        <template></template>
+      <mu-container class="buttons">
+        <slot></slot>
         <mu-button @click="$emit('onSave')" :disabled="!edited" color="cyan500">保存</mu-button>
       </mu-container>
     </template>
@@ -34,10 +34,13 @@ export default {
       type: Boolean,
       default: false
     }
-  },
+  }
 };
 </script>
 <style>
-
+/* hack mu-button */
+.i-boolbar .buttons > .mu-button + .mu-button {
+  margin-left: 10px;
+}
 </style>
 
