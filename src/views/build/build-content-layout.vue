@@ -41,6 +41,8 @@ export default {
 
 .build-content-layout > .content{
   margin-top: 20px;
+  /* minus margin-top and toolbar height */
+  height: calc(100% - 20px - 64px);
 }
 
 </style>

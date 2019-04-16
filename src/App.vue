@@ -39,6 +39,16 @@ export default {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.i-flat-row{
+  font-size: 0;
+  vertical-align: top;
+}
+
+.i-flat-row > div{
+  display: inline-block;
+}
+
+
 .i-pull-left{
   float: left;
 }

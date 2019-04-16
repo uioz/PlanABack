@@ -9,10 +9,15 @@
   slots:
 
   process:
+  1. 获取专业模型
+    1.1 合并到内部状态
+    1.2 一份用于重置
+    1.3 一份用于编辑
+    1.4 一份用于卡片队列
 
 </docs>
 <template>
-  <build-content-layout>
+  <build-content-layout class="build-model">
     <template #toolbar-area>
       <build-toolbar
         :enabled="edited"
@@ -22,35 +27,44 @@
       ></build-toolbar>
     </template>
     <template #content-area>
-      <div>content-area</div>
+      <build-model-card
+        class="build-content-card"
+        v-for="(item,index) in cardQueue"
+        :key="index"
+        :index="index"
+        :source="item"
+      ></build-model-card>
     </template>
   </build-content-layout>
 </template>
 <script>
 import buildContentLayout from "./build-content-layout";
-import buildToolbar from './build-toolbar';
+import buildToolbar from "./build-toolbar";
 import { mapActions, mapMutations } from "vuex";
 import Message from "../../plugin/musemessage.js";
 import { easyClone } from "../../utils/public.js";
+import buildModelCard from "./build-model-card";
 
 export default {
   name: "build-model",
   components: {
     buildContentLayout,
-    buildToolbar
+    buildToolbar,
+    buildModelCard
   },
   data() {
     return {
       edited: false,
       fetching: false,
       fetchData: undefined,
-      fetchDataBackup:undefined,
+      fetchDataBackup: undefined,
+      cardQueue: [], // 用于保存每一个横向卡片中的内容
       dialogOpen: false
     };
   },
   methods: {
     ...mapMutations(["progressStart", "progressDone"]),
-    ...mapActions(["post","get"]),
+    ...mapActions(["post", "get"]),
     handleSave() {
       this.progressStart();
       this.fetching = true;
@@ -65,46 +79,46 @@ export default {
         })
         .finally(() => this.progressDone());
     },
-    handleReset(){
+    handleReset() {
       this.fetchData = this.fetchDataBackup;
       this.edited = false;
     },
-    beforeFetch(){
+    beforeFetch() {
       this.fetching = true;
-      this.fetchData = this.fetchDataBackup =  undefined;
+      this.fetchData = this.fetchDataBackup = undefined;
     },
-    afterFetch(){
+    afterFetch() {
       this.fetching = false;
     },
-    fetch(){
-
-      if(this.fetching){
+    fetch() {
+      if (this.fetching) {
         return;
       }
 
       this.beforeFetch();
 
       this.get({
-        target:'model'
-      }).then(({data:result})=>{
-        if(result){
-        this.fetchData = result;
-        this.fetchDataBackup = easyClone(result);
-      }
+        target: "model"
       })
-      .finally(()=>this.afterFetch());
-
+        .then(({ data: result }) => {
+          if (result) {
+            this.fetchData = result;
+            this.fetchDataBackup = easyClone(result);
+            this.cardQueue.push(easyClone(result));
+          }
+        })
+        .finally(() => this.afterFetch());
     }
   },
   created() {
     this.fetch();
   },
-  beforeRouteUpdate(){
+  beforeRouteUpdate() {
     this.fetch();
     next();
   },
   beforeRouteLeave(to, from, next) {
-    if(!this.fetching){
+    if (!this.fetching) {
       return next();
     }
     Message.confirm("还没有上传完成,提前离开可能会让修改失效!", "警告", {
@@ -119,4 +133,21 @@ export default {
   }
 };
 </script>
+<style>
+.build-model > .content {
+  display: inline-block;
+  white-space: nowrap;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.build-model .build-content-card {
+  display: inline-block;
+}
+
+.build-model .build-content-card + .build-content-card {
+  margin-left: 20px;
+}
+</style>
+
 
