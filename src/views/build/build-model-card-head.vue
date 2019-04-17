@@ -36,6 +36,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 5px;
+  border: 1px solid rgb(251,53,105);
 }
 
 .build-model-card-head > p {
