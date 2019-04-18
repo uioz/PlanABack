@@ -15,6 +15,12 @@
     1.3 一份用于编辑
     1.4 一份用于卡片队列
 
+  卡片队列中元素的数据结构:
+  {
+    label:string, // 当前的键名
+    data:object|array // 对应的内容
+  }
+
 </docs>
 <template>
   <build-content-layout class="build-model">
@@ -32,7 +38,9 @@
         v-for="(item,index) in cardQueue"
         :key="index"
         :index="index"
-        :source="item"
+        :label="item.label"
+        :source="item.data"
+        @pick="handleCardPick"
       ></build-model-card>
     </template>
   </build-content-layout>
@@ -63,6 +71,20 @@ export default {
     };
   },
   methods: {
+    handleCardPick(index, key) {
+
+      // index start with zero
+      if (index + 1 < this.cardQueue.length) {
+        this.cardQueue.splice(index + 1);
+      }
+
+      this.cardQueue.push({
+        label: key,
+        data: this.cardQueue[index].data[key]
+      });
+
+    },
+    // ----- Split Lines
     ...mapMutations(["progressStart", "progressDone"]),
     ...mapActions(["post", "get"]),
     handleSave() {
@@ -104,7 +126,10 @@ export default {
           if (result) {
             this.fetchData = result;
             this.fetchDataBackup = easyClone(result);
-            this.cardQueue.push(easyClone(result));
+            this.cardQueue.push({
+              label: "全部专业",
+              data: easyClone(result)
+            });
           }
         })
         .finally(() => this.afterFetch());

@@ -7,7 +7,7 @@
   label:string // 用于标签名称
 
   methods:
-  pick():void // 当标签被点击(空白处)的时候触发
+  pick(label:string):void // 当标签被点击(空白处)的时候触发
   remove():void // 当点击移除的时候触发
   change(text:string):void // 当输入内容回车后触发
 
@@ -17,7 +17,7 @@
 
 </docs>
 <template>
-  <mu-paper class="build-model-card-item" @click="$emit('pick')">
+  <mu-paper class="build-model-card-item" @click="$emit('pick',label)">
     <mu-button title="删除该项目" class="times" small icon color="grey" @click.stop="$emit('remove')">
       <font-awesome-icon icon="times"/>
     </mu-button>

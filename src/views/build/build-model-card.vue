@@ -3,8 +3,11 @@
   intro:
 
   props:
+  label:string='所有专业' // 标签名称也是对象的键名
+  index:number // 当前卡片相对于全局卡片数组中的下标
 
   methods:
+  pick(index:number,label:string):void // 当卡片内部的项目被点击的时候触发
 
   slots:
 
@@ -22,7 +25,9 @@
       @change="handleItemChange"
       @remove="handleItemRemove"
     ></build-model-card-item>
-    <build-model-card-plus></build-model-card-plus>
+    <build-model-card-plus
+      @change="handlePlusChange"
+    ></build-model-card-plus>
   </div>
 </template>
 <script>
@@ -41,11 +46,11 @@ export default {
   props: {
     label: {
       type: String,
-      default: "所有专业"
+      required:true
     },
-    index: {
-      type: Number,
-      required: true
+    index:{
+      type:Number,
+      required:true
     },
     source: {
       type: [Array, Object],
@@ -65,17 +70,24 @@ export default {
     }
   },
   methods: {
+    handleItemPick(label) {
+      // 如果是数组,则已经没有类似于对象的嵌套的结构了
+      // 所以不会触发点击事件
+      if(!Array.isArray(this.source)){
+        this.$emit('pick',this.index,label);
+      }
+    },
     handleCancelAll() {
       console.log("cancelAll");
-    },
-    handleItemPick() {
-      console.log("itemPick");
     },
     handleItemRemove() {
       console.log("itemRemove");
     },
     handleItemChange() {
       console.log("itemChange");
+    },
+    handlePlusChange(){
+      console.log('plusChange')
     }
   }
 };
