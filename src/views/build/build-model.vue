@@ -71,7 +71,6 @@ export default {
       fetchData: undefined,
       fetchDataBackup: undefined,
       cardQueue: [], // 用于保存每一个横向卡片中的内容
-      dialogOpen: false
     };
   },
   methods: {
@@ -311,6 +310,7 @@ export default {
 };
 </script>
 <style>
+/* hack build-content-layout */
 .build-model > .content {
   display: inline-block;
   white-space: nowrap;

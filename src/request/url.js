@@ -3,7 +3,8 @@ export const urls = {
   logout:'/logout',
   base: '/api/server/base',
   state:'/api/state',
-  model:'/model'
+  model:'/model',
+  speciality:'/assest/speciality'
 }
 
 /**
