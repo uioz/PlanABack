@@ -21,7 +21,7 @@
     <template #right>
       <mu-container class="buttons">
         <slot></slot>
-        <mu-button @click="$emit('onSave')" :disabled="!edited" color="cyan500">保存</mu-button>
+        <mu-button @click="$emit('save')" :disabled="!edited" color="cyan500">保存</mu-button>
       </mu-container>
     </template>
   </mu-appbar>

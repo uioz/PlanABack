@@ -7,7 +7,7 @@
   label:string // 展示的问题
 
   methods:
-  cancel():void // 当点击清空的时候触发
+  remove():void // 当点击清空的时候触发
 
   slots:
 
@@ -17,7 +17,7 @@
 <template>
   <mu-paper class="build-model-card-head">
     <p class="i-single-row" style="width:20em" :title="label">{{label}}</p>
-    <mu-button small flat color="secondary" @click="$emit('cancel')">全部删除</mu-button>
+    <mu-button small flat color="secondary" @click="$emit('remove')">全部删除</mu-button>
   </mu-paper>
 </template>
 <script>

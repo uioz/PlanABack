@@ -8,6 +8,10 @@
 
   methods:
   pick(index:number,label:string):void // 当卡片内部的项目被点击的时候触发
+  remove-all(index:number,label:string):void // 当移出所有的项目的时候触发,注意这里的label是card的label
+  remove(index:number,parentLabel:string,childLabel:string):void // 当移除某一项的时候触发,注意这里的label是被移除项目(item)的label
+  change(index:number,parentLabel:string,childLabel:string,inputText:string):void // 当修改原有的内容的时候触发
+  plus-item(index:number,label:string,inputText:string,isResultSet:boolean):void // 当触发添加新的的项目的时候触发
 
   slots:
 
@@ -16,7 +20,7 @@
 </docs>
 <template>
   <div class="build-model-card">
-    <build-model-card-head v-if="!lastCard" :label="label" @cancel="handleCancelAll"></build-model-card-head>
+    <build-model-card-head v-if="index !== 0" :label="label" @remove="handleRemoveAll"></build-model-card-head>
     <build-model-card-item
       v-for="item of transformedSource"
       :key="item"
@@ -26,6 +30,7 @@
       @remove="handleItemRemove"
     ></build-model-card-item>
     <build-model-card-plus
+      :hide-switch="isLastOneCard"
       @change="handlePlusChange"
     ></build-model-card-plus>
   </div>
@@ -58,13 +63,14 @@ export default {
     }
   },
   computed: {
-    lastCard() {
+    isLastOneCard(){
       return Array.isArray(this.source);
     },
     transformedSource() {
-      if (this.lastCard) {
-        return this.source;
-      } else {
+
+      if(Array.isArray(this.source)){
+        return this.source
+      }else{
         return Object.keys(this.source);
       }
     }
@@ -77,17 +83,17 @@ export default {
         this.$emit('pick',this.index,label);
       }
     },
-    handleCancelAll() {
-      console.log("cancelAll");
+    handleRemoveAll() {
+      this.$emit('remove-all',this.index,this.label);
     },
-    handleItemRemove() {
-      console.log("itemRemove");
+    handleItemRemove(label) {
+      this.$emit('remove',this.index,this.label,label);
     },
-    handleItemChange() {
-      console.log("itemChange");
+    handleItemChange(label,inputText) {
+      this.$emit('change',this.index,this.label,label,inputText);
     },
-    handlePlusChange(){
-      console.log('plusChange')
+    handlePlusChange(inputText,isResultSet){
+      this.$emit('plus-item',this.index,this.label,inputText,isResultSet);
     }
   }
 };

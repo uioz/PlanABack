@@ -28,8 +28,8 @@
       <build-toolbar
         :enabled="edited"
         :edited="!fetching && edited"
-        @on-save="handleSave"
-        @on-reset="handleReset"
+        @save="handleSave"
+        @reset="handleReset"
       ></build-toolbar>
     </template>
     <template #content-area>
@@ -41,6 +41,10 @@
         :label="item.label"
         :source="item.data"
         @pick="handleCardPick"
+        @remove-all="handleCardRemoveAll"
+        @remove="handleItemRemove"
+        @change="handleItemChange"
+        @plus-item="handleItemPlus"
       ></build-model-card>
     </template>
   </build-content-layout>
@@ -71,8 +75,135 @@ export default {
     };
   },
   methods: {
-    handleCardPick(index, key) {
+    handleItemPlus(index, parentKey, inputText, isResultSet) {
+      const getCollectlyNode = () => (isResultSet ? [] : {}),
+        target = this.cardQueue[index].data;
 
+      let result = undefined;
+      // add from cardQuee
+      if (Array.isArray(target)) {
+        target.push(inputText);
+        result = target;
+      } else {
+        this.$set(target, inputText, getCollectlyNode());
+        result = target[inputText];
+      }
+
+      // add from fetchData
+      let addTarget = this.fetchData;
+
+      if (index > 0) {
+        let i = 1;
+        while (i < index) {
+          addTarget = addTarget[this.cardQueue[i].label];
+          i++;
+        }
+        this.$set(addTarget[parentKey], inputText, result);
+      } else {
+        this.$set(addTarget, inputText, result);
+      }
+    },
+    handleItemChange(index, parentKey, childKey, inputText) {
+      // change from cardQueue
+      const target = this.cardQueue[index].data;
+      let changeOfArray = false,
+        result = undefined;
+
+      if (Array.isArray(target)) {
+        changeOfArray = true;
+        this.$set(target, target.indexOf(childKey), inputText);
+        result = target;
+      } else {
+        this.$set(target, inputText, target[childKey]);
+        this.$delete(target, childKey);
+        result = target[childKey];
+      }
+      // 如果有下个卡片且是当前被修改项目的后代,修正这个后代的标签名称
+      if (
+        this.cardQueue[index + 1] &&
+        this.cardQueue[index + 1].label === childKey
+      ) {
+        this.cardQueue[index + 1].label = inputText;
+      }
+
+      // change from fetchData
+      let changeTarget = this.fetchData;
+      if (index > 0) {
+        let i = 1;
+        while (i < index) {
+          changeTarget = changeTarget[this.cardQueue[i].label];
+          i++;
+        }
+      }
+
+      const correctlyKey = index > 0 ? parentKey : childKey;
+
+      if (changeOfArray) {
+        this.$set(changeTarget, correctlyKey, result);
+      } else {
+        this.$set(changeTarget, inputText, result);
+        this.$delete(changeTarget, correctlyKey);
+      }
+    },
+    handleItemRemove(index, fatherLabel, childLabel) {
+      // remove from cardQueue
+      const target = this.cardQueue[index].data;
+      if (Array.isArray(target)) {
+        this.$delete(target, target.indexOf(childLabel));
+        // 如果删除完成后没有内容了则清空选中的卡片
+        if (target.length === 0) {
+          return this.handleCardRemoveAll(index, fatherLabel);
+        }
+      } else {
+        this.$delete(target, childLabel);
+        // 如果删除完成后没有内容了则清空选中的卡片
+        if (Object.keys(target).length === 0) {
+          return this.handleCardRemoveAll(index, fatherLabel);
+        }
+        // 如果后代是自身则移出这个卡片
+        if (
+          this.cardQueue[index + 1] &&
+          this.cardQueue[index + 1].label === childLabel
+        ) {
+          this.cardQueue.splice(index + 1);
+        }
+      }
+
+      // remove from fetchData
+      let deleteTarget = this.fetchData;
+      if (index > 0) {
+        let i = 1;
+        while (i < index) {
+          deleteTarget = deleteTarget[this.cardQueue[i].label];
+          i++;
+        }
+        deleteTarget = deleteTarget[fatherLabel];
+      }
+
+      if (Array.isArray(deleteTarget)) {
+        this.$delete(deleteTarget, deleteTarget.indexOf(childLabel));
+      } else {
+        this.$delete(deleteTarget, childLabel);
+      }
+    },
+    handleCardRemoveAll(index, key) {
+      // remove from fetchData
+      let target = this.fetchData;
+
+      let i = 1;
+      // index start with zero
+      while (i < index) {
+        target = target[this.cardQueue[i].label];
+        i++;
+      }
+      this.$delete(target, key);
+      // remove from card
+      this.cardQueue.splice(index);
+      if (--index >= 0) {
+        this.$delete(this.cardQueue[index].data, key);
+      }
+    },
+    handleCardPick(index, key) {
       // index start with zero
       if (index + 1 < this.cardQueue.length) {
         this.cardQueue.splice(index + 1);
@@ -82,7 +213,6 @@ export default {
         label: key,
         data: this.cardQueue[index].data[key]
       });
-
     },
     // ----- Split Lines
     ...mapMutations(["progressStart", "progressDone"]),
@@ -95,15 +225,25 @@ export default {
         target: "model",
         data: this.fetchData
       })
-        .then((result = false) => {
+        .then(result => {
           if (result) {
           }
         })
-        .finally(() => this.progressDone());
+        .finally(() => {
+          this.afterFetch();
+          this.progressDone();
+        });
     },
     handleReset() {
-      this.fetchData = this.fetchDataBackup;
-      this.edited = false;
+      this.cardQueue = [
+        {
+          label: "",
+          data: (this.fetchData = easyClone(this.fetchDataBackup))
+        }
+      ];
+      this.$nextTick(() => {
+        this.edited = false;
+      });
     },
     beforeFetch() {
       this.fetching = true;
@@ -127,12 +267,24 @@ export default {
             this.fetchData = result;
             this.fetchDataBackup = easyClone(result);
             this.cardQueue.push({
-              label: "全部专业",
+              label: "",
               data: easyClone(result)
             });
           }
         })
         .finally(() => this.afterFetch());
+    }
+  },
+  watch: {
+    fetchData: {
+      deep: true, // 开启深度响应式
+      handler: function(newvalue, oldvalue) {
+        // 如果oldvalue为undefined说明此时
+        // 数据刚刚获取
+        if (oldvalue !== undefined) {
+          this.edited = true;
+        }
+      }
     }
   },
   created() {
@@ -163,7 +315,6 @@ export default {
   display: inline-block;
   white-space: nowrap;
   width: 100%;
-  overflow-x: auto;
 }
 
 .build-model .build-content-card {

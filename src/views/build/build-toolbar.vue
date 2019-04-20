@@ -14,7 +14,7 @@
 </docs>
 <template>
   <i-toolbar v-bind="$attrs" v-on="$listeners">
-    <mu-button color="error" :disabled="!enabled" @click="$emit('onReset')">重置</mu-button>
+    <mu-button color="error" :disabled="!enabled" @click="$emit('reset')">重置</mu-button>
   </i-toolbar>
 </template>
 <script>

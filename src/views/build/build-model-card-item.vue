@@ -8,8 +8,8 @@
 
   methods:
   pick(label:string):void // 当标签被点击(空白处)的时候触发
-  remove():void // 当点击移除的时候触发
-  change(text:string):void // 当输入内容回车后触发
+  remove(label:string):void // 当点击移除的时候触发
+  change(label:string,text:string):void // 当输入内容回车后触发
 
   slots:
 
@@ -18,12 +18,19 @@
 </docs>
 <template>
   <mu-paper class="build-model-card-item" @click="$emit('pick',label)">
-    <mu-button title="删除该项目" class="times" small icon color="grey" @click.stop="$emit('remove')">
+    <mu-button
+      title="删除该项目"
+      class="times"
+      small
+      icon
+      color="grey"
+      @click.stop="$emit('remove',label)"
+    >
       <font-awesome-icon icon="times"/>
     </mu-button>
     <mu-tooltip placement="left" content="回车完成编辑">
       <mu-text-field
-        v-model="newLabel"
+        v-model="inputText"
         @click.stop
         @keyup.enter="handleEnter"
         full-width
@@ -46,27 +53,25 @@ export default {
   },
   data() {
     return {
-      errorText:"",
-      newLabel: "",
-      timeOutId:undefined
+      errorText: "",
+      inputText: "",
+      timeOutId: undefined
     };
   },
-  methods:{
-    handleEnter(){
-      if(this.newLabel){
-        this.$emit("change",this.newLabel);
-      }else{
-
-        if(this.timeOutId){
+  methods: {
+    handleEnter() {
+      if (this.inputText) {
+        this.$emit("change",this.label,this.inputText);
+      } else {
+        if (this.timeOutId) {
           clearTimeout(this.timeOutId);
         }
 
-        this.errorText = "请先输入字段名称";
+        this.errorText = "请先输入内容";
 
         this.timeOutId = setTimeout(() => {
-          this.errorText = '';
+          this.errorText = "";
         }, 2000);
-
       }
     }
   }
