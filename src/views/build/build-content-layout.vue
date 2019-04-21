@@ -16,7 +16,7 @@
 
 </docs>
 <template>
-  <div class="build-content-layout">
+  <div class="build-content-layout" >
     <div class="toolbar">
       <slot name="toolbar-area"></slot>
     </div>
@@ -40,6 +40,7 @@ export default {
 }
 
 .build-content-layout > .content{
+  position: relative;
   margin-top: 20px;
   /* minus margin-top and toolbar height */
   height: calc(100% - 20px - 64px);

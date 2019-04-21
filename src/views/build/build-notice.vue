@@ -10,16 +10,14 @@
     </template>
     <template #content-area>
       <build-notice-card
-        v-for="(item,index) in cardQueue"
-        :key="index"
-        :index="index"
-        :label="item.label"
-        :source="item.data.lists"
+        :source="fetchData"
+        label=""
+        :index="0"
         @set-all="handleSetAll"
         @remove-all="handleRemoveAll"
-        @pick-item="handlePickItem"
         @edit-item="handleEditItem"
       ></build-notice-card>
+      <build-notice-edit-card :label="specName" v-model="editNotice" @confirm="handleEditCardChange"></build-notice-edit-card>
     </template>
   </build-content-layout>
 </template>
@@ -28,6 +26,7 @@ import buildContentLayout from "./build-content-layout";
 import buildNoticeCard from "./build-notice-card";
 import Message from "../../plugin/musemessage.js";
 import buildToolbar from "./build-toolbar";
+import buildNoticeEditCard from "./build-notice-edit-card";
 import { mapActions, mapMutations } from "vuex";
 import { easyClone } from "../../utils/public.js";
 
@@ -36,7 +35,8 @@ export default {
   components: {
     buildContentLayout,
     buildNoticeCard,
-    buildToolbar
+    buildToolbar,
+    buildNoticeEditCard
   },
   data() {
     return {
@@ -44,45 +44,53 @@ export default {
       edited: false,
       fetchData: undefined,
       fetchDataBackup: undefined,
+      editNotice: "", // 通知内容
+      specName: "", // 通知名称
       cardQueue: [] // 用于保存每一个横向卡片中的内容
     };
   },
   methods: {
-    handleEditItem() {
-      console.log("editItem");
+    handleEditCardChange(label){
+
+      const [target] = this.fetchData.filter(value => value.name === label);
+      target.notice = this.editNotice;
+      this.editNotice = this.specName = '';
+    },
+    handleEditItem(index, parentKey, childKey) {
+      const [target] = this.fetchData.filter(value => value.name === childKey);
+      this.specName = target.name;
+      console.log(this.specName)
+      this.editNotice = target.notice;
     },
     handlePickItem(index, parentKey, childKey) {
-      this.cardQueue.splice(index + 1);
-      let [target] = this.cardQueue[index].data.lists.filter(
-        value => value.name === childKey
-      );
-      this.cardQueue.push({
-        label: childKey,
-        data: target
-      });
-      console.log(this.cardQueue);
+      // this.cardQueue.splice(index + 1);
+      // let [target] = this.cardQueue[index].data.lists.filter(
+      //   value => value.name === childKey
+      // );
+      // this.cardQueue.push({
+      //   label: childKey,
+      //   data: target
+      // });
     },
     handleRemoveAll(index, label) {
-      // remove from cardQueue
-
       if (index === 0) {
-        this.cardQueue[index].data.lists.forEach(value => {
+        this.cardQueue[index].data.forEach(value => {
           value.notice = "";
         });
       }
 
       // remove from fetchData
-      let target = this.fetchData.lists,
-        i = 1;
+      // let target = this.fetchData;
+      //   i = 1;
 
-      while (i < index) {
-        [target] = target.lists.filter(
-          value => value.name === this.cardQueue[i].label
-        );
-        i++;
-      }
+      // while (i < index) {
+      //   [target] = target.lists.filter(
+      //     value => value.name === this.cardQueue[i].label
+      //   );
+      //   i++;
+      // }
 
-      target.lists.forEach(value => (value.notice = ""));
+      this.fetchData.forEach(value => (value.notice = ""));
     },
     handleSetAll() {
       console.log("set all");
@@ -100,9 +108,7 @@ export default {
       this.cardQueue = [
         {
           label: "",
-          data: {
-            lists: easyClone(this.fetchData)
-          }
+          data: easyClone(this.fetchData)
         }
       ];
     },
@@ -172,19 +178,18 @@ export default {
 };
 </script>
 <style>
-.build-notice > .content{
+.build-notice > .content {
   display: inline-block;
   white-space: nowrap;
   width: 100%;
 }
 
-.build-notice .build-notice-card{
+.build-notice .build-notice-card {
   display: inline-block;
 }
 
-.build-notice .build-notice-card+.build-notice-card{
+.build-notice .build-notice-card + .build-notice-card {
   margin-left: 10px;
 }
-
 </style>
 

@@ -64,7 +64,7 @@ mock('/assest/speciality', [
   {
     "name": "信息工程系",
     "title": "你好",
-    "notice": "",
+    "notice": "hello",
     "lists": [
       {
         "name": "计算机技术",
