@@ -1,3 +1,19 @@
+<docs>
+
+  intro:
+  这个组件拥有和build-model同样的结构,完成的功能较为简单.  
+  但是递归处理十分麻烦,这里不再编写递归解析的方式来满足所有的功能实现.  
+  仅仅使用最基本的实现方式,顶级字段拥有通知.  
+
+  props:
+
+  methods:
+
+  slots:
+
+  process:
+
+</docs>
 <template>
   <build-content-layout class="build-notice">
     <template #toolbar-area>
@@ -11,13 +27,17 @@
     <template #content-area>
       <build-notice-card
         :source="fetchData"
-        label=""
+        label
         :index="0"
         @set-all="handleSetAll"
         @remove-all="handleRemoveAll"
         @edit-item="handleEditItem"
       ></build-notice-card>
-      <build-notice-edit-card :label="specName" v-model="editNotice" @confirm="handleEditCardChange"></build-notice-edit-card>
+      <build-notice-edit-card
+        :label="specName"
+        v-model="editNotice"
+        @confirm="handleEditCardChange"
+      ></build-notice-edit-card>
     </template>
   </build-content-layout>
 </template>
@@ -29,6 +49,7 @@ import buildToolbar from "./build-toolbar";
 import buildNoticeEditCard from "./build-notice-edit-card";
 import { mapActions, mapMutations } from "vuex";
 import { easyClone } from "../../utils/public.js";
+import { getStringLength } from "../../utils/validates.js";
 
 export default {
   name: "build-notice",
@@ -50,16 +71,14 @@ export default {
     };
   },
   methods: {
-    handleEditCardChange(label){
-
+    handleEditCardChange(label) {
       const [target] = this.fetchData.filter(value => value.name === label);
       target.notice = this.editNotice;
-      this.editNotice = this.specName = '';
+      this.editNotice = this.specName = "";
     },
     handleEditItem(index, parentKey, childKey) {
       const [target] = this.fetchData.filter(value => value.name === childKey);
       this.specName = target.name;
-      console.log(this.specName)
       this.editNotice = target.notice;
     },
     handlePickItem(index, parentKey, childKey) {
@@ -73,11 +92,11 @@ export default {
       // });
     },
     handleRemoveAll(index, label) {
-      if (index === 0) {
+      // if (index === 0) {
         this.cardQueue[index].data.forEach(value => {
           value.notice = "";
         });
-      }
+      // }
 
       // remove from fetchData
       // let target = this.fetchData;
@@ -93,13 +112,37 @@ export default {
       this.fetchData.forEach(value => (value.notice = ""));
     },
     handleSetAll() {
-      console.log("set all");
+      Message.prompt("请输入通知:", "统一设置", {
+        inputPlaceholder: "输入的内容长度不得超过200个字符",
+        validator: text => {
+          text = text || "";
+          return {
+            valid:getStringLength(text)<=200,
+            message:'输入的内容长度不得超过200个字符'
+          };
+        }
+      }).then(result => {
+        this.cardQueue[0].data.forEach(value=>value.notice = '');
+        this.fetchData.forEach(value => (value.notice = result.value));
+      });
     },
     handleSave() {
-      console.log("save");
+
+      this.fetching = true;
+
+      this.post({
+        target:'model',
+        data:this.fetchData
+      }).then((response)=>{
+        if(response && response.data){
+          // TODO 响应成功
+        }
+      }).finally(()=>this.fetching = false);
+
     },
     handleReset() {
-      console.log("reset");
+      this.fetchData = easyClone(this.fetchDataBackup);
+      this.cardInit();
     },
     ...mapMutations(["progressStart", "progressDone"]),
     ...mapActions(["post", "get"]),

@@ -14,21 +14,29 @@
 <template>
   <mu-paper class="build-notice-edit-card" :z-depth="5">
     <h4>预览&编辑</h4>
-    <mu-text-field v-bind="$attrs" v-on="$listeners" placeholder="还没有通知哦" multi-line :rows="3" :rows-max="6"></mu-text-field>
+    <mu-text-field
+      placeholder="还没有通知哦"
+      multi-line
+      v-bind="$attrs"
+      v-on="$listeners"
+      :rows="3"
+      :rows-max="6"
+      :max-length="200"
+    ></mu-text-field>
     <br>
     <mu-button style="margin-bottom:10px;" color="primary" @click="$emit('confirm',label)">确认修改</mu-button>
   </mu-paper>
 </template>
 <script>
 export default {
-  name:'build-notice-edit-card',
-  props:{
-    label:String
-  },
-}
+  name: "build-notice-edit-card",
+  props: {
+    label: String
+  }
+};
 </script>
 <style>
-.build-notice-edit-card{
+.build-notice-edit-card {
   position: absolute;
   top: 0;
   right: 0;
