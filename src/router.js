@@ -24,30 +24,57 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "login" */ './views/login/login.vue')
     },
     {
-      path:'/build',
+      path: '/build',
       component: () => import(/* webpackChunkName: "build" */ './views/build/build.vue'),
-      redirect:'/build/model',
-      children:[
+      redirect: '/build/model',
+      children: [
         {
-          path:'model',
-          meta:{
-            activeTabName:'model'
+          path: 'model',
+          meta: {
+            activeTabName: 'model'
           },
-          component: () => import(/* webpackChunkName: "build-model" */ './views/build/build-model.vue')  
+          component: () => import(/* webpackChunkName: "build-model" */ './views/build/build-model.vue')
         },
         {
-          path:'notice',
+          path: 'notice',
           meta: {
             activeTabName: 'notice'
           },
-          component: () => import(/* webpackChunkName: "build-notice" */ './views/build/build-notice.vue')  
+          component: () => import(/* webpackChunkName: "build-notice" */ './views/build/build-notice.vue')
         },
         {
-          path:'preview',
+          path: 'preview',
           meta: {
             activeTabName: 'preview'
           },
-          component: () => import(/* webpackChunkName: "build-preview" */ './views/build/build-preview.vue')  
+          component: () => import(/* webpackChunkName: "build-preview" */ './views/build/build-preview.vue')
+        },
+      ]
+    },
+    {
+      path: 'data',
+      component: () => import(/* webpackChunkName: "data" */ './views/data/data.vue'),
+      children: [
+        {
+          path: 'upload',
+          meta: {
+            activeTabName: 'upload'
+          },
+          component: () => import(/* webpackChunkName: "data-upload" */ './views/data/data-upload.vue')
+        },
+        {
+          path: 'download',
+          meta: {
+            activeTabName: 'download'
+          },
+          component: () => import(/* webpackChunkName: "data-download" */ './views/data/data-download.vue')
+        },
+        {
+          path: 'preview',
+          meta: {
+            activeTabName: 'preview'
+          },
+          component: () => import(/* webpackChunkName: "data-preview" */ './views/data/data-preview.vue')
         },
       ]
     },

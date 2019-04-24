@@ -121,4 +121,13 @@ mock('/assest/speciality', [
       }
     ]
   }
-])
+]);
+
+mock('/api/specalties/2019', {
+  stateCode: 200,
+  "message|5-10": [
+    "@word",
+    "CMD",
+    "UMD"
+  ]
+});
