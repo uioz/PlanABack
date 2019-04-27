@@ -4,7 +4,10 @@ export const urls = {
   base: '/api/server/base',
   state:'/api/state',
   model:'/model',
-  speciality:'/assest/speciality'
+  speciality:'/assest/speciality',
+  upload:{
+    source:'/source'
+  }
 }
 
 /**

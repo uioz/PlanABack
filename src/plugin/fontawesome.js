@@ -13,7 +13,11 @@ import {
   faComment,
   faRocket,
   faTimes,
-  faPlus
+  faPlus,
+  faUpload,
+  faDownload,
+  faGlasses,
+  faQuestionCircle
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -30,7 +34,11 @@ library.add(
   faComment,
   faRocket,
   faTimes,
-  faPlus
+  faPlus,
+  faUpload,
+  faDownload,
+  faGlasses,
+  faQuestionCircle
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);

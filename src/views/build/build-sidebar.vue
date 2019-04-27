@@ -1,7 +1,7 @@
 <template>
   <mu-paper class="build-sidebar" :z-depth="2" >
     <mu-list :value="activeName">
-      <mu-list-item button v-for="item of soruce" :key="item.label" :to="item.to" :value="item.activeName">
+      <mu-list-item button v-for="item of source" :key="item.label" :to="item.to" :value="item.activeName">
         <mu-list-item-action>
           <font-awesome-icon :icon="item.icon"></font-awesome-icon>
         </mu-list-item-action>
@@ -17,35 +17,16 @@ export default {
     active:{
       type:String,
     },
-    soruce:{
+    source:{
       type:Array,
       default(){
-        return [
-          {
-            label:'专业模型构建',
-            icon:'cubes',
-            activeName:'model',
-            to:'/build/model'
-          },
-          {
-            label:'通知消息',
-            icon:'comment',
-            activeName:'notice',
-            to:'/build/notice'
-          },
-          {
-            label:'结果预览',
-            icon:'rocket',
-            activeName:'preview',
-            to:'/build/preview'
-          },
-        ]
+        return [];
       }
     }
   },
   computed:{
     activeName(){
-      return this.active ? this.active : this.soruce[0] ? this.soruce[0].activeName : '';
+      return this.active ? this.active : this.source[0] ? this.source[0].activeName : '';
     }
   },
 };

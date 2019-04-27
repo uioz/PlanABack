@@ -50,14 +50,6 @@
 <script>
 import { mapState, mapActions } from "vuex";
 
-const tabsMap = {
-  "/": 0,
-  "/build": 1,
-  "/data": 2,
-  "/config": 3,
-  "/privilege": 4
-};
-
 export default {
   name: "i-navbar",
   props: {
@@ -69,14 +61,17 @@ export default {
       return this.$route.path;
     }
   },
+  created() {
+    this.changeActiveTabName(this.$route.path);
+  },
   watch: {
     params(path) {
-      this.activeIndex = tabsMap[path];
+      this.changeActiveTabName(this.$route.path);
     }
   },
   data() {
     return {
-      activeIndex: tabsMap[this.$route.path],
+      activeIndex: 0,
       tabsList: [
         { label: "首页", route: "/", activeIndex: 0 },
         { label: "模型构建", route: "/build", activeIndex: 1 },
@@ -95,6 +90,22 @@ export default {
         this.$router.replace("/login");
       }
       this.logoutLock = false;
+    },
+    changeActiveTabName(path) {
+
+      const tabsMap = {
+        "/": 0,
+        "/build/": 1,
+        "/data/": 2,
+        "/config/": 3,
+        "/privilege/": 4
+      };
+
+      // will return null when nothing to matched
+      const topPath = path.match(/^.*\//);
+
+      this.activeIndex = topPath ? tabsMap[topPath] : 0;
+
     }
   }
 };

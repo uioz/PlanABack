@@ -52,8 +52,9 @@ const router = new Router({
       ]
     },
     {
-      path: 'data',
+      path: '/data',
       component: () => import(/* webpackChunkName: "data" */ './views/data/data.vue'),
+      redirect:'/data/upload',
       children: [
         {
           path: 'upload',

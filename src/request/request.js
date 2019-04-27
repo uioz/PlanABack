@@ -1,9 +1,8 @@
 import Axios from "axios";
 import { urls, routeExp, UrlRouterGenerator } from "./url.js";
 
-const
-  AxiosInstance = Axios.create(),
-  urlRouter = UrlRouterGenerator(urls, routeExp);
+export const urlRouter = UrlRouterGenerator(urls, routeExp);
+const AxiosInstance = Axios.create();
 
 /**
  * 默认拦截器组
@@ -33,10 +32,10 @@ const autoIntercept = (name, source, ...rest) => {
   const isFun = source[name];
 
   if (typeof isFun === 'function') {
-    isFun(source.data, ...rest);
+    isFun(source, ...rest);
   } else if (isFun === undefined || isFun === true) {
 
-    intercepts[name](source.data, ...rest);
+    intercepts[name](source, ...rest);
   }
 }
 
@@ -50,7 +49,9 @@ const autoIntercept = (name, source, ...rest) => {
 const request = async (method, url, source, ...rest) => {
 
   try {
-    autoIntercept('request', source, ...rest);
+    if (source.request != false) {
+      autoIntercept('request', source, ...rest);
+    }
     const result = await AxiosInstance.request({
       url,
       method,
@@ -58,11 +59,17 @@ const request = async (method, url, source, ...rest) => {
       data: method === 'post' ? source.data : undefined,
       ...source.config
     });
-    ;
-    autoIntercept('response', source, result, ...rest);
+    if (source.response != false) {
+      autoIntercept('response', source, result, ...rest);
+    }
     return result;
   } catch (error) {
-    autoIntercept('error', source, error, ...rest);
+    if (source.error != false) {
+      autoIntercept('error', source, error, ...rest);
+      return null;
+    } else {
+      throw error;
+    }
   }
 }
 
@@ -99,7 +106,40 @@ const generatorRequestMethods = (...methods) => {
  * 方法响应:
  * get():Promise<undefined|object> // 如果拦截器代理了所有的处理则then返回undefined
  */
-
 export default {
-  ...generatorRequestMethods('get', 'post')
+  ...generatorRequestMethods('get', 'post'),
+  getAsJson({ dispatch }, payload) {
+    return dispatch('get', {
+      ...payload,
+      config: {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      }
+    });
+  },
+  // postAsForm({ dispatch }, payload) {
+  //   const { data, ...rest } = payload;
+  //   return dispatch('post', {
+  //     data: Qs(humps.decamelizeKeys(data)),
+  //     config: {
+  //       headers: {
+  //         'content-type': 'application/x-www-form-urlencoded'
+  //       },
+  //     },
+  //     ...rest
+  //   });
+  // },
+  uploadForm({ dispatch }, payload) {
+    const { data, ...rest } = payload;
+    return dispatch('post', {
+      data: makeFormData(humps.decamelizeKeys(data)),
+      config: {
+        headers: {
+          'content-type': 'multipart/form-data'
+        },
+      },
+      ...rest
+    });
+  }
 }
