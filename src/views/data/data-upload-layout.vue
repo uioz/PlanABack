@@ -17,7 +17,7 @@
       <slot name="intro-area"></slot>
     </mu-col>
     <mu-col span="12" sm="7" md="7" lg="7" xl="7">
-      <slot name="upload-area"></slot>
+      <slot name="operation-area"></slot>
     </mu-col>
   </mu-row>
 </template>

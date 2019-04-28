@@ -12,13 +12,23 @@
 
 </docs>
 <template>
-  <div class="data-download">
-    data-download
-  </div>
+  <data-upload-layout class="data-download">
+    <template #intro-area>
+      <div>intro</div>
+    </template>
+    <template #operation-area>
+      <div>operation</div>
+    </template>
+  </data-upload-layout>
 </template>
 <script>
+import dataUploadLayout from "./data-upload-layout";
+
 export default {
-  name:'data-download'
+  name:'data-download',
+  components:{
+    dataUploadLayout
+  }
 }
 </script>
 <style>

@@ -16,7 +16,7 @@
     <template #intro-area>
       <data-upload-intro></data-upload-intro>
     </template>
-    <template #upload-area>
+    <template #operation-area>
       <data-upload-upload></data-upload-upload>
     </template>
   </data-upload-layout>
