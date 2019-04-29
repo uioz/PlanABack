@@ -53,7 +53,7 @@ export default {
           to: "/data/download"
         },
         {
-          label: "浏览",
+          label: "预览",
           icon: "glasses",
           activeName: "preview",
           to: "/data/preview"

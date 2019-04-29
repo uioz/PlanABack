@@ -14,20 +14,24 @@
 <template>
   <data-upload-layout class="data-download">
     <template #intro-area>
-      <div>intro</div>
+      <data-download-intro></data-download-intro>
     </template>
     <template #operation-area>
-      <div>operation</div>
+      <data-download-download></data-download-download>
     </template>
   </data-upload-layout>
 </template>
 <script>
 import dataUploadLayout from "./data-upload-layout";
+import dataDownloadIntro from './data-download-intro';
+import dataDownloadDownload from './data-download-download';
 
 export default {
   name:'data-download',
   components:{
-    dataUploadLayout
+    dataUploadLayout,
+    dataDownloadIntro,
+    dataDownloadDownload
   }
 }
 </script>

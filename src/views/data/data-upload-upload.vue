@@ -19,7 +19,7 @@
       </template>
     </data-speciality-pick>
     <mu-button color="secondary" round @click="handleUpload">点击上传</mu-button>
-    <!-- see https://stackoverflow.com/questions/11832930/html-input-file-accept-attribute-file-type-csv -->
+    <!-- input-accept see https://stackoverflow.com/questions/11832930/html-input-file-accept-attribute-file-type-csv -->
     <input
       accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
       ref="file"
@@ -53,7 +53,7 @@ export default {
         headers:{
           'Content-Type':'multipart/form-data'
         },
-        url:urlRouter('upload/source'),
+        url:urlRouter('source/upload'),
         method:'post',
         responseType:'application/json'
       })
@@ -78,7 +78,7 @@ export default {
     fetch(data){
       this.beforeFetch();
       this.axios({
-        adapter:(...rest)=>{
+        adapter:(...rest)=>{ // TODO for test
           return new Promise((resolve)=>{
             resolve({
               status:200,

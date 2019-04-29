@@ -5,9 +5,13 @@ export const urls = {
   state:'/api/state',
   model:'/model',
   speciality:'/assest/speciality',
-  upload:{
-    source:'/source'
-  }
+  source:{
+    upload:'/source',
+    fetch:'/source',
+    json:{
+      
+    }
+  },
 }
 
 /**
