@@ -8,9 +8,6 @@ export const urls = {
   source:{
     upload:'/source',
     fetch:'/source',
-    json:{
-      
-    }
   },
 }
 

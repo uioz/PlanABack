@@ -49,7 +49,7 @@ export default {
       progress:0,
       selected:'',
       tips:"这个列表中的专业是你可以上传的,此列表之外的其他专业都会被系统忽略.",
-      axios:Axios.create({
+      axios:Axios.create({ // 为了使用uploadprogress所以不使用封装的版本
         headers:{
           'Content-Type':'multipart/form-data'
         },

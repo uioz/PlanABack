@@ -32,6 +32,7 @@
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "mockjs": "^1.0.1-beta3",
+    "path-to-regexp": "^3.0.0",
     "vue-template-compiler": "^2.5.21"
   },
   "eslintConfig": {

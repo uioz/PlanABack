@@ -1,4 +1,5 @@
 import { mock, setup, Random } from "mockjs";
+import pathToRegexp from "path-to-regexp";
 
 setup({
   timeout: '200-600' // see https://github.com/nuysoft/Mock/wiki/Mock.setup()
@@ -125,9 +126,25 @@ mock('/assest/speciality', [
 
 mock('/api/specalties/2019', {
   stateCode: 200,
-  "message|5-10": [
+  message: '',
+  "data|5-10": [
     "@word",
     "CMD",
     "UMD"
+  ]
+});
+
+mock(pathToRegexp('/source/json/:year/:start/to/:end'), 'get', {
+  stateCode: 200,
+  message: '',
+  "data|20": [
+    {
+      "name": "你好吗",
+      "number": 12435658679,
+      "speciality": "计算机类",
+      "ss": "hello区域",
+      "score": 372.097045053,
+      "specialityPath": []
+    }
   ]
 });
