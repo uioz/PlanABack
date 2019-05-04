@@ -17,7 +17,10 @@ import {
   faUpload,
   faDownload,
   faGlasses,
-  faQuestionCircle
+  faQuestionCircle,
+  faToriiGate,
+  faBell,
+  faCogs
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -38,7 +41,10 @@ library.add(
   faUpload,
   faDownload,
   faGlasses,
-  faQuestionCircle
+  faQuestionCircle,
+  faToriiGate,
+  faBell,
+  faCogs
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);

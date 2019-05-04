@@ -13,15 +13,18 @@
 
 </docs>
 <template>
-  <mu-data-table class="data-preview-table" :columns="tableColums" :data="source">
-    <template #default="row">
+<mu-paper class="data-preview-table" :z-depth="2">
+  <mu-data-table :columns="tableColums" :data="source">
+    <template #default="{row}">
       <td>{{row.name}}</td>
       <td>{{row.number}}</td>
       <td>{{row.speciality}}</td>
+      <td>{{row.ss}}</td>
       <td>{{row.score}}</td>
       <td>{{row.specialityPath}}</td>
     </template>
   </mu-data-table>
+</mu-paper>
 </template>
 <script>
 const tableColums = [
@@ -42,6 +45,12 @@ const tableColums = [
     name: "speciality",
     align: "left",
     cellAlign: "left"
+  },
+  {
+    title: "所在地区",
+    name: "ss",
+    cellAlign: "left",
+    align: "left"
   },
   {
     title: "测试成绩",

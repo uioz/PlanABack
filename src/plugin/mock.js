@@ -148,3 +148,24 @@ mock(pathToRegexp('/source/json/:year/:start/to/:end'), 'get', {
     }
   ]
 });
+
+mock('/open/force',{
+  stateCode:200,
+  message:'',
+  data:'@boolean'
+})
+
+mock('/open/range',{
+  stateCode: 200,
+  message: '',
+  data: {
+    startTime:'@natural(1000000000000,1999999999999)',
+    endTime:'@natural(1000000000000,1999999999999)'
+  }
+});
+
+mock('/open',{
+  stateCode: 200,
+  message: '',
+  data: '@boolean'
+})

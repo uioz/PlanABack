@@ -80,6 +80,34 @@ const router = new Router({
       ]
     },
     {
+      path:'/config',
+      component: () => import(/* webpackChunkName: "config" */ './views/config/config.vue'),
+      redirect: '/config/switch',
+      children:[
+        {
+          path: 'switch',
+          meta: {
+            activeTabName: 'switch'
+          },
+          component: () => import(/* webpackChunkName: "config-switch" */ './views/config/config-switch.vue')
+        },
+        {
+          path: 'static',
+          meta: {
+            activeTabName: 'static'
+          },
+          component: () => import(/* webpackChunkName: "config-static" */ './views/config/config-static.vue')
+        },
+        {
+          path: 'message',
+          meta: {
+            activeTabName: 'message'
+          },
+          component: () => import(/* webpackChunkName: "config-message" */ './views/config/config-message.vue')
+        },
+      ]
+    },
+    {
       path: '/error/:code',
       component: () => import(/* webpackChunkName: "error" */ './views/error/error.vue')
     },

@@ -73,9 +73,16 @@ export default {
     },
     beforeFetch() {
       this.fetching = true;
+      this.dataOfRender = [];
     },
     fetch(url, params) {
+
       if (this.fetching) {
+        return;
+      }
+
+      if(this.fetchData[url]){
+        this.dataOfRender = this.fetchData[url];
         return;
       }
 
@@ -86,7 +93,11 @@ export default {
         params
       })
         .then(response => {
-          console.log(response);
+          if(response){
+            // It doesn't need reactivity
+            this.fetchData[url] = response.data.data;
+            this.dataOfRender = this.fetchData[url];
+          }
         })
         .finally(() => this.afterFetch());
     },

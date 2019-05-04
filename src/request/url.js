@@ -9,6 +9,11 @@ export const urls = {
     upload:'/source',
     fetch:'/source',
   },
+  config:{
+    force:'/open/force',
+    range:'/open/range',
+    open:'/open'
+  }
 }
 
 /**

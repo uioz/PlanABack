@@ -113,11 +113,22 @@ export default {
       ...payload,
       config: {
         headers: {
-          'Content-Type': 'application/json'
+          'accept': 'application/json'
         },
       }
     });
   },
+  postAsJson({ dispatch},payload){
+    return dispatch('post', {
+      ...payload,
+      config: {
+        headers: {
+          'accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      }
+    });
+  }
   // postAsForm({ dispatch }, payload) {
   //   const { data, ...rest } = payload;
   //   return dispatch('post', {
@@ -130,16 +141,16 @@ export default {
   //     ...rest
   //   });
   // },
-  uploadForm({ dispatch }, payload) {
-    const { data, ...rest } = payload;
-    return dispatch('post', {
-      data: makeFormData(humps.decamelizeKeys(data)),
-      config: {
-        headers: {
-          'content-type': 'multipart/form-data'
-        },
-      },
-      ...rest
-    });
-  }
+  // uploadForm({ dispatch }, payload) {
+  //   const { data, ...rest } = payload;
+  //   return dispatch('post', {
+  //     data: makeFormData(humps.decamelizeKeys(data)),
+  //     config: {
+  //       headers: {
+  //         'content-type': 'multipart/form-data'
+  //       },
+  //     },
+  //     ...rest
+  //   });
+  // }
 }

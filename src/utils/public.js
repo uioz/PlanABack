@@ -8,3 +8,18 @@ export function _throttle(fn, interval) { var last; var timer; var interval = in
 export function easyClone(data) {
   return JSON.parse(JSON.stringify(data));
 }
+
+/**
+ * 浅层拷贝,将右侧对象上对应键的内容copy到左侧对象上  
+ * 如果force为false(默认),则只有当左侧和右侧同名的情况下左侧才会被覆盖
+ * @param {Object} target 目标对象
+ * @param {Object} source 数据源对象
+ * @param {Boolean} force 强力模式
+ * @returns {Object} 返回target
+ */
+export function easyAssign(target,source,force) {
+  for (const key of Object.keys(source)) {
+    force ? target[key] = source[key] : target[key] ? target[key] = source[key] : null;
+  }
+  return target;
+}

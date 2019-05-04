@@ -17,7 +17,10 @@
 
 </docs>
 <template>
-  <mu-appbar class="i-boolbar" color="grey800">
+  <mu-appbar class="i-boolbar" :color="color">
+    <template #left>
+      <slot name="left"></slot>
+    </template>
     <template #right>
       <mu-container class="buttons">
         <slot></slot>
@@ -30,6 +33,10 @@
 export default {
   name: "i-toolbar",
   props: {
+    color:{
+      type:String,
+      default:'grey800'
+    },
     edited: {
       type: Boolean,
       default: false
