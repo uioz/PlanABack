@@ -20,7 +20,11 @@ import {
   faQuestionCircle,
   faToriiGate,
   faBell,
-  faCogs
+  faCogs,
+  faTerminal,
+  faMobile,
+  faBroadcastTower,
+  faBullhorn
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -44,7 +48,11 @@ library.add(
   faQuestionCircle,
   faToriiGate,
   faBell,
-  faCogs
+  faCogs,
+  faTerminal,
+  faMobile,
+  faBroadcastTower,
+  faBullhorn
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
