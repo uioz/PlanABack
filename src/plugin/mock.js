@@ -169,3 +169,20 @@ mock('/open',{
   message: '',
   data: '@boolean'
 })
+
+
+mock('/api/assets','get',{
+  stateCode:200,
+  message:'',
+  data:{
+    systemName:'@word',
+    clientName:'@word',
+    systemMessage:'@word',
+    clientMessage:'@word',
+  }
+});
+
+mock('/api/assest','post',{
+  stateCode:200,
+  message:'数据上传成功'
+});

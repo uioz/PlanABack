@@ -19,20 +19,23 @@
       </mu-paper>
     </template>
     <template #modify-area>
-      <mu-paper :z-depth="2">hello world</mu-paper>
+      <mu-paper v-if="!!fetchData" :z-depth="2">
+        <config-message-editer :source="fetchData[activeIndex]" @change="handleEditerChange"></config-message-editer>
+      </mu-paper>
     </template>
   </config-message-layout>
 </template>
 <script>
 import iListSimple from "@/components/i-list-simple";
 import configMessageLayout from "./config-message-layout";
-
-// TODO end提供一个批量更新这个四个属性的功能
+import configMessageEditer from './config-message-editer';
+import { mapActions } from "vuex";
 
 export default {
   name: "config-message",
   components: {
     configMessageLayout,
+    configMessageEditer,
     iListSimple
   },
   data() {
@@ -41,30 +44,73 @@ export default {
         {
           label: "系统应用名称",
           faIcon: "terminal",
-          index: "system-name"
+          index: "systemName"
         },
         {
           label: "客户端应用名称",
           faIcon: "mobile",
-          index: "client-name"
+          index: "clientName"
         },
         {
           label: "系统公告",
           faIcon: "broadcast-tower",
-          index: "system-message"
+          index: "systemMessage"
         },
         {
           label: "客户端公告",
           faIcon: "bullhorn",
-          index: "client-message"
+          index: "clientMessage"
         }
-      ]
+      ],
+      activeIndex:'systemName',
+      fetchData:undefined,
+      fetching:false
     };
   },
   methods: {
+    ...mapActions(['get','postAsJson']),
+    handleEditerChange(){
+      // TODO 发送数据
+      // TODO 检测 editer 为何payload是数组格式
+      // this.postAsJson({
+      //   target:'',
+      //   data:{
+      //     [this.activeIndex]:''
+      //   }
+      // })
+    },
+    beforeFetch(){
+      this.fetching = true;
+    },
+    fetch(){
+
+      if(this.fetching){
+        return;
+      }
+
+      this.beforeFetch();
+
+      this.get({
+        target:'config/message'
+      }).then(response=>{
+        if(response){
+          this.fetchData = response.data.data;
+        }
+      }).finally(()=>this.afterFetch());
+
+    },
+    afterFetch(){
+      this.fetching = false;
+    },
     handleListChange(index) {
-      console.log(index);
+      this.activeIndex = index;
     }
+  },
+  created(){
+    this.fetch();
+  },
+  beforeRouteUpdate(){
+    this.fetch();
   }
 };
 </script>

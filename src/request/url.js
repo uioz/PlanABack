@@ -12,7 +12,8 @@ export const urls = {
   config:{
     force:'/open/force',
     range:'/open/range',
-    open:'/open'
+    open:'/open',
+    message:'/api/assets'
   }
 }
 

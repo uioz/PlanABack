@@ -57,3 +57,10 @@ export const range = (min = 1, max = 16) => (str) => {
   const len = getStringLength(str);
   return len >= min && len <= max;
 }
+
+/**
+ * 验证给定的字符串输入的字符串是否合法,支持多行输入.  
+ * 运行输入中英文常见的标点符号.  
+ * @param {String} str 字符串
+ */
+export const mulitRowText = str => /^[\u4E00-\u9FA5\w\n\r@,\.!\[\]\+\-\(\)，。！‘’“”{}'"　 ]*$/.test(str);
