@@ -15,7 +15,7 @@
   <config-message-layout class="config-message">
     <template #list-area>
       <mu-paper :z-depth="2">
-        <i-list-simple :lists="listData" @change="handleListChange"></i-list-simple>
+        <i-list-simple :lists="listData" :active-index="activeIndex" @change="handleListChange"></i-list-simple>
       </mu-paper>
     </template>
     <template #modify-area>
@@ -69,15 +69,14 @@ export default {
   },
   methods: {
     ...mapActions(['get','postAsJson']),
-    handleEditerChange(){
-      // TODO 发送数据
-      // TODO 检测 editer 为何payload是数组格式
-      // this.postAsJson({
-      //   target:'',
-      //   data:{
-      //     [this.activeIndex]:''
-      //   }
-      // })
+    handleEditerChange(payload){
+      this.beforeFetch();
+      this.postAsJson({
+        target:'config/message',
+        data:{
+          [this.activeIndex]:payload
+        }
+      }).finally(()=>this.afterFetch());
     },
     beforeFetch(){
       this.fetching = true;

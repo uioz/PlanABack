@@ -13,7 +13,10 @@ export const urls = {
     force:'/open/force',
     range:'/open/range',
     open:'/open',
-    message:'/api/assets'
+    message:'/api/assets',
+    static:{
+      photos:'/api/assets/static/photos'
+    }
   }
 }
 

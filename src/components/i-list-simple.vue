@@ -24,7 +24,7 @@
 
 </docs>
 <template>
-  <mu-list class="i-list-simple" :value="realActiveIndex" @change="$emit('change',$event)">
+  <mu-list class="i-list-simple" :value="activeIndex" @change="$emit('change',$event)">
     <mu-list-item button v-for="item in lists" :key="item.label" :value="item.index" :to="item.to">
       <mu-list-item-action>
         <font-awesome-icon :icon="item.faIcon"/>
@@ -35,7 +35,7 @@
 </template>
 <script>
 export default {
-  name: "i-tabs",
+  name: "i-list-simple",
   props: {
     lists:{
       type:Array,
@@ -45,11 +45,6 @@ export default {
     },
     activeIndex:String
   },
-  computed: {
-    realActiveIndex(){
-      return this.activeIndex || this.lists.length ? this.lists[0].index : undefined;
-    }
-  }
 };
 </script>
 <style>

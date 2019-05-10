@@ -38,7 +38,7 @@ export default {
         ]
       },
       FormData:{
-        editedData:''
+        editedData:this.source
       }
     }
   },
@@ -52,7 +52,7 @@ export default {
   },
   watch:{
     source(newValue){
-      this.FormData.editedData = newValue;
+      this.$set(this.FormData,'editedData',newValue);
     },
     'FormData.editedData'(){
       this.edited = true;

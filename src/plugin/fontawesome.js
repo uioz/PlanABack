@@ -24,7 +24,10 @@ import {
   faTerminal,
   faMobile,
   faBroadcastTower,
-  faBullhorn
+  faBullhorn,
+  faLink,
+  faExternalLinkAlt,
+  faTrashAlt
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -52,7 +55,10 @@ library.add(
   faTerminal,
   faMobile,
   faBroadcastTower,
-  faBullhorn
+  faBullhorn,
+  faLink,
+  faExternalLinkAlt,
+  faTrashAlt
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);

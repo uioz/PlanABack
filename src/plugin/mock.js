@@ -186,3 +186,15 @@ mock('/api/assest','post',{
   stateCode:200,
   message:'数据上传成功'
 });
+
+mock('/api/assets/static/photos','get',{
+  stateCode:200,
+  message:'',
+  'data|5-10':[
+    {
+      id:'@guid',
+      src: Random.image('200x100', '#4A7BF7', 'Hello'),
+      fileName:'@word'
+    }
+  ]
+})
