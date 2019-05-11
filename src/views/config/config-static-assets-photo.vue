@@ -32,22 +32,47 @@
 <script>
 export default {
   name: "config-static-assets-photo",
-  props:{
-    value:{
-      type:Array,
-      default(){
+  props: {
+    value: {
+      type: Array,
+      default() {
         return [];
       }
     }
   },
-  methods:{
-    handleDelete(imageData){
-      // TOOD 
-      // TODO 触发删除事件
+  data() {
+    return {
+      innerValues: this.value
+    };
+  },
+  methods: {
+    getIndexFromInnerValuesById(id){
+      let len = this.innerValues.length;
+      while (len--) {
+        if(this.innerValues[len].id === id){
+          return len;
+        }
+      }
+      return;
     },
-    handleDragStart(event,imageData){
-      event.dataTransfer.effectAllowed = 'link';
-      event.dataTransfer.setData('text/plain',JSON.stringify(imageData));
+    handleDelete(imageData) {
+
+      const index = this.getIndexFromInnerValuesById(imageData.id);
+
+      if(typeof index === 'number'){
+        this.innerValues.splice(index,1);
+        this.$emit('input',this.innerValues);
+      }
+
+    },
+    handleDragStart(event, imageData) {
+      event.dataTransfer.effectAllowed = "link";
+      event.dataTransfer.setData("text/plain", JSON.stringify(imageData));
+    }
+  },
+  watch: {
+    value(newVal) {
+      this.innerValues = newVal;
     }
   }
 };

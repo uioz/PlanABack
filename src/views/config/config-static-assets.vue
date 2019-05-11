@@ -17,7 +17,7 @@
 <template>
   <mu-paper class="config-static-assets" :z-depth="2">
     <config-static-assets-photo v-model="fetchData"></config-static-assets-photo>
-    <button >上传图片</button>
+    <mu-button class="button" color="primary" >上传图片</mu-button>
   </mu-paper>
 </template>
 <script>
@@ -69,6 +69,10 @@ export default {
   padding: 20px;
   height: 100%;
   overflow: auto;
+}
+
+.config-static-assets > .button{
+  margin:10px 0 0;
 }
 
 .config-static-assets > .config-static-assets-photo{
