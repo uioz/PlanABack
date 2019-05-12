@@ -17,68 +17,97 @@
 <template>
   <mu-paper class="config-static-assets" :z-depth="2">
     <config-static-assets-photo v-model="fetchData"></config-static-assets-photo>
-    <mu-button class="button" color="primary" >上传图片</mu-button>
+    <i-upload-simple
+      accept="image/jpeg, image/png"
+      class="button"
+      color="primary"
+      :disabled="fetching"
+      @change="handleUploadFile"
+    >上传图片</i-upload-simple>
   </mu-paper>
 </template>
 <script>
-import configStaticAssetsPhoto from './config-static-assets-photo';
+import iUploadSimple from "@/components/i-upload-simple";
+import configStaticAssetsPhoto from "./config-static-assets-photo";
+import axios from "@/plugin/axios.js";
+import { makeFormData } from "@/utils/public.js";
 import { mapActions } from "vuex";
 
 export default {
-  name:'config-static-assets',
-  components:{
-    configStaticAssetsPhoto
+  name: "config-static-assets",
+  components: {
+    configStaticAssetsPhoto,
+    iUploadSimple
   },
-  data(){
+  data() {
     return {
-      fetchData:undefined,
-      fetching:false
-    }
+      fetchData: undefined,
+      fetching: false,
+      axios
+    };
   },
-  methods:{
-    ...mapActions(['get']),
-    beforeFetch(){
+  methods: {
+    ...mapActions(["get"]),
+    makeFormData,
+    beforeFetch() {
       this.fetching = true;
     },
-    fetch(){
+    handleUploadFile(fileList){
 
       if(this.fetching){
         return;
       }
 
-      this.get({
-        target:'config/static/photos',
-      }).then(response=>{
-        if(response){
-          this.fetchData = response.data.data;
-        }
-      }).finally(()=>this.afterFetch());
+      const data = this.makeFormData(fileList);
+      console.log(data);
+      // TODO send data
+
+      // this.beforeFetch();
+
+      // this.axios()
+
+      // this.afterFetch();
+      
 
     },
-    afterFetch(){
+    fetch() {
+      if (this.fetching) {
+        return;
+      }
+
+      this.get({
+        target: "config/static/photos"
+      })
+        .then(response => {
+          if (response) {
+            this.fetchData = response.data.data;
+          }
+        })
+        .finally(() => this.afterFetch());
+    },
+    afterFetch() {
       this.fetching = false;
     }
   },
-  created(){
+  created() {
     this.fetch();
   }
-}
+};
 </script>
 <style>
-.config-static-assets{
+.config-static-assets {
   padding: 20px;
   height: 100%;
   overflow: auto;
 }
 
-.config-static-assets > .button{
-  margin:10px 0 0;
+.config-static-assets > .button {
+  margin: 10px 0 0;
 }
 
-.config-static-assets > .config-static-assets-photo{
+.config-static-assets > .config-static-assets-photo {
   height: 90%;
   overflow: auto;
 }
-
 </style>
 

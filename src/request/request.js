@@ -1,8 +1,7 @@
-import Axios from "axios";
+import AxiosInstance from "@/plugin/axios.js";
 import { urls, routeExp, UrlRouterGenerator } from "./url.js";
 
 export const urlRouter = UrlRouterGenerator(urls, routeExp);
-const AxiosInstance = Axios.create();
 
 /**
  * 默认拦截器组

@@ -33,6 +33,7 @@
 <script>
 import Axios from "axios";
 import iQuestion from "@/components/i-question";
+import { makeFormData } from "@/utils/public.js";
 import dataSpecialityPick from "./data-speciality-pick";
 import { mapState } from "vuex";
 import { urlRouter } from "../../request/request.js";
@@ -63,11 +64,7 @@ export default {
     handleUpload(){
       this.$refs.file.click();
     },
-    makeFormData(file){
-      let formData = new FormData();
-      formData.append('file',file);
-      return formData;
-    },
+    makeFormData,
     handleFileChange(event){
       this.fetch(this.makeFormData(event.srcElement.files[0]));
     },
@@ -77,6 +74,8 @@ export default {
     },
     fetch(data){
       this.beforeFetch();
+      // TODO 测试上传
+      // TOOD 替换upload为plugin中的axios实例
       this.axios({
         adapter:(...rest)=>{ // TODO for test
           return new Promise((resolve)=>{

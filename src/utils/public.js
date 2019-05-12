@@ -23,3 +23,25 @@ export function easyAssign(target,source,force) {
   }
   return target;
 }
+
+/**
+ * 将FileList转为,文件名称-文件对象的fromdata对象,
+ * 如果传入一个File对象则返回一个名称为file对应值为file的fromdata对象.
+ * @param {FileList|File} files 需要转换为formdata的对象
+ */
+export function makeFormData(files) {
+
+  const formData = new FormData();
+
+  if(files instanceof File){
+    formData.set('file',files);
+    return formData;
+  }
+
+  for (const keyName of Object.keys(files)) {
+    formData.append(files[keyName].name,files[keyName]);
+  }
+
+  return formData;
+
+}
