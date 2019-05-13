@@ -198,3 +198,16 @@ mock('/api/assets/static/photos','get',{
     }
   ]
 })
+
+mock('/api/assets/static/photos','post',{
+  stateCode:200,
+  message:'上传文件成功',
+  'data|5-10': [
+    {
+      id: '@guid',
+      src: Random.image('200x100', '#4A7BF7', 'Hello'),
+      fileName: '@word'
+    }
+  ]
+});
+

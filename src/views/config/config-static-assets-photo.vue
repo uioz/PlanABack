@@ -5,6 +5,8 @@
   props:
 
   methods:
+  input():void // 模拟v-model语法糖
+  delete(imageData:object):void // 当点击删除的时候触发,并且携带需要删除的元素.
 
   slots:
 
@@ -60,6 +62,7 @@ export default {
       const index = this.getIndexFromInnerValuesById(imageData.id);
 
       if(typeof index === 'number'){
+        this.$emit('delete',this.innerValues[index]);
         this.innerValues.splice(index,1);
         this.$emit('input',this.innerValues);
       }

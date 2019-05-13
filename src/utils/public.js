@@ -31,6 +31,10 @@ export function easyAssign(target,source,force) {
  */
 export function makeFormData(files) {
 
+  if(files instanceof FormData){
+    return files;
+  }
+
   const formData = new FormData();
 
   if(files instanceof File){
@@ -39,7 +43,7 @@ export function makeFormData(files) {
   }
 
   for (const keyName of Object.keys(files)) {
-    formData.append(files[keyName].name,files[keyName]);
+    formData.set(files[keyName].name,files[keyName]);
   }
 
   return formData;

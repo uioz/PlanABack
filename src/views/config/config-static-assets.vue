@@ -16,7 +16,7 @@
 </docs>
 <template>
   <mu-paper class="config-static-assets" :z-depth="2">
-    <config-static-assets-photo v-model="fetchData"></config-static-assets-photo>
+    <config-static-assets-photo v-model="fetchData" @delete="handlePhotosDelete"></config-static-assets-photo>
     <i-upload-simple
       accept="image/jpeg, image/png"
       class="button"
@@ -29,8 +29,6 @@
 <script>
 import iUploadSimple from "@/components/i-upload-simple";
 import configStaticAssetsPhoto from "./config-static-assets-photo";
-import axios from "@/plugin/axios.js";
-import { makeFormData } from "@/utils/public.js";
 import { mapActions } from "vuex";
 
 export default {
@@ -43,12 +41,20 @@ export default {
     return {
       fetchData: undefined,
       fetching: false,
-      axios
     };
   },
   methods: {
-    ...mapActions(["get"]),
-    makeFormData,
+    ...mapActions(["get","uploadForm","delete"]),
+    handlePhotosDelete(imageData){
+      this.delete({
+        target:'config/static/photos',
+        data:{
+          id:imageData.id
+        }
+      }).then(response=>{
+        // TODO test delete and response of delete
+      })
+    },
     beforeFetch() {
       this.fetching = true;
     },
@@ -58,16 +64,16 @@ export default {
         return;
       }
 
-      const data = this.makeFormData(fileList);
-      console.log(data);
-      // TODO send data
+      this.beforeFetch();
 
-      // this.beforeFetch();
-
-      // this.axios()
-
-      // this.afterFetch();
-      
+      this.uploadForm({
+        target:'config/static/photos',
+        data:fileList
+      }).then(response=>{
+        if(response){
+          this.fetchData = this.fetchData.concat(response.data.data);
+        }
+      }).finally(()=>this.afterFetch());
 
     },
     fetch() {

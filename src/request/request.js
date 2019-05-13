@@ -1,5 +1,6 @@
 import AxiosInstance from "@/plugin/axios.js";
 import { urls, routeExp, UrlRouterGenerator } from "./url.js";
+import { makeFormData } from "../utils/public.js";
 
 export const urlRouter = UrlRouterGenerator(urls, routeExp);
 
@@ -54,7 +55,7 @@ const request = async (method, url, source, ...rest) => {
     const result = await AxiosInstance.request({
       url,
       method,
-      params: method === 'get' ? source.data : undefined,
+      params: method !== 'post' ? source.data : undefined,
       data: method === 'post' ? source.data : undefined,
       ...source.config
     });
@@ -106,7 +107,7 @@ const generatorRequestMethods = (...methods) => {
  * get():Promise<undefined|object> // 如果拦截器代理了所有的处理则then返回undefined
  */
 export default {
-  ...generatorRequestMethods('get', 'post'),
+  ...generatorRequestMethods('get', 'post','delete'),
   getAsJson({ dispatch }, payload) {
     return dispatch('get', {
       ...payload,
@@ -127,6 +128,18 @@ export default {
         },
       }
     });
+  },
+  uploadForm({ dispatch }, payload) {
+    const { data, ...rest } = payload;
+    return dispatch('post', {
+      data: makeFormData(data),
+      config: {
+        headers: {
+          'content-type': 'multipart/form-data'
+        },
+      },
+      ...rest
+    });
   }
   // postAsForm({ dispatch }, payload) {
   //   const { data, ...rest } = payload;
@@ -140,16 +153,4 @@ export default {
   //     ...rest
   //   });
   // },
-  // uploadForm({ dispatch }, payload) {
-  //   const { data, ...rest } = payload;
-  //   return dispatch('post', {
-  //     data: makeFormData(humps.decamelizeKeys(data)),
-  //     config: {
-  //       headers: {
-  //         'content-type': 'multipart/form-data'
-  //       },
-  //     },
-  //     ...rest
-  //   });
-  // }
 }
