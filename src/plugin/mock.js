@@ -187,6 +187,11 @@ mock('/api/assest','post',{
   message:'数据上传成功'
 });
 
+mock(pathToRegexp('/api/assets/app/image/:type'),'post',{
+  stateCode:200,
+  message:'修改成功',
+});
+
 mock('/api/assets/static/photos','get',{
   stateCode:200,
   message:'',
@@ -209,5 +214,14 @@ mock('/api/assets/static/photos','post',{
       fileName: '@word'
     }
   ]
+});
+
+
+// It will not pass to this pattern
+// when url has query string
+// in order to use regexp
+mock(/^\/api\/assets\/static\/photos/, 'delete', {
+  stateCode: 200,
+  message: '删除成功',
 });
 

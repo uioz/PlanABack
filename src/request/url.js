@@ -15,8 +15,9 @@ export const urls = {
     open:'/open',
     message:'/api/assets',
     static:{
-      photos:'/api/assets/static/photos'
-    }
+      photos:'/api/assets/static/photos',
+      list:'/api/assets/app/image'
+    },
   }
 }
 

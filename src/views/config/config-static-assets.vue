@@ -51,9 +51,7 @@ export default {
         data:{
           id:imageData.id
         }
-      }).then(response=>{
-        // TODO test delete and response of delete
-      })
+      });
     },
     beforeFetch() {
       this.fetching = true;

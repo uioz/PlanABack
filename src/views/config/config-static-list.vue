@@ -17,6 +17,8 @@
   </mu-paper>
 </template>
 <script>
+import { mapActions } from "vuex";
+import { urlRouter } from "@/request/request.js";
 import configStaticListItem from './config-static-list-item';
 
 export default {
@@ -34,8 +36,12 @@ export default {
     }
   },
   methods:{
-    handleItemChange(){
-
+    ...mapActions(['postAsJson']),
+    handleItemChange(updateType,pickedData){
+      this.postAsJson({
+        target:`${urlRouter('config/static/list')}/${updateType}`,
+        data:pickedData
+      });
     }
   }
 }

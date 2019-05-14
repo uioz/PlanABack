@@ -3,8 +3,12 @@
   intro:
 
   props:
+  label:string // 展示项目的名称
+  value:string // 对应名称的id
 
   methods:
+  change(value:string,data:object) 
+  // 当静态图片资源数据关联的时候触发
 
   slots:
 
@@ -23,7 +27,7 @@ export default {
       event.preventDefault();
     },
     handleDrop(event){
-      this.$emit('change',this.value,event.dataTransfer.getData('text/plain'));
+      this.$emit('change',this.value,JSON.parse(event.dataTransfer.getData('text/plain')));
     }
   }
 }
