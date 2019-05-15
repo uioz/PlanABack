@@ -18,6 +18,9 @@ export const urls = {
       photos:'/api/assets/static/photos',
       list:'/api/assets/app/image'
     },
+  },
+  privilege:{
+    members:'/api/users'
   }
 }
 

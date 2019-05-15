@@ -27,6 +27,9 @@ export default {
 }
 </script>
 <style>
-
+.privilege-members-layout,
+.privilege-members-layout > .col{
+  height: 100%;
+}
 </style>
 

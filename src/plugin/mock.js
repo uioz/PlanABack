@@ -236,7 +236,7 @@ mock(/^\/api\/assets\/static\/photos/, 'delete', {
 mock('/api/users','get',{
   stateCode:200,
   message:'',
-  'data|1-10':[
+  'data|1-20':[
     {
       account:'@word',
       nickname:'@word',
@@ -250,7 +250,6 @@ mock('/api/users','get',{
 mock(pathToRegexp('/api/users'),'post',{
   stateCode:200,
   message:'修改成功',
-  data:{}
 });
 
 // deleteOne
