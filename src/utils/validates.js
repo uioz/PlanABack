@@ -46,7 +46,7 @@ export const CnEnAndUndeline = str => /^[\u2E80-\u2EFF\u2F00-\u2FDF\u3000-\u303F
  * 给定的字符串需要以字母开头且只能含有字母数字下划线
  * @param {String} str 字符串
  */
-export const password = str => /^[a-zA-Z]\w*$/.test(str);
+export const password = str => /^([a-zA-Z]\w)*$/.test(str);
 
 /**
  * 判断给定的字符串是否在指定的区间中(给定的区间也被包含在内)
@@ -54,8 +54,11 @@ export const password = str => /^[a-zA-Z]\w*$/.test(str);
  * @param {Number} max 最大值
  */
 export const range = (min = 1, max = 16) => (str) => {
-  const len = getStringLength(str);
-  return len >= min && len <= max;
+  if(str){
+    const len = getStringLength(str);
+    return len >= min && len <= max;
+  }
+  return true;  
 }
 
 /**
