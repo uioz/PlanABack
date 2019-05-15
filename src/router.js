@@ -108,6 +108,27 @@ const router = new Router({
       ]
     },
     {
+      path:'/privilege',
+      component: () => import(/* webpackChunkName: "privilege" */ './views/privilege/privilege.vue'),
+      redirect: '/privilege/members',
+      children:[
+        {
+          path:'/privilege/members',
+          meta:{
+            activeTabName:'members'
+          },
+          component: () => import(/* webpackChunkName: "privilege-members" */ './views/privilege/privilege-members.vue')
+        },
+        {
+          path:'/privilege/management',
+          meta:{
+            activeTabName:'management'
+          },
+          component: () => import(/* webpackChunkName: "privilege-management" */ './views/privilege/privilege-management.vue')
+        },
+      ]
+    },
+    {
       path: '/error/:code',
       component: () => import(/* webpackChunkName: "error" */ './views/error/error.vue')
     },

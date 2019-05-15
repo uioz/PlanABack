@@ -12,7 +12,7 @@
 
 </docs>
 <template>
-  <build-layout class="config">
+  <build-layout class="privilege">
     <template #sidebar-area>
       <!-- activeTab from minixs -->
       <build-sidebar :active="activeTab" :source="sidebarData"></build-sidebar>
@@ -28,39 +28,32 @@ import buildLayout from "../build/build-layout";
 import { autoTabIndex } from "../../utils/interface.js";
 
 export default {
-  name:'config',
+  name: "privilege",
   mixins:[autoTabIndex],
-  components:{
+  components: {
     buildSidebar,
     buildLayout
   },
-  data(){
-    return{
-      sidebarData:[
+  data() {
+    return {
+      sidebarData: [
         {
-          label: "服务器开放",
-          icon: "torii-gate",
-          activeName: "switch",
-          to: "/config/switch"
+          label: "人员管理",
+          icon: "id-card",
+          activeName: "members",
+          to: "/privilege/members"
         },
         {
-          label: "全局消息",
-          icon: "bell",
-          activeName: "message",
-          to: "/config/message"
+          label: "权限管理",
+          icon: "eye",
+          activeName: "management",
+          to: "/privilege/management"
         },
-        {
-          label: "静态资源配置",
-          icon: "cogs",
-          activeName: "static",
-          to: "/config/static"
-        }
       ]
-    }
+    };
   }
-}
+};
 </script>
 <style>
-
 </style>
 

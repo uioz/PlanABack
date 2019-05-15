@@ -27,7 +27,9 @@ import {
   faBullhorn,
   faLink,
   faExternalLinkAlt,
-  faTrashAlt
+  faTrashAlt,
+  faIdCard,
+  faEye
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -58,7 +60,9 @@ library.add(
   faBullhorn,
   faLink,
   faExternalLinkAlt,
-  faTrashAlt
+  faTrashAlt,
+  faIdCard,
+  faEye
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);

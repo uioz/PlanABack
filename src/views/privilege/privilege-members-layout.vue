@@ -12,24 +12,21 @@
 
 </docs>
 <template>
-  <mu-row class="config-static-layout" gutter>
-    <mu-col :span="6">
+  <mu-row class="privilege-members-layout" gutter>
+    <mu-col :span="8">
       <slot name="left-area"></slot>
     </mu-col>
-    <mu-col :span="6">
+    <mu-col :span="4">
       <slot name="right-area"></slot>
     </mu-col>
   </mu-row>
 </template>
 <script>
 export default {
-  name:'config-static-layout'
+  name:'privilege-members-layout'
 }
 </script>
 <style>
-.config-static-layout,
-.config-static-layout > .col{
-  height: 100%;
-}
+
 </style>
 

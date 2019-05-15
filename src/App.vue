@@ -79,4 +79,8 @@ export default {
   position: fixed!important;
 }
 
+.i-card-padding{
+  padding: 20px;
+}
+
 </style>

@@ -225,3 +225,36 @@ mock(/^\/api\/assets\/static\/photos/, 'delete', {
   message: '删除成功',
 });
 
+// findOne
+// mock(pathToRegexp('/api/users/:id'),'get',{
+//   stateCode:200,
+//   message:'',
+//   data:{}
+// });
+
+// findAll
+mock('/api/users','get',{
+  stateCode:200,
+  message:'',
+  'data|1-10':[
+    {
+      account:'@word',
+      nickname:'@word',
+      'level|0-63':63,
+      'control|0-5':['@word']
+    }
+  ]
+});
+
+// updateOne by JSON
+mock(pathToRegexp('/api/users'),'post',{
+  stateCode:200,
+  message:'修改成功',
+  data:{}
+});
+
+// deleteOne
+mock(pathToRegexp('/api/users/:id'),'delete',{
+  stateCode:200,
+  message:'删除成功',
+});

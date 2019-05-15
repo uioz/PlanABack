@@ -12,7 +12,7 @@
 
 </docs>
 <template>
-  <mu-paper class="config-message-editer" >
+  <mu-paper class="config-message-editer i-card-padding" >
     <h4>编辑</h4>
     <mu-form ref="form" class="editer" :model="FormData">
       <mu-form-item prop="editedData" :rules="FormRules.editedData" >
@@ -61,14 +61,9 @@ export default {
 }
 </script>
 <style>
-.config-message-editer{
-  padding: 20px;
-}
-
 .config-message-editer > .editer{
   padding-right: 10px;
   border-right: 2px solid rgb(33, 150, 243);
 }
-
 </style>
 
