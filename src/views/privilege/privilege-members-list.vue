@@ -33,6 +33,8 @@
   </mu-paper>
 </template>
 <script>
+import { getIndexFromDataByAccount } from "./common.js";
+
 export default {
   name: "privilege-members-list",
   props:{
@@ -66,19 +68,7 @@ export default {
     }
   },
   methods:{
-    getIndexFromDataByAccount(account){
-
-      let len = this.value.length;
-
-      while (len--) {
-        if(this.value[len].account === account){
-          return len;
-        }
-      }
-
-      return -1;
-
-    },
+    getIndexFromDataByAccount:getIndexFromDataByAccount('value'),
     handleListActive(account){
 
       this.activeItemNameInner = account;

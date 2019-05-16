@@ -17,7 +17,7 @@
       <privilege-members-list v-model="userList" @pick="handleItemPick" @delete="handleItemDelete" ></privilege-members-list>
     </template>
     <template #right-area >
-      <privilege-members-editer :source="editedData"></privilege-members-editer>
+      <privilege-members-editer :source="editedData" @change="handleEditerChange" @user-add="handleEditerUserAdd"></privilege-members-editer>
     </template>
   </privilege-members-layout>
 </template>
@@ -25,6 +25,7 @@
 import privilegeMembersLayout from './privilege-members-layout';
 import privilegeMembersList from './privilege-members-list';
 import privilegeMembersEditer from './privilege-members-editer';
+import { getIndexFromDataByAccount } from "./common.js";
 import { mapActions } from "vuex";
 
 export default {
@@ -43,6 +44,22 @@ export default {
   },
   methods:{
     ...mapActions(['get','delete']),
+    getIndexFromDataByAccount:getIndexFromDataByAccount('userList'),
+    handleEditerChange(newUserData,oldUserData){
+
+      this.editedData = undefined;
+
+      const index = this.getIndexFromDataByAccount(oldUserData.account);
+      if(index !== -1){
+        this.userList.splice(index,1,newUserData);
+      }else{
+        this.userList.push(newUserData);
+      }
+
+    },
+    handleEditerUserAdd(userData){
+      this.userList.push(userData);
+    },
     handleItemPick(userData){
       this.editedData = userData;
     },
