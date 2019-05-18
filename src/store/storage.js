@@ -1,15 +1,27 @@
-import Vue2Storage from 'vue2-storage';
+import { easyAssign } from "../utils/public";
 
-const noop = function () {
-  
-};
+const USER_DATA_NAME = 'userData';
 
-Vue2Storage(noop, {
-  prefix: 'app_',
-  driver: 'local',
-  ttl: 1000 * 60 * 10 // 10 minute
-});
+/**
+ * 获取本地保存的用户数据,
+ * 不存在则返回null
+ */
+export const getUserData = ()=>{
+  return localStorage.getItem(USER_DATA_NAME);
+}
+
+/**
+ * 更新本地保存的用户数据
+ * @param {object} newData 需要写入用户信息的数据
+ */
+export const updateUserData = (newData)=>{
+  localStorage.setItem(USER_DATA_NAME, JSON.stringify(easyAssign(localStorage.getItem(USER_DATA_NAME) || {}, newData, true)));
+}
 
 
-// get a storage instance that not include Vue-prototype
-export default noop.prototype.$storage;
+/**
+ * 清空本地保存的用户数据
+ */
+export const clearUserData = ()=>{
+  localStorage.removeItem(USER_DATA_NAME);
+}

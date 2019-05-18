@@ -1,47 +1,36 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import requests from "../request/request.js";
-import Storage from "./storage.js";
+import {clearUserData,getUserData,updateUserData} from "./storage.js";
 import Progress from "../plugin/museprogress.js";
+import { easyAssign } from "../utils/public";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production', // see https://vuex.vuejs.org/zh/guide/strict.html#%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%8F%91%E5%B8%83%E7%8E%AF%E5%A2%83
   state: {
-    info: {
-      isLogin: false, // 是否已经登录过
-    },
-    user: {// 用户信息
-      nickName:'',
-      controlArea:[],
-      level:0,
-      levelCodeRaw:123,
-    }, 
+    info:undefined,
+    userData: getUserData(), 
     fullContent: false, // 屏蔽导航和侧边栏
     Progressing: false, // 是否在progress状态
     errorCode: 0,
+  },
+  getters:{
+    isLogin(state){
+      return !!state.userData
+    },
+    serverInfo(state){
+      return state.info || {};
+    }
   },
   mutations: {
     compareData(state,{target,data}){
       state[target] = Object.assign({},state[target],data);
     },
-    updateUserInfo(state,data){
-
-    },
-    /**
-     * 清空保存的服务器公开信息  
-     * 且清空本地缓存
-     */
-    clearInfo(state) {
-      state.info = {};
-      Storage.set('localInfo', state.info);
-    },
-    /**
-     * 清空内部保存的用户信息
-     */
-    clearUser(state){
-      state.user = {};
+    clearUserData(state){
+      state.userData = undefined;
+      clearUserData();
     },
     /**
      * 设置跳转码
@@ -90,20 +79,7 @@ export default new Vuex.Store({
   },
   actions: {
     ...requests,
-    /**
-     * 合并服务器公开信息到内部状态  
-     * 并且写入缓存
-     * **注意**:该方法有副作用
-     * @param {Object} state 
-     * @param {Object} initDataFromLocalStorage 需要被初始化的对象
-     */
-    initState({state,commit}, initDataFromLocalStorage) {
-      commit('compareData',{
-        target:'info',
-        data:initDataFromLocalStorage
-      });
-      Storage.set('localInfo', state.info);
-    },
+    // TODO initState 改为commit initInfo
     /**
      * 发送一个登录请求到服务器,如果登录成功这个actions会自动合并状态  
      * 如果失败则自动拦截错误  
@@ -114,26 +90,21 @@ export default new Vuex.Store({
      */
     async requestLogin({dispatch,commit},data){
 
-      const result = await dispatch('post', {
+      const response = await dispatch('post', {
         target: 'login',
         data,
-        response() {
-          // TODO intercept stateCode from server
-        }
       });
 
-      if(result){
-        dispatch('initState',{
-          isLogin:true,
-        });
+      if(response){
         commit('compareData',{
-          target:'user',
-          data:result
+          target:'userData',
+          data:response.data.data
         });
+        updateUserData(response.data.data);
         return true;
-      }else{
-        return false;
       }
+
+      return false;
 
     },
     /**
@@ -149,7 +120,7 @@ export default new Vuex.Store({
       });
 
       if(result){
-        commit('clearUser');
+        
         return true;
       }else{
         return false;

@@ -20,7 +20,8 @@ export const urls = {
     },
   },
   privilege:{
-    members:'/api/users'
+    members:'/api/users',
+    management:'/api/users'
   }
 }
 

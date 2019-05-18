@@ -240,8 +240,8 @@ mock('/api/users','get',{
     {
       account:'@word',
       nickname:'@word',
-      'level|0-63':63,
-      'control|0-5':['@word']
+      level:'@integer(0,63)',
+      'controlarea|0-5':['@word']
     }
   ]
 });
