@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import requests from "../request/request.js";
+import requests, { urlRouter } from "../request/request.js";
 import { baseInfo,userData } from "./storage.js";
 import Progress from "../plugin/museprogress.js";
 import { easyAssign } from "../utils/public";
@@ -15,6 +15,7 @@ export default new Vuex.Store({
     fullContent: false, // 屏蔽导航和侧边栏
     Progressing: false, // 是否在progress状态
     errorCode: 0,
+    specalties:[] // 所有的顶级专业范围
   },
   getters:{
     isLogin(state){
@@ -25,6 +26,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    updateSpecalties(state,specaltiesArr){
+      state.specalties = specaltiesArr;
+    },
     compareData(state,{target,data}){
       state[target] = easyAssign({},data,true);
     },
@@ -147,6 +151,33 @@ export default new Vuex.Store({
       }else{
         return false;
       }
+
+    },
+    async requestSpecalties({dispatch,commit}){
+
+      let 
+        tryTime = 3,
+        response;
+
+      while (tryTime --) {
+
+        response = await dispatch('get', {
+          target: `/api/specalties/${(new Date()).getFullYear()}`,
+        });
+
+        if(response){
+          break;
+        }
+
+      }
+
+      if(response){
+        commit('updateSpecalties', response.data.data);
+      }else{
+        // TODO 提示网络错误无法获取该年份的专业信息
+      }
+
+      return response.data.data;
 
     }
   }

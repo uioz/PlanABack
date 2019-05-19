@@ -12,45 +12,67 @@
 
 </docs>
 <template>
-  <build-content-layout class="privilege-management">
-    <template #toolbar-area>
-      <i-toolbar :edited="edited"></i-toolbar>
-    </template>
-    <template #content-area>
-      <mu-paper style="height:100%" :z-depth="5">
-        <mu-data-table height="100%" :columns="columns" :data="fetchData" >
-          <template #default="{row}">
-            <td>{{row.account}}</td>
-            <td>{{row.controlarea}}</td>
-            <td><mu-checkbox v-model="row.power.upload" @change="handleCheckedChange(row)" ></mu-checkbox></td>
-            <td><mu-checkbox v-model="row.power.download" @change="handleCheckedChange(row)" ></mu-checkbox></td>
-            <td><mu-checkbox v-model="row.power.view" @change="handleCheckedChange(row)" ></mu-checkbox></td>
-            <td><mu-checkbox v-model="row.power.edit" @change="handleCheckedChange(row)" ></mu-checkbox></td>
-            <td><mu-checkbox v-model="row.power.static" @change="handleCheckedChange(row)" ></mu-checkbox></td>
-            <td><mu-checkbox v-model="row.power.management" @change="handleCheckedChange(row)" ></mu-checkbox></td>
-          </template>
-        </mu-data-table>
-      </mu-paper>
-    </template>
-  </build-content-layout>
+  <mu-paper class="privilege-management" :z-depth="5">
+    <mu-data-table height="100%" :columns="columns" :data="fetchData" :min-col-width="50">
+      <template #default="{row}">
+        <td>{{row.account}}</td>
+        <td>
+          <mu-select
+            chips
+            multiple
+            separator="/"
+            v-model="row.controlarea"
+            full-width
+            @change="handleSelectChange(row)"
+          >
+            <template #prepend>
+              <i-question content="选择为空表示这个用户可以管理所有的专业"></i-question>
+            </template>
+            <mu-option v-for="(item,index) in specalties" :key="index" :label="item" :value="item"></mu-option>
+          </mu-select>
+        </td>
+        <td>
+          <mu-checkbox v-model="row.power.upload" @change="handleCheckedChange(row)"></mu-checkbox>
+        </td>
+        <td>
+          <mu-checkbox v-model="row.power.download" @change="handleCheckedChange(row)"></mu-checkbox>
+        </td>
+        <td>
+          <mu-checkbox v-model="row.power.view" @change="handleCheckedChange(row)"></mu-checkbox>
+        </td>
+        <td>
+          <mu-checkbox v-model="row.power.edit" @change="handleCheckedChange(row)"></mu-checkbox>
+        </td>
+        <td>
+          <mu-checkbox v-model="row.power.static" @change="handleCheckedChange(row)"></mu-checkbox>
+        </td>
+        <td>
+          <mu-checkbox v-model="row.power.management" @change="handleCheckedChange(row)"></mu-checkbox>
+        </td>
+      </template>
+    </mu-data-table>
+  </mu-paper>
 </template>
 <script>
 import buildContentLayout from "@/views/build/build-content-layout";
 import iToolbar from "@/components/i-toolbar";
-import { mapActions,mapMutations } from "vuex";
-import { Privilege } from "../../utils/privilege";
-import { easyAssign } from "../../utils/public";
+import iQuestion from "@/components/i-question";
+import { Privilege } from "@/utils/privilege";
+import { easyAssign } from "@/utils/public";
+import { mapActions, mapMutations } from "vuex";
 
 const columns = [
   {
     title: "账号",
     name: "account",
-    cellAlign: "center"
+    cellAlign: "center",
+    width: 100
   },
   {
     title: "管理专业范围",
     name: "controlarea",
-    cellAlign: "center"
+    cellAlign: "center",
+    width: 600
   },
   {
     title: "上传",
@@ -88,34 +110,54 @@ export default {
   name: "privilege-management",
   components: {
     buildContentLayout,
-    iToolbar
+    iToolbar,
+    iQuestion
   },
   data() {
     return {
-      edited:false,
+      edited: false,
       fetching: false,
       fetchData: [],
-      columns
+      columns,
+      specalties: []
     };
   },
   methods: {
-    ...mapActions(["get","psotAsJson"]),
-    ...mapMutations([]),
-    handleCheckedChange(rowData){
-
-      if(this.fetching){
+    ...mapActions(["get", "postAsJson", "requestSpecalties"]),
+    ...mapMutations(["progressStart", "progressDone"]),
+    handleSelectChange(rowData) {
+      if (this.fetching) {
         return;
       }
 
       this.beforeFetch();
-      
+      this.progressStart();
       this.postAsJson({
-        target:'',
-        data:{
-          level:Privilege.numberIfy(Privilege.rawCodeIfy(rowData.power))
-        }
-      }).finally(()=>this.afterFetch());
+        target: "privilege/management",
+        account: rowData.account,
+        controlarea: rowData.controlarea
+      }).finally(() => {
+        this.afterFetch();
+        this.progressDone();
+      });
+    },
+    handleCheckedChange(rowData) {
+      if (this.fetching) {
+        return;
+      }
 
+      this.beforeFetch();
+      this.progressStart();
+      this.postAsJson({
+        target: "privilege/management",
+        data: {
+          account: rowData.account,
+          level: Privilege.numberIfy(Privilege.rawCodeIfy(rowData.power))
+        }
+      }).finally(() => {
+        this.afterFetch();
+        this.progressDone();
+      });
     },
     beforeFetch() {
       this.fetching = true;
@@ -126,15 +168,24 @@ export default {
       }
       this.beforeFetch();
 
+      // 自动报错和获取当前年份下的所有专业
+      this.requestSpecalties().then(
+        specalties => (this.specalties = specalties)
+      );
+
       this.get({
         target: "privilege/management"
       })
         .then(response => {
           if (response) {
             this.fetchData = response.data.data.map(item => {
-              return easyAssign(item, {
-                power:Privilege.parse(item.level)
-              }, true);
+              return easyAssign(
+                item,
+                {
+                  power: Privilege.parse(item.level)
+                },
+                true
+              );
             });
           }
         })
@@ -149,3 +200,8 @@ export default {
   }
 };
 </script>
+<style>
+.privilege-management{
+  height: 100%;
+}
+</style>

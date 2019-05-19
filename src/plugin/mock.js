@@ -135,11 +135,7 @@ mock('/assest/speciality', [
 mock('/api/specalties/2019', {
   stateCode: 200,
   message: '',
-  "data|5-10": [
-    "@word",
-    "CMD",
-    "UMD"
-  ]
+  "data|5-10": ["@word"]
 });
 
 mock(pathToRegexp('/source/json/:year/:start/to/:end'), 'get', {
