@@ -22,12 +22,12 @@
           <template #default="{row}">
             <td>{{row.account}}</td>
             <td>{{row.controlarea}}</td>
-            <td><mu-checkbox v-model="row.upload" @click="handleChange" ></mu-checkbox></td>
-            <td><mu-checkbox v-model="row.download" @click="handleChange" ></mu-checkbox></td>
-            <td><mu-checkbox v-model="row.view" @click="handleChange" ></mu-checkbox></td>
-            <td><mu-checkbox v-model="row.edit" @click="handleChange" ></mu-checkbox></td>
-            <td><mu-checkbox v-model="row.static" @click="handleChange" ></mu-checkbox></td>
-            <td><mu-checkbox v-model="row.management" @click="handleChange" ></mu-checkbox></td>
+            <td><mu-checkbox v-model="row.power.upload" @change="handleCheckedChange(row)" ></mu-checkbox></td>
+            <td><mu-checkbox v-model="row.power.download" @change="handleCheckedChange(row)" ></mu-checkbox></td>
+            <td><mu-checkbox v-model="row.power.view" @change="handleCheckedChange(row)" ></mu-checkbox></td>
+            <td><mu-checkbox v-model="row.power.edit" @change="handleCheckedChange(row)" ></mu-checkbox></td>
+            <td><mu-checkbox v-model="row.power.static" @change="handleCheckedChange(row)" ></mu-checkbox></td>
+            <td><mu-checkbox v-model="row.power.management" @change="handleCheckedChange(row)" ></mu-checkbox></td>
           </template>
         </mu-data-table>
       </mu-paper>
@@ -37,7 +37,7 @@
 <script>
 import buildContentLayout from "@/views/build/build-content-layout";
 import iToolbar from "@/components/i-toolbar";
-import { mapActions } from "vuex";
+import { mapActions,mapMutations } from "vuex";
 import { Privilege } from "../../utils/privilege";
 import { easyAssign } from "../../utils/public";
 
@@ -99,9 +99,23 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["get"]),
-    handleChange(){
-      this.edited = true;
+    ...mapActions(["get","psotAsJson"]),
+    ...mapMutations([]),
+    handleCheckedChange(rowData){
+
+      if(this.fetching){
+        return;
+      }
+
+      this.beforeFetch();
+      
+      this.postAsJson({
+        target:'',
+        data:{
+          level:Privilege.numberIfy(Privilege.rawCodeIfy(rowData.power))
+        }
+      }).finally(()=>this.afterFetch());
+
     },
     beforeFetch() {
       this.fetching = true;
@@ -118,7 +132,9 @@ export default {
         .then(response => {
           if (response) {
             this.fetchData = response.data.data.map(item => {
-              return easyAssign(item, Privilege.parse(item.level), true);
+              return easyAssign(item, {
+                power:Privilege.parse(item.level)
+              }, true);
             });
           }
         })

@@ -146,11 +146,13 @@ const router = new Router({
   ]
 });
 
+
+
 router.beforeEach((to, from, next) => {
 
   const meta = to.meta;
 
-  if ('isLogin' in meta && meta.isLogin !== Store.state.info.isLogin) {
+  if ('isLogin' in meta && meta.isLogin !== Store.getters.isLogin) {
     return next('/auth/login');
   }
 

@@ -1,7 +1,7 @@
 <template>
   <mu-form class="login-form" ref="form" :model="FormData" label-width="80px">
     <mu-form-item label="用户名" prop="account" :rules="FormRules.accountRules">
-      <mu-text-field v-model="FormData.account" prop="account" >
+      <mu-text-field v-model="FormData.account" prop="account">
         <template #prepend>
           <font-awesome-icon icon="user-circle"></font-awesome-icon>
         </template>
@@ -23,7 +23,7 @@
 </template>
 <script>
 import * as validate from "../../utils/validates.js";
-import {  mapActions} from "vuex";
+import { mapActions } from "vuex";
 import sha1 from "sha1";
 
 export default {
@@ -34,34 +34,43 @@ export default {
         accountRules: [
           { validate: validate.required, message: "请填写用户名称" },
           { validate: validate.noSpace, message: "用户名称中不能包含空白字符" },
-          { validate: validate.CnEnAndUndeline, message: "用户名称由中英文和下划线组成" },
-          { validate: validate.range(2,10), message: "用户名称需要在2到10位之间" },
+          {
+            validate: validate.CnEnAndUndeline,
+            message: "用户名称由中英文和下划线组成"
+          },
+          {
+            validate: validate.range(2, 10),
+            message: "用户名称需要在2到10位之间"
+          }
         ],
         passwordRules: [
           { validate: validate.required, message: "请填写密码" },
           { validate: validate.noSpace, message: "密码中不能包含空白字符" },
-          { validate: validate.password, message: "密码以字母开头由英文数字和下划线组成" },
-          { validate: validate.range(6,16), message: "密码需要在6到16位之间" },
+          {
+            validate: validate.password,
+            message: "密码以字母开头由英文数字和下划线组成"
+          },
+          { validate: validate.range(6, 16), message: "密码需要在6到16位之间" }
         ]
       },
       FormData: {
         account: "",
         password: ""
       },
-      lock:false
+      lock: false
     };
   },
   methods: {
-    ...mapActions(['requestLogin']),
+    ...mapActions(["requestLogin"]),
     async submit() {
-      if(await this.$refs.form.validate()){
+      if (await this.$refs.form.validate()) {
         this.lock = true;
-        if(await this.requestLogin(this.FormData)){
-          this.$router.push('/');
+        if (await this.requestLogin(this.FormData)) {
+          this.$router.push("/");
         }
         this.lock = false;
       }
-    },
+    }
   }
 };
 </script>

@@ -13,9 +13,9 @@
 </docs>
 <template>
   <login-layout class="login">
-    <template #title>{{info.appname}}</template>
-    <template #sub-title>{{info.school}}</template>
-    <template #notice>{{info.notice}}</template>
+    <template #title>{{baseInfo? baseInfo.appname:''}}</template>
+    <template #sub-title>{{baseInfo? baseInfo.school:''}}</template>
+    <template #notice>{{baseInfo? baseInfo.notice:''}}</template>
     <template #version>0.1.0</template>
     <template #form>
       <login-form></login-form>
@@ -33,8 +33,8 @@ export default {
     loginLayout,
     loginForm
   },
-  computed:{
-    ...mapState(['info'])
+  computed: {
+    ...mapState(["baseInfo"])
   }
 };
 </script>

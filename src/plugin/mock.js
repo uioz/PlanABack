@@ -12,19 +12,27 @@ Random.extend({
 });
 
 mock('/login', {
-  nickName: '@csentence(2,10)',
-  level: '@integer(1, 68)',
-  levelCodeRaw: '@string("number", 1, 3)',
-  'controlArea|1-10': ['@word']
+  stateCode: 200,
+  message:'',
+  data: {
+    nickName: '@csentence(2,10)',
+    level: '@integer(1, 68)',
+    levelCodeRaw: '@string("number", 1, 3)',
+    'controlArea|1-10': ['@word']
+  }
 });
 
 mock('/api/server/base', {
-  notice: '@cparagraph',
-  appname: '@csentence(2,10)',
-  brand: '@url',
-  logo: '@url',
-  bg: '@url',
-  pubilc: '/public'
+  stateCode: 200,
+  message: '',
+  data: {
+    notice: '@cparagraph',
+    appname: '@csentence(2,10)',
+    brand: '@url',
+    logo: '@url',
+    bg: '@url',
+    pubilc: '/public'
+  }
 });
 // TODO add info about system and school name
 
@@ -149,64 +157,64 @@ mock(pathToRegexp('/source/json/:year/:start/to/:end'), 'get', {
   ]
 });
 
-mock('/open/force',{
-  stateCode:200,
-  message:'',
-  data:'@boolean'
+mock('/open/force', {
+  stateCode: 200,
+  message: '',
+  data: '@boolean'
 })
 
-mock('/open/range',{
+mock('/open/range', {
   stateCode: 200,
   message: '',
   data: {
-    startTime:'@natural(1000000000000,1999999999999)',
-    endTime:'@natural(1000000000000,1999999999999)'
+    startTime: '@natural(1000000000000,1999999999999)',
+    endTime: '@natural(1000000000000,1999999999999)'
   }
 });
 
-mock('/open',{
+mock('/open', {
   stateCode: 200,
   message: '',
   data: '@boolean'
 })
 
 
-mock('/api/assets','get',{
-  stateCode:200,
-  message:'',
-  data:{
-    systemName:'@word',
-    clientName:'@word',
-    systemMessage:'@word',
-    clientMessage:'@word',
+mock('/api/assets', 'get', {
+  stateCode: 200,
+  message: '',
+  data: {
+    systemName: '@word',
+    clientName: '@word',
+    systemMessage: '@word',
+    clientMessage: '@word',
   }
 });
 
-mock('/api/assest','post',{
-  stateCode:200,
-  message:'数据上传成功'
+mock('/api/assest', 'post', {
+  stateCode: 200,
+  message: '数据上传成功'
 });
 
-mock(pathToRegexp('/api/assets/app/image/:type'),'post',{
-  stateCode:200,
-  message:'修改成功',
+mock(pathToRegexp('/api/assets/app/image/:type'), 'post', {
+  stateCode: 200,
+  message: '修改成功',
 });
 
-mock('/api/assets/static/photos','get',{
-  stateCode:200,
-  message:'',
-  'data|5-10':[
+mock('/api/assets/static/photos', 'get', {
+  stateCode: 200,
+  message: '',
+  'data|5-10': [
     {
-      id:'@guid',
+      id: '@guid',
       src: Random.image('200x100', '#4A7BF7', 'Hello'),
-      fileName:'@word'
+      fileName: '@word'
     }
   ]
 })
 
-mock('/api/assets/static/photos','post',{
-  stateCode:200,
-  message:'上传文件成功',
+mock('/api/assets/static/photos', 'post', {
+  stateCode: 200,
+  message: '上传文件成功',
   'data|5-10': [
     {
       id: '@guid',
@@ -233,27 +241,27 @@ mock(/^\/api\/assets\/static\/photos/, 'delete', {
 // });
 
 // findAll
-mock('/api/users','get',{
-  stateCode:200,
-  message:'',
-  'data|1-20':[
+mock('/api/users', 'get', {
+  stateCode: 200,
+  message: '',
+  'data|1-20': [
     {
-      account:'@word',
-      nickname:'@word',
-      level:'@integer(0,63)',
-      'controlarea|0-5':['@word']
+      account: '@word',
+      nickname: '@word',
+      level: '@integer(0,63)',
+      'controlarea|0-5': ['@word']
     }
   ]
 });
 
 // updateOne by JSON
-mock(pathToRegexp('/api/users'),'post',{
-  stateCode:200,
-  message:'修改成功',
+mock(pathToRegexp('/api/users'), 'post', {
+  stateCode: 200,
+  message: '修改成功',
 });
 
 // deleteOne
-mock(pathToRegexp('/api/users/:id'),'delete',{
-  stateCode:200,
-  message:'删除成功',
+mock(pathToRegexp('/api/users/:id'), 'delete', {
+  stateCode: 200,
+  message: '删除成功',
 });

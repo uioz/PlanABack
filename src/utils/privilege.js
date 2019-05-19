@@ -89,7 +89,7 @@ export class Privilege {
             for (const keyName of Privilege.powerList) {
                 result.push(+data[keyName]);
             }
-            return result.join('');
+            return '1'+result.join('');
         }
     }
     /**
@@ -97,7 +97,7 @@ export class Privilege {
      * @param rawCode 权限代码
      */
     static numberIfy(rawCode) {
-        return +Privilege.format(rawCode);
+        return parseInt(Privilege.format(rawCode),2);
     }
     /**
      * 判断给定的权限代码rawCode在levelPos指定的位置上,

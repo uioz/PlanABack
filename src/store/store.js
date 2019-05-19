@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import requests from "../request/request.js";
-import {clearUserData,getUserData,updateUserData} from "./storage.js";
+import { baseInfo,userData } from "./storage.js";
 import Progress from "../plugin/museprogress.js";
 import { easyAssign } from "../utils/public";
 
@@ -10,27 +10,27 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production', // see https://vuex.vuejs.org/zh/guide/strict.html#%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%8F%91%E5%B8%83%E7%8E%AF%E5%A2%83
   state: {
-    info:undefined,
-    userData: getUserData(), 
+    baseInfo:baseInfo.get(),
+    userData: userData.get(),
     fullContent: false, // 屏蔽导航和侧边栏
     Progressing: false, // 是否在progress状态
     errorCode: 0,
   },
   getters:{
     isLogin(state){
-      return !!state.userData
+      return !!state.userData;
     },
-    serverInfo(state){
-      return state.info || {};
+    hasGotInfo(state){
+      return !!state.baseInfo;
     }
   },
   mutations: {
     compareData(state,{target,data}){
-      state[target] = Object.assign({},state[target],data);
+      state[target] = easyAssign({},data,true);
     },
     clearUserData(state){
       state.userData = undefined;
-      clearUserData();
+      userData.clear();
     },
     /**
      * 设置跳转码
@@ -79,7 +79,6 @@ export default new Vuex.Store({
   },
   actions: {
     ...requests,
-    // TODO initState 改为commit initInfo
     /**
      * 发送一个登录请求到服务器,如果登录成功这个actions会自动合并状态  
      * 如果失败则自动拦截错误  
@@ -90,21 +89,44 @@ export default new Vuex.Store({
      */
     async requestLogin({dispatch,commit},data){
 
+      // TODO response 进行拦截
+      // 当响应过期的时候
+      // 清空本地的数据,跳转到登录页面
       const response = await dispatch('post', {
         target: 'login',
         data,
       });
 
       if(response){
+        const data = response.data.data;
         commit('compareData',{
           target:'userData',
-          data:response.data.data
+          data
         });
-        updateUserData(response.data.data);
+        userData.update(data);
         return true;
       }
 
       return false;
+
+    },
+    /**
+     * 拉取服务器基本公开信息
+     */
+    async requestBaseInfo({dispatch,commit}){
+
+      const response = await dispatch('get',{
+        target:'base'
+      });
+
+      if(response){
+        const data = response.data.data;
+        commit('compareData',{
+          target:'baseInfo',
+          data
+        });
+        baseInfo.update(data);
+      }
 
     },
     /**
