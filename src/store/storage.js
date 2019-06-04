@@ -21,7 +21,7 @@ class LocalStoreHelper {
    * 获取数据
    */
   get(){
-    return window[this.storeType].getItem(this.itemName);
+    return JSON.parse(window[this.storeType].getItem(this.itemName));
   }
 
   /**

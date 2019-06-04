@@ -29,9 +29,9 @@ import { mapState } from "vuex";
 export default {
   name: "data-speciality-pick",
   computed: {
-    ...mapState(["user"]),
+    ...mapState(["userData"]),
     selects() {
-      return this.user.controlArea.length ? this.user.controlArea.map(item=>({value:item,label:item})) : [{label:'所有专业',value:''}];
+      return this.userData.controlArea.length ? this.userData.controlArea.map(item=>({value:item,label:item})) : [{label:'所有专业',value:''}];
     }
   }
 };

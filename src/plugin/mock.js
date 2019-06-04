@@ -186,7 +186,7 @@ mock('/api/assets', 'get', {
   }
 });
 
-mock('/api/assest', 'post', {
+mock('/api/assets', 'post', {
   stateCode: 200,
   message: '数据上传成功'
 });
