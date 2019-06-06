@@ -62,7 +62,14 @@ export default {
   created() {
     this.get({
       target:'state'
-    }).then(({data})=>this.fetchData = data);
+    })
+    .then(response=>{
+
+      if(response){
+        this.fetchData = response.data.data;
+      }
+
+    });
   }
 };
 </script>

@@ -52,10 +52,10 @@
 <script>
 import buildContentLayout from "./build-content-layout";
 import buildToolbar from "./build-toolbar";
-import { mapActions, mapMutations } from "vuex";
 import Message from "../../plugin/musemessage.js";
-import { easyClone } from "../../utils/public.js";
 import buildModelCard from "./build-model-card";
+import { mapActions, mapMutations } from "vuex";
+import { easyClone } from "../../utils/public.js";
 
 export default {
   name: "build-model",
@@ -253,6 +253,7 @@ export default {
       this.fetching = false;
     },
     fetch() {
+
       if (this.fetching) {
         return;
       }
@@ -262,17 +263,24 @@ export default {
       this.get({
         target: "model"
       })
-        .then(({ data: result }) => {
-          if (result) {
-            this.fetchData = result;
-            this.fetchDataBackup = easyClone(result);
+        .then(response => {
+
+          if(response){
+            
+            const data = response.data.data;
+
+            this.fetchData = data;
+            this.fetchDataBackup = easyClone(data);
             this.cardQueue.push({
               label: "",
-              data: easyClone(result)
+              data: easyClone(data)
             });
+
           }
+
         })
         .finally(() => this.afterFetch());
+
     }
   },
   watch: {

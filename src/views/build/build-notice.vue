@@ -163,6 +163,7 @@ export default {
       this.fetching = false;
     },
     fetch() {
+
       if (this.fetching) {
         return;
       }
@@ -173,16 +174,20 @@ export default {
         target: "speciality"
       })
         .then(response => {
+
           if (response) {
-            this.fetchData = response.data;
-            this.fetchDataBackup = easyClone(response.data);
+            const data = response.data.data;
+            this.fetchData = data;
+            this.fetchDataBackup = easyClone(data);
             this.cardInit();
           }
+
         })
         .finally(() => {
           this.progressDone();
           this.afterFetch();
         });
+        
     }
   },
   watch: {

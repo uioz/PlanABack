@@ -13,7 +13,7 @@ Random.extend({
 
 mock('/login', {
   stateCode: 200,
-  message:'',
+  message: '',
   data: {
     nickName: '@csentence(2,10)',
     level: '@integer(1, 68)',
@@ -22,117 +22,130 @@ mock('/login', {
   }
 });
 
-mock('/api/server/base', {
-  stateCode: 200,
-  message: '',
-  data: {
-    notice: '@cparagraph',
-    appname: '@csentence(2,10)',
-    brand: '@url',
-    logo: '@url',
-    bg: '@url',
-    pubilc: '/public'
-  }
-});
+mock('/logout',{
+  stateCode:200,
+  message:'登出成功'
+})
+
+
 // TODO add info about system and school name
 
 mock('/api/state', {
-  nickName: '@csentence(2,10)',
-  lastLoginTime: '@ISODateStr',
-  startTime: '@ISODateStr',
-  endTime: '@ISODateStr',
-  'runingTime|1000-10000000000': 0,
+  stateCode: 200,
+  message: '',
+  data: {
+    nickName: '@csentence(2,10)',
+    'lastLoginTime|1000-10000000000': 0,
+    'startTime|1000-10000000000': 0,
+    'endTime|1000-10000000000': 0,
+    'runingTime|1000-10000000000': 0,
+  }
 });
 
 mock('/model', {
-  '信息工程系': {
-    '计算机应用技术': ['这个技术', '哪个技术'],
-    'deepdark': {
-      'hello': ['world', 'C++'],
-      'deepdark': ['fantasy']
-    }
-  },
-  '新的系': {
-    'java': {
-      'android': {
-        'sqllite': ['3.0', '4.0', '5.0']
+  stateCode: 200,
+  message: '',
+  data: {
+    '信息工程系': {
+      '计算机应用技术': ['这个技术', '哪个技术'],
+      'deepdark': {
+        'hello': ['world', 'C++'],
+        'deepdark': ['fantasy']
       }
     },
-    'node': {
-      'express': ['egg', 'koa', 'xxx.js']
+    '新的系': {
+      'java': {
+        'android': {
+          'sqllite': ['3.0', '4.0', '5.0']
+        }
+      },
+      'node': {
+        'express': ['egg', 'koa', 'xxx.js']
+      }
+    },
+    "devDependencies": {
+      "@vue/cli-plugin-babel": ['7', '8', '9'],
+      "@vue/cli-plugin-eslint": ['4', '5', '6'],
+      "@vue/cli-service": ['1', '2', '3']
     }
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": ['7', '8', '9'],
-    "@vue/cli-plugin-eslint": ['4', '5', '6'],
-    "@vue/cli-service": ['1', '2', '3']
   }
 });
 
-mock('/assest/speciality', [
-  {
-    "name": "信息工程系",
-    "title": "你好",
-    "notice": "hello",
-    "lists": [
-      {
-        "name": "计算机技术",
-        "title": "吗",
-        "notice": "",
-        "lists": [
-          {
-            "name": "计算机应用技术",
-            "title": "我",
-            "notice": "",
-            "lists": [
+mock('/assest/speciality', {
+  stateCode: 200,
+  message: '',
+  data: [
+    {
+      "name": "信息工程系",
+      "title": "你好",
+      "notice": "hello",
+      "lists": [
+        {
+          "name": "计算机技术",
+          "title": "吗",
+          "notice": "",
+          "lists": [
+            {
+              "name": "计算机应用技术",
+              "title": "我",
+              "notice": "",
+              "lists": [
 
-            ]
-          },
-          {
-            "name": "移动应用开发",
-            "title": "知道",
-            "notice": "",
-            "lists": [
+              ]
+            },
+            {
+              "name": "移动应用开发",
+              "title": "知道",
+              "notice": "",
+              "lists": [
 
-            ]
-          }
-        ]
-      },
-      {
-        "name": "环境艺术设计",
-        "title": "你",
-        "notice": "",
-        "lists": [
-          {
-            "name": "室内设计",
-            "title": "在那里",
-            "notice": "",
-            "lists": [
+              ]
+            }
+          ]
+        },
+        {
+          "name": "环境艺术设计",
+          "title": "你",
+          "notice": "",
+          "lists": [
+            {
+              "name": "室内设计",
+              "title": "在那里",
+              "notice": "",
+              "lists": [
 
-            ]
-          }
-        ]
-      },
-      {
-        "name": "动漫制作",
-        "title": "",
-        "notice": "",
-        "lists": [
-          {
-            "name": "数字雕刻技术",
-            "title": "",
-            "notice": "",
-            "lists": [
+              ]
+            }
+          ]
+        },
+        {
+          "name": "动漫制作",
+          "title": "",
+          "notice": "",
+          "lists": [
+            {
+              "name": "数字雕刻技术",
+              "title": "",
+              "notice": "",
+              "lists": [
 
-            ]
-          }
-        ]
-      }
-    ]
-  }
-]);
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+});
 
-mock('/api/specalties/2019', {
+
+/**
+ * query :{
+ *  year:undefined // 获取的是专业结构上的可以使用的专业
+ *  year:number // 获取的是该年份数据的可以使用的专业
+ * }
+ */
+mock('/api/specalties', {
   stateCode: 200,
   message: '',
   "data|5-10": ["@word"]
@@ -153,13 +166,13 @@ mock(pathToRegexp('/source/json/:year/:start/to/:end'), 'get', {
   ]
 });
 
-mock('/open/force', {
+mock('/api/open/force', {
   stateCode: 200,
   message: '',
   data: '@boolean'
 })
 
-mock('/open/range', {
+mock('/api/open/range', {
   stateCode: 200,
   message: '',
   data: {
@@ -168,7 +181,7 @@ mock('/open/range', {
   }
 });
 
-mock('/open', {
+mock('/api/open', {
   stateCode: 200,
   message: '',
   data: '@boolean'
@@ -183,6 +196,9 @@ mock('/api/assets', 'get', {
     clientName: '@word',
     systemMessage: '@word',
     clientMessage: '@word',
+    systemBackground: Random.image('200x100', '#4A7BF7', 'Hello'),
+    clientBackground: Random.image('200x100', '#4A7BF7', 'Hello'),
+    logo: Random.image('200x100', '#4A7BF7', 'Hello')
   }
 });
 

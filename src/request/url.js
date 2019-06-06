@@ -1,7 +1,7 @@
 export const urls = {
   login: '/login',
   logout:'/logout',
-  base: '/api/server/base',
+  base: '/api/assets',
   state:'/api/state',
   model:'/model',
   speciality:'/assest/speciality',
@@ -10,9 +10,9 @@ export const urls = {
     fetch:'/source',
   },
   config:{
-    force:'/open/force',
-    range:'/open/range',
-    open:'/open',
+    force:'/api/open/force',
+    range:'/api/open/range',
+    open:'/api/open',
     message:'/api/assets',
     static:{
       photos:'/api/assets/static/photos',

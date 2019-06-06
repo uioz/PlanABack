@@ -13,9 +13,9 @@
 </docs>
 <template>
   <login-layout class="login">
-    <template #title>{{baseInfo? baseInfo.appname:''}}</template>
+    <template #title>{{baseInfo? baseInfo.systemName:''}}</template>
     <template #sub-title>{{baseInfo? baseInfo.school:''}}</template>
-    <template #notice>{{baseInfo? baseInfo.notice:''}}</template>
+    <template #notice>{{baseInfo? baseInfo.systemMessage:''}}</template>
     <template #version>0.1.0</template>
     <template #form>
       <login-form></login-form>

@@ -137,7 +137,6 @@ export default new Vuex.Store({
      * 发送登出请求,  
      * 登出成功返回true,  
      * 反之返回false.  
-     * 如果有其他呢绒出现
      */
     async requestLogout({dispatch,commit}){
       
@@ -145,8 +144,9 @@ export default new Vuex.Store({
         target:'logout'
       });
 
+      commit('clearUserData');
+
       if(result){
-        
         return true;
       }else{
         return false;
@@ -162,7 +162,7 @@ export default new Vuex.Store({
       while (tryTime --) {
 
         response = await dispatch('get', {
-          target: `/api/specalties/${(new Date()).getFullYear()}`,
+          target: `/api/specalties`,
         });
 
         if(response){

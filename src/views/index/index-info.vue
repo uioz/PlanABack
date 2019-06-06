@@ -17,7 +17,6 @@
 </template>
 <script>
 import timeAgo from "../../plugin/timeago.js";
-import timeago from '../../plugin/timeago.js';
 
 export default {
   name: "index-info",
@@ -31,11 +30,17 @@ export default {
         return value;
       }
 
-      if(!+value){
-        return new Date(value).toLocaleString();
-      }else{
-        return timeAgo(value);
+      if(key === 'lastLoginTime'){
+        return timeAgo(value)
       }
+      
+      return new Date(value).toLocaleString();
+
+      // if(!+value){
+      //   return new Date(value).toLocaleString();
+      // }else{
+      //   return timeAgo(value);
+      // }
 
     }
   },

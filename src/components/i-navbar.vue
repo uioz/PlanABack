@@ -41,7 +41,7 @@
           size="lg"
           icon="user-circle"
         />
-        <span>{{baseInfo.appname}}</span>
+        <span>{{baseInfo.systemName}}</span>
       </mu-paper>
       <mu-button v-if="!isLogin" :disabled="logoutLock" color="secondary" to="/login">登录</mu-button>
     </template>
