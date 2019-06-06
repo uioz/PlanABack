@@ -156,12 +156,14 @@ export default {
         if (data.password) {
           data.password = sha1(data.password);
         }
+
         const result = await this.postAsJson({
           target: "privilege/members",
           data
         });
 
         if (result) {
+          // 不提交 password 属性, 以免污染数据, 被发送到服务器上
           delete data.password;
           this.edited = false;
           this.$emit("change", data,easyClone(this.source));

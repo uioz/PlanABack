@@ -106,6 +106,8 @@ const columns = [
   }
 ];
 
+// TODO 重命名 userid
+
 export default {
   name: "privilege-management",
   components: {

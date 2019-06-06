@@ -43,7 +43,7 @@ export default {
     }
   },
   methods:{
-    ...mapActions(['get','delete']),
+    ...mapActions(['get']),
     getIndexFromDataByAccount:getIndexFromDataByAccount('userList'),
     handleEditerChange(newUserData,oldUserData){
 
@@ -68,11 +68,6 @@ export default {
       if(this.editedData && this.editedData.account === userData.account){
         this.editedData = undefined;
       }
-
-      this.$delete({
-        target:'privilege/members',
-        data:userData
-      });
 
     },
     beforeFetch(){

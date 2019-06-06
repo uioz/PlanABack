@@ -64,8 +64,18 @@ export default {
     ...mapActions(["requestLogin"]),
     async submit() {
       if (await this.$refs.form.validate()) {
+
         this.lock = true;
-        if (await this.requestLogin(this.FormData)) {
+
+        // 不发送编辑中的数据
+        // 混淆 password 格式
+        const data = Object.assign({},this.FormData);
+
+        data.password = sha1(data.password);
+
+        debugger;
+
+        if (await this.requestLogin(data)) {
           this.$router.push("/");
         }
         this.lock = false;

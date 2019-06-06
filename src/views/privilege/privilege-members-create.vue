@@ -21,7 +21,7 @@
       <mu-text-field v-model="FormData.nickname"></mu-text-field>
     </mu-form-item>
     <mu-form-item label="密码" prop="password" :rules="FormRules.password">
-      <mu-text-field v-model="FormData.password"></mu-text-field>
+      <mu-text-field type="password" v-model="FormData.password"></mu-text-field>
     </mu-form-item>
     <mu-form-item>
       <mu-button color="secondary" :disabled="!canSubmit" @click="fetch">提交</mu-button>

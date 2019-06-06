@@ -34,65 +34,79 @@
 </template>
 <script>
 import { getIndexFromDataByAccount } from "./common.js";
+import { mapActions } from "vuex";
+import { urlRouter } from "../../request/request.js";
 
 export default {
   name: "privilege-members-list",
-  props:{
-    value:{
-      type:Array,
-      default(){
+  props: {
+    value: {
+      type: Array,
+      default() {
         return [];
       }
     }
   },
-  computed:{
-    activeListItem(){
+  computed: {
+    activeListItem() {
       // 1. 如果传入了内容
       //   1.1 如果内部有选中的内容,返回选中的内容
       //   1.2 如果没有选中的内容,则使用传入内容中的第一个数据
       // 2. 返回空串
-      if(this.value.length){
-        if(this.activeItemNameInner){
-          return this.activeItemNameInner
-        }else{
+      if (this.value.length) {
+        if (this.activeItemNameInner) {
+          return this.activeItemNameInner;
+        } else {
           return this.value[0].account;
         }
-      }else{
-        return '';
+      } else {
+        return "";
       }
     }
   },
-  data(){
+  data() {
     return {
-      activeItemNameInner:''
-    }
+      fetching: false,
+      activeItemNameInner: ""
+    };
   },
-  methods:{
-    getIndexFromDataByAccount:getIndexFromDataByAccount('value'),
-    handleListActive(account){
-
+  methods: {
+    ...mapActions(["delete"]),
+    getIndexFromDataByAccount: getIndexFromDataByAccount("value"),
+    handleListActive(account) {
       this.activeItemNameInner = account;
       const userIndexInValue = this.getIndexFromDataByAccount(account);
-      if(userIndexInValue !== -1){
-        this.$emit('pick',this.value[userIndexInValue]);
+      if (userIndexInValue !== -1) {
+        this.$emit("pick", this.value[userIndexInValue]);
+      }
+    },
+    handleDelete(account) {
+      if (this.fetching) {
+        return;
       }
 
-    },
-    handleDelete(account){
-      
+      this.fetching = true;
+
       const userIndexInValue = this.getIndexFromDataByAccount(account);
 
-      if(userIndexInValue !== -1){
+      if (userIndexInValue !== -1) {
 
-        const userData = this.value[userIndexInValue];
+        // 复制一份数据, 以防止在上传中数据被修改
+        const userData = Object.assign({},this.value[userIndexInValue]);
 
-        // 移除并且触发input事件
-        this.value.splice(userIndexInValue,1);
-        this.$emit('input',this.value);
-        this.$emit('delete',userData);
-        
+        this.delete({
+          target: `${urlRouter("privilege/members")}/${userData.userid}`,
+        })
+          .then(response => {
+            if (response) {
+              // 移除并且触发input事件
+              this.value.splice(userIndexInValue, 1);
+              this.$emit("input", this.value);
+              this.$emit("delete", userData);
+            }
+          })
+          .finally(() => (this.fetching = false));
       }
-
     }
   }
 };
