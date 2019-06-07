@@ -27,6 +27,19 @@
       style="display:none;"
       @change="handleFileChange"
     >
+    <mu-dialog title="Dialog" width="360" :open.sync="resultDialogOpen">
+      <p>
+        总数据量:
+        <span>{{ total }}</span>
+      </p>
+      <p>
+        实际使用量:
+        <span>{{ real }}</span>
+      </p>
+      <template #actions>
+        <mu-button flat color="primary" @click="resultDialogOpen = !resultDialogOpen">确认</mu-button>
+      </template>
+    </mu-dialog>
   </mu-paper>
 </template>
 <script>
@@ -44,6 +57,9 @@ export default {
   },
   data() {
     return {
+      resultDialogOpen: false,
+      real: 0, // 实际使用的数据量
+      total: 0, // 总数据量
       fetching: false,
       progress: 0,
       selected: "",
@@ -62,6 +78,7 @@ export default {
     },
     beforeFetch() {
       this.fetching = true;
+      this.real = this.total = 0;
       this.progressStart();
     },
     fetch(data) {
@@ -72,19 +89,18 @@ export default {
       this.beforeFetch();
 
       this.uploadForm({
-        // TODO 提供年份的选择
-        target: urlRouter(`source/upload/${new Date().getFullYear()}`),
+        // TODO 提供年份的选择, 目前直接使用当前年份
+        target: `${urlRouter("source/upload")}/${new Date().getFullYear()}`,
         data
       })
         .then(response => {
           if (response) {
-            debugger;
-          } else {
-            // TODO 提示错误
+            const { real, total } = response.data.data;
+            this.real = real;
+            this.total = total;
           }
         })
         .finally(() => this.afterFetch());
-
     },
     afterFetch() {
       this.fetching = false;

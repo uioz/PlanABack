@@ -14,6 +14,7 @@
 <template>
   <data-preview-layout class="data-preview">
     <template #select-area>
+      <!-- TODO 读取可以使用的专业列表 -->
       <data-speciality-pick label="选择要预览的专业" :value="selectSpeciality" @input="handleSelectInput"></data-speciality-pick>
     </template>
     <template #year-pick>
@@ -29,7 +30,7 @@ import dataPreviewLayout from "./data-preview-layout";
 import dataSpecialityPick from "./data-speciality-pick";
 import dataPreviewTable from "./data-preview-table";
 import dataYearPick from "./data-year-pick";
-import Axios from "axios";
+import { mapActions } from "vuex";
 
 export default {
   name: "data-preview",
@@ -46,54 +47,56 @@ export default {
       dataOfRender: [],
       fetchData: {},
       fetching: false,
-      pageIndex: 1,
-      axios: Axios.create({ // 动态url不使用封装的版本
-        method: "get",
-        responseType: "application/json"
-      })
+      pageIndex: 1
     };
   },
   methods: {
-    handleYearPick(value){
+    ...mapActions(["getAsJson"]),
+    handleYearPick(value) {
       this.selectDate = value;
-      this.fetch(this.makeUrl(),this.makeQuery());
+      this.fetch(this.makeUrl(), this.makeQuery());
     },
     handleSelectInput(value) {
       this.selectSpeciality = value;
-      this.fetch(this.makeUrl(),this.makeQuery());
+      this.fetch(this.makeUrl(), this.makeQuery());
     },
     makeUrl() {
       const baseUrl = "/source/json/";
-      return baseUrl + `${this.selectDate.getFullYear()}/${this.pageIndex * 20 - 19}/to/${this.pageIndex * 20}`;
+      return (
+        baseUrl +
+        `${this.selectDate.getFullYear()}/${this.pageIndex * 20 - 19}/to/${this
+          .pageIndex * 20}`
+      );
     },
-    makeQuery(){
-      return this.selectSpeciality ? {
-        speciality:this.selectSpeciality
-      } : {};
+    makeQuery() {
+      return this.selectSpeciality
+        ? {
+            speciality: this.selectSpeciality
+          }
+        : {};
     },
     beforeFetch() {
       this.fetching = true;
       this.dataOfRender = [];
     },
-    fetch(url, params) {
-
+    fetch(url, query) {
       if (this.fetching) {
         return;
       }
 
-      if(this.fetchData[url]){
+      if (this.fetchData[url]) {
         this.dataOfRender = this.fetchData[url];
         return;
       }
 
       this.beforeFetch();
 
-      this.axios({
+      this.getAsJson({
         url,
-        params
+        data: query,
       })
         .then(response => {
-          if(response){
+          if (response) {
             // It doesn't need reactivity
             this.fetchData[url] = response.data.data;
             this.dataOfRender = this.fetchData[url];
@@ -104,6 +107,9 @@ export default {
     afterFetch() {
       this.fetching = false;
     }
+  },
+  created(){
+    this.fetch(this.makeUrl(),this.makeQuery());
   }
 };
 </script>

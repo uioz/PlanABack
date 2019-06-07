@@ -10,22 +10,22 @@ export const urlRouter = UrlRouterGenerator(urls, routeExp);
  */
 const intercepts = {
   request(data, vuexContext) {
-    
+
   },
   response(data, response, vuexContext) {
 
     if (response.status >= 400) {
       throw '电波无法到达!✨';
-    } else if (response.data && response.data.stateCode !== 200){
+    } else if (response.data && response.data.stateCode !== 200) {
       throw response.data.message;
     }
 
   },
   error(data, error, vuexContext) {
 
-    if(error instanceof Error){
+    if (error instanceof Error) {
       Toast.error('网络连接失败, 请检查你的网络!');
-    }else{
+    } else {
       Toast.warning(error);
     }
 
@@ -94,7 +94,8 @@ const generatorRequestMethods = (...methods) => {
   const result = {};
   for (const method of methods) {
     result[method] = (vuexContext, source) => {
-      return request(method, urlRouter(source.target), source, vuexContext);
+      // 优先使用 payload.url 
+      return request(method, source.url || urlRouter(source.target), source, vuexContext);
     }
   }
   return result;
@@ -120,7 +121,7 @@ const generatorRequestMethods = (...methods) => {
  * get():Promise<undefined|object> // 如果拦截器代理了所有的处理则then返回undefined
  */
 export default {
-  ...generatorRequestMethods('get', 'post','delete'),
+  ...generatorRequestMethods('get', 'post', 'delete'),
   getAsJson({ dispatch }, payload) {
     return dispatch('get', {
       ...payload,
@@ -131,7 +132,7 @@ export default {
       }
     });
   },
-  postAsJson({ dispatch},payload){
+  postAsJson({ dispatch }, payload) {
     return dispatch('post', {
       ...payload,
       config: {
