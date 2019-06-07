@@ -6,7 +6,7 @@ import "./plugin/normalize.js";
 import "./plugin/museui.js";
 import "./plugin/fontawesome.js";
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.VUE_APP_MOCK === 'true') {
   require('./plugin/mock.js');
 }
 
