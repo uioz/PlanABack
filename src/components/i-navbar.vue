@@ -41,7 +41,7 @@
           size="lg"
           icon="user-circle"
         />
-        <span>{{baseInfo.systemName}}</span>
+        <span>{{userData.nickName}}</span>
       </mu-paper>
       <mu-button v-if="!isLogin" :disabled="logoutLock" color="secondary" to="/login">登录</mu-button>
     </template>
@@ -56,7 +56,7 @@ export default {
     drawerClick: Boolean
   },
   computed: {
-    ...mapState(["baseInfo"]),
+    ...mapState(["baseInfo","userData"]),
     ...mapGetters(['isLogin']),
     params() {
       return this.$route.path;

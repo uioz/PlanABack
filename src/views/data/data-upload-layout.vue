@@ -28,6 +28,12 @@ export default {
 </script>
 <style>
 .data-upload-layout {
+  height: 100%;
 }
+
+.data-upload-layout .col {
+  height: 100%;
+}
+
 </style>
 

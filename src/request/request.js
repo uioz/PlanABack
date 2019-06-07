@@ -1,6 +1,7 @@
 import AxiosInstance from "@/plugin/axios.js";
 import { urls, routeExp, UrlRouterGenerator } from "./url.js";
 import { makeFormData } from "../utils/public.js";
+import Toast from "../plugin/musetoast.js";
 
 export const urlRouter = UrlRouterGenerator(urls, routeExp);
 
@@ -9,13 +10,25 @@ export const urlRouter = UrlRouterGenerator(urls, routeExp);
  */
 const intercepts = {
   request(data, vuexContext) {
-    console.log(data);
+    
   },
   response(data, response, vuexContext) {
-    console.log(data, response);
+
+    if (response.status >= 400) {
+      throw '电波无法到达!✨';
+    } else if (response.data && response.data.stateCode !== 200){
+      throw response.data.message;
+    }
+
   },
   error(data, error, vuexContext) {
-    console.log(data, error);
+
+    if(error instanceof Error){
+      Toast.error('网络连接失败, 请检查你的网络!');
+    }else{
+      Toast.warning(error);
+    }
+
   }
 }
 

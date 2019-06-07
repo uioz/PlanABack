@@ -27,15 +27,13 @@
       style="display:none;"
       @change="handleFileChange"
     >
-    <mu-linear-progress class="progress" v-show="progress" :value="progress" ></mu-linear-progress>
   </mu-paper>
 </template>
 <script>
-import Axios from "axios";
 import iQuestion from "@/components/i-question";
 import { makeFormData } from "@/utils/public.js";
 import dataSpecialityPick from "./data-speciality-pick";
-import { mapState } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 import { urlRouter } from "../../request/request.js";
 
 export default {
@@ -46,57 +44,51 @@ export default {
   },
   data() {
     return {
-      fetching:false,
-      progress:0,
-      selected:'',
-      tips:"这个列表中的专业是你可以上传的,此列表之外的其他专业都会被系统忽略.",
-      axios:Axios.create({ // 为了使用uploadprogress所以不使用封装的版本
-        headers:{
-          'Content-Type':'multipart/form-data'
-        },
-        url:urlRouter('source/upload'),
-        method:'post',
-        responseType:'application/json'
-      })
+      fetching: false,
+      progress: 0,
+      selected: "",
+      tips: "这个列表中的专业是你可以上传的,此列表之外的其他专业都会被系统忽略."
     };
   },
-  methods:{
-    handleUpload(){
+  methods: {
+    ...mapActions(["uploadForm"]),
+    ...mapMutations(["progressStart", "progressDone"]),
+    handleUpload() {
       this.$refs.file.click();
     },
     makeFormData,
-    handleFileChange(event){
+    handleFileChange(event) {
       this.fetch(this.makeFormData(event.srcElement.files[0]));
     },
-    beforeFetch(){
+    beforeFetch() {
       this.fetching = true;
-      this.progress = 1;
+      this.progressStart();
     },
-    fetch(data){
+    fetch(data) {
+      if (this.fetching) {
+        return;
+      }
+
       this.beforeFetch();
-      // TODO 测试上传
-      // TOOD 替换upload为plugin中的axios实例
-      this.axios({
-        adapter:(...rest)=>{ // TODO for test
-          return new Promise((resolve)=>{
-            resolve({
-              status:200,
-            });
-          })
-        },
-        data,
-        onUploadProgress(event){
-          // TODO change progress when uploading.
-        }
-      }).then(response=>{
-        if(response && response.data){
-          // TODO tips
-        }
-      }).catch(/* do nothing */).finally(()=>this.afterFetch());
+
+      this.uploadForm({
+        // TODO 提供年份的选择
+        target: urlRouter(`source/upload/${new Date().getFullYear()}`),
+        data
+      })
+        .then(response => {
+          if (response) {
+            debugger;
+          } else {
+            // TODO 提示错误
+          }
+        })
+        .finally(() => this.afterFetch());
+
     },
-    afterFetch(){
+    afterFetch() {
       this.fetching = false;
-      this.progress = 0;
+      this.progressDone();
     }
   }
 };
@@ -106,7 +98,7 @@ export default {
   padding: 20px;
 }
 
-.data-upload-upload .progress{
+.data-upload-upload .progress {
   margin-top: 10px;
 }
 </style>

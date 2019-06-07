@@ -131,7 +131,7 @@ export default {
       this.fetching = true;
 
       this.post({
-        target:'model',
+        target:'build/notice',
         data:this.fetchData
       }).then((response)=>{
         if(response && response.data){
@@ -171,7 +171,7 @@ export default {
       this.beforeFetch();
       this.progressStart();
       this.get({
-        target: "speciality"
+        target: "build/notice"
       })
         .then(response => {
 

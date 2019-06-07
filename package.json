@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "dev-pure":"vue-cli-service serve --mode unmock"
+    "dev-pure": "vue-cli-service serve --mode unmock"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.17",
@@ -16,6 +16,7 @@
     "muse-ui": "git+https://github.com/uioz/muse-ui.git",
     "muse-ui-message": "^0.2.1",
     "muse-ui-progress": "^0.1.0",
+    "muse-ui-toast": "^0.3.0",
     "normalize.css": "^8.0.1",
     "sha1": "^1.1.1",
     "vue": "^2.6.6",

@@ -3,8 +3,8 @@ export const urls = {
   logout:'/logout',
   base: '/api/assets',
   state:'/api/state',
-  model:'/model',
-  speciality:'/assest/speciality',
+  // model:'/model',
+  // speciality:'/assest/speciality',
   source:{
     upload:'/source',
     fetch:'/source',
@@ -22,6 +22,9 @@ export const urls = {
   privilege:{
     members:'/api/users',
     management:'/api/users'
+  },
+  build:{
+    notice:'/specialties/broadcast'
   }
 }
 

@@ -29,7 +29,8 @@ import {
   faExternalLinkAlt,
   faTrashAlt,
   faIdCard,
-  faEye
+  faEye,
+  faExclamationCircle
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -62,7 +63,8 @@ library.add(
   faExternalLinkAlt,
   faTrashAlt,
   faIdCard,
-  faEye
+  faEye,
+  faExclamationCircle
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
