@@ -60,24 +60,27 @@ export default {
   methods: {
     ...mapActions(["get", "postAsJson"]),
     handleSave() {
+
       this.beforeFetch();
-      Promise.all([
-        this.postAsJson({
-          target: "config/force",
-          data: this.force
-        }),
-        this.postAsJson({
-          target: "config/range",
-          data: this.dataRange
-        }),
-        this.postAsJson({
-          target: "config/open",
-          data: this.open
-        })
-      ])
-        .then(responses => {
+
+      const { startTime,endTime } = this.range;
+
+      this.postAsJson({
+        target:'config/upload',
+        data:{
+          range:{
+            startTime:+startTime,
+            endTime:+endTime
+          },
+          open:this.open,
+          force:this.force
+        }
+      })
+      .then(responses => {
           // 如果有错误则异步请求中会返回null而不是response对象
           let hasErrorInResponse = false;
+
+          debugger;
 
           for (const response of responses) {
             if (!response) {
@@ -90,6 +93,8 @@ export default {
           }
         })
         .finally(() => this.afterFetch());
+
+        
     },
     handleDataRangeChange(dataRange) {
       this.dataRange = dataRange;

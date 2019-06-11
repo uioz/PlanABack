@@ -3,7 +3,7 @@ export const urls = {
   logout:'/logout',
   base: '/api/assets',
   state:'/api/state',
-  // model:'/model',
+  model:'/model',
   // speciality:'/assest/speciality',
   source:{
     upload:'/source',
@@ -12,7 +12,8 @@ export const urls = {
   config:{
     force:'/api/open/force',
     range:'/api/open/range',
-    open:'/api/open',
+    open:'/api/open/open',
+    upload:'/api/open',
     message:'/api/assets',
     static:{
       photos:'/api/assets/static/photos',

@@ -31,6 +31,7 @@ const router = new Router({
         {
           path: 'model',
           meta: {
+            isLogin: true,
             activeTabName: 'model'
           },
           component: () => import(/* webpackChunkName: "build-model" */ './views/build/build-model.vue')
@@ -38,6 +39,7 @@ const router = new Router({
         {
           path: 'notice',
           meta: {
+            isLogin: true,
             activeTabName: 'notice'
           },
           component: () => import(/* webpackChunkName: "build-notice" */ './views/build/build-notice.vue')
@@ -45,6 +47,7 @@ const router = new Router({
         {
           path: 'preview',
           meta: {
+            isLogin: true,
             activeTabName: 'preview'
           },
           component: () => import(/* webpackChunkName: "build-preview" */ './views/build/build-preview.vue')
@@ -59,6 +62,7 @@ const router = new Router({
         {
           path: 'upload',
           meta: {
+            isLogin: true,
             activeTabName: 'upload'
           },
           component: () => import(/* webpackChunkName: "data-upload" */ './views/data/data-upload.vue')
@@ -66,6 +70,7 @@ const router = new Router({
         {
           path: 'download',
           meta: {
+            isLogin: true,
             activeTabName: 'download'
           },
           component: () => import(/* webpackChunkName: "data-download" */ './views/data/data-download.vue')
@@ -73,6 +78,7 @@ const router = new Router({
         {
           path: 'preview',
           meta: {
+            isLogin: true,
             activeTabName: 'preview'
           },
           component: () => import(/* webpackChunkName: "data-preview" */ './views/data/data-preview.vue')
@@ -87,6 +93,7 @@ const router = new Router({
         {
           path: 'switch',
           meta: {
+            isLogin: true,
             activeTabName: 'switch'
           },
           component: () => import(/* webpackChunkName: "config-switch" */ './views/config/config-switch.vue')
@@ -94,6 +101,7 @@ const router = new Router({
         {
           path: 'static',
           meta: {
+            isLogin: true,
             activeTabName: 'static'
           },
           component: () => import(/* webpackChunkName: "config-static" */ './views/config/config-static.vue')
@@ -101,6 +109,7 @@ const router = new Router({
         {
           path: 'message',
           meta: {
+            isLogin: true,
             activeTabName: 'message'
           },
           component: () => import(/* webpackChunkName: "config-message" */ './views/config/config-message.vue')
@@ -115,6 +124,7 @@ const router = new Router({
         {
           path:'/privilege/members',
           meta:{
+            isLogin: true,
             activeTabName:'members'
           },
           component: () => import(/* webpackChunkName: "privilege-members" */ './views/privilege/privilege-members.vue')
@@ -122,6 +132,7 @@ const router = new Router({
         {
           path:'/privilege/management',
           meta:{
+            isLogin: true,
             activeTabName:'management'
           },
           component: () => import(/* webpackChunkName: "privilege-management" */ './views/privilege/privilege-management.vue')

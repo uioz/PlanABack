@@ -46,30 +46,41 @@ mock('/model', {
   stateCode: 200,
   message: '',
   data: {
-    '信息工程系': {
-      '计算机应用技术': ['这个技术', '哪个技术'],
-      'deepdark': {
-        'hello': ['world', 'C++'],
-        'deepdark': ['fantasy']
-      }
+    "信息工程系": {
+      "计算机技术": ["计算机应用技术", "移动应用开发"],
+      "环境艺术设计": ["室内设计"]
     },
-    '新的系': {
-      'java': {
-        'android': {
-          'sqllite': ['3.0', '4.0', '5.0']
-        }
-      },
-      'node': {
-        'express': ['egg', 'koa', 'xxx.js']
-      }
-    },
-    "devDependencies": {
-      "@vue/cli-plugin-babel": ['7', '8', '9'],
-      "@vue/cli-plugin-eslint": ['4', '5', '6'],
-      "@vue/cli-service": ['1', '2', '3']
-    }
+    "艺术系": ["动漫制作"]
   }
 });
+// mock('/model', {
+//   stateCode: 200,
+//   message: '',
+//   data: {
+//     '信息工程系': {
+//       '计算机应用技术': ['这个技术', '哪个技术'],
+//       'deepdark': {
+//         'hello': ['world', 'C++'],
+//         'deepdark': ['fantasy']
+//       }
+//     },
+//     '新的系': {
+//       'java': {
+//         'android': {
+//           'sqllite': ['3.0', '4.0', '5.0']
+//         }
+//       },
+//       'node': {
+//         'express': ['egg', 'koa', 'xxx.js']
+//       }
+//     },
+//     "devDependencies": {
+//       "@vue/cli-plugin-babel": ['7', '8', '9'],
+//       "@vue/cli-plugin-eslint": ['4', '5', '6'],
+//       "@vue/cli-service": ['1', '2', '3']
+//     }
+//   }
+// });
 
 mock('/assest/speciality', {
   stateCode: 200,
@@ -181,11 +192,16 @@ mock('/api/open/range', {
   }
 });
 
-mock('/api/open', {
+mock('/api/open/open','get', {
   stateCode: 200,
   message: '',
   data: '@boolean'
-})
+});
+mock('/api/open','post', {
+  stateCode: 200,
+  message: '',
+  data: '@boolean'
+});
 
 
 mock('/api/assets', 'get', {
