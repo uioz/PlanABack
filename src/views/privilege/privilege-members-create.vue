@@ -93,11 +93,10 @@ export default {
         const data = easyClone(this.FormData);
         data.password = sha1(data.password);
 
-        // TODO 添加的新用户信息合并到源数据上并且触发事件
-        // TODO 修改用户信息也会被正常返回修改后的内容
-        if (await this.postAsJson({ target: "privilege/members", data })) {
-          delete data.password;
-          this.$emit("user-add", data);
+        const response = await this.postAsJson({ target: "privilege/members", data });
+
+        if(response){
+          this.$emit('user-add',response.data.data);
         }
 
         this.afterFetch();

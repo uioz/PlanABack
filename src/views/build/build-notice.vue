@@ -134,8 +134,8 @@ export default {
         target:'build/notice',
         data:this.fetchData
       }).then((response)=>{
-        if(response && response.data){
-          // TODO 响应成功
+        if(response){
+          this.edited = false;
         }
       }).finally(()=>this.fetching = false);
 

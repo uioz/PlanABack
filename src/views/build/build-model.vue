@@ -226,7 +226,7 @@ export default {
       })
         .then(result => {
           if (result) {
-            // TODO 响应成功
+            this.edited = false;
           }
         })
         .finally(() => {

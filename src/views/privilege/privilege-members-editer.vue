@@ -153,20 +153,20 @@ export default {
         this.beforeFetch();
 
         const data = easyClone(this.FormData);
+        // 如果需要修改密码, 则对密码进行混淆
         if (data.password) {
           data.password = sha1(data.password);
         }
 
-        const result = await this.postAsJson({
+        const response = await this.postAsJson({
           target: "privilege/members",
           data
         });
 
-        if (result) {
-          // 不提交 password 属性, 以免污染数据, 被发送到服务器上
-          delete data.password;
+        if(response){
+          debugger;
           this.edited = false;
-          this.$emit("change", data,easyClone(this.source));
+          this.$emit("change", data,response.data.data);
         }
 
         this.afterFetch();

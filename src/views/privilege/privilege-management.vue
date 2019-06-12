@@ -132,12 +132,15 @@ export default {
         return;
       }
 
+
       this.beforeFetch();
       this.progressStart();
       this.postAsJson({
         target: "privilege/management",
-        account: rowData.account,
-        controlarea: rowData.controlarea
+        data: {
+          userid: rowData.userid,
+          controlarea: rowData.controlarea
+        }
       }).finally(() => {
         this.afterFetch();
         this.progressDone();
@@ -153,7 +156,7 @@ export default {
       this.postAsJson({
         target: "privilege/management",
         data: {
-          account: rowData.account,
+          userid: rowData.userid,
           level: Privilege.numberIfy(Privilege.rawCodeIfy(rowData.power))
         }
       }).finally(() => {
@@ -203,7 +206,7 @@ export default {
 };
 </script>
 <style>
-.privilege-management{
+.privilege-management {
   height: 100%;
 }
 </style>
