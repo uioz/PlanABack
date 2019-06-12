@@ -19,8 +19,8 @@
       </mu-paper>
     </template>
     <template #modify-area>
-      <mu-paper v-if="!!fetchData" :z-depth="2">
-        <config-message-editer :source="fetchData[activeIndex]" @change="handleEditerChange"></config-message-editer>
+      <mu-paper v-if="loadedData" :z-depth="2">
+        <config-message-editer :source="dataForEdit" @change="handleEditerChange"></config-message-editer>
       </mu-paper>
     </template>
   </config-message-layout>
@@ -76,7 +76,13 @@ export default {
         data:{
           [this.activeIndex]:payload
         }
-      }).finally(()=>this.afterFetch());
+      })
+      .then(response=>{
+        if(response){
+          this.$set(this.fetchData,this.activeIndex,payload);
+        }
+      })
+      .finally(()=>this.afterFetch());
     },
     beforeFetch(){
       this.fetching = true;
@@ -103,6 +109,18 @@ export default {
     },
     handleListChange(index) {
       this.activeIndex = index;
+    }
+  },
+  computed:{
+    loadedData(){
+      return typeof this.fetchData === 'object';
+    },
+    /**
+     * 返回用于编辑的数据, 利用 activeIndex 从 fetchData 上获取, 在
+     * fetchData 未加载完成前返回 undefined 
+     */
+    dataForEdit(){
+      return this.fetchData ? this.fetchData[this.activeIndex] || '' : undefined;
     }
   },
   created(){

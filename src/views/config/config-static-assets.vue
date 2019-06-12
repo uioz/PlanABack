@@ -30,6 +30,7 @@
 import iUploadSimple from "@/components/i-upload-simple";
 import configStaticAssetsPhoto from "./config-static-assets-photo";
 import { mapActions } from "vuex";
+import { urlRouter } from "../../request/request.js";
 
 export default {
   name: "config-static-assets",
@@ -47,10 +48,7 @@ export default {
     ...mapActions(["get","uploadForm","delete"]),
     handlePhotosDelete(imageData){
       this.delete({
-        target:'config/static/photos',
-        data:{
-          id:imageData.id
-        }
+        url:`${urlRouter('config/static/photos')}/${imageData.id}`,
       });
     },
     beforeFetch() {
@@ -66,9 +64,10 @@ export default {
 
       this.uploadForm({
         target:'config/static/photos',
-        data:fileList
+        data:fileList[0] // 只获取第一个文件对象, 在 formdata 中名称为 file
       }).then(response=>{
         if(response){
+          // 上传完成后将返回的内容连接到本地数组中
           this.fetchData = this.fetchData.concat(response.data.data);
         }
       }).finally(()=>this.afterFetch());

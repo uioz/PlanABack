@@ -25,7 +25,7 @@
       </i-toolbar>
     </template>
     <template #content-area>
-      <config-switch-content v-if="dataRange" :source="dataRange" @change="handleDataRangeChange"></config-switch-content>
+      <config-switch-content v-if="dateRange" :source="dateRange" @change="handleDataRangeChange"></config-switch-content>
     </template>
   </build-content-layout>
 </template>
@@ -52,7 +52,7 @@ export default {
       fetching: false,
       force: false,
       open: false,
-      dataRange: undefined,
+      dateRange: undefined,
       edited: false,
       watchers: []
     };
@@ -60,44 +60,30 @@ export default {
   methods: {
     ...mapActions(["get", "postAsJson"]),
     handleSave() {
-
       this.beforeFetch();
 
-      const { startTime,endTime } = this.range;
+      const { startTime, endTime } = this.dateRange;
 
       this.postAsJson({
-        target:'config/upload',
-        data:{
-          range:{
-            startTime:+startTime,
-            endTime:+endTime
+        target: "config/upload",
+        data: {
+          range: {
+            startTime: +startTime,
+            endTime: +endTime
           },
-          open:this.open,
-          force:this.force
+          open: this.open,
+          force: this.force
         }
       })
-      .then(responses => {
-          // 如果有错误则异步请求中会返回null而不是response对象
-          let hasErrorInResponse = false;
-
-          debugger;
-
-          for (const response of responses) {
-            if (!response) {
-              hasErrorInResponse = true;
-            }
-          }
-
-          if (!hasErrorInResponse) {
+        .then(response => {
+          if (response) {
             this.edited = false;
           }
         })
         .finally(() => this.afterFetch());
-
-        
     },
-    handleDataRangeChange(dataRange) {
-      this.dataRange = dataRange;
+    handleDataRangeChange(dateRange) {
+      this.dateRange = dateRange;
       this.edited = true;
     },
     watchForEdited() {
@@ -107,7 +93,7 @@ export default {
         }),
         this.$watch("open", function() {
           this.edited = true;
-        }),
+        })
       );
     },
     beforeFetch() {
@@ -128,7 +114,7 @@ export default {
 
       this.force = (await force).data.data;
       this.open = (await open).data.data;
-      this.dataRange = (await range).data.data;
+      this.dateRange = (await range).data.data;
 
       this.watchForEdited();
 
@@ -138,7 +124,7 @@ export default {
       this.fetching = false;
     }
   },
-  destroyed(){
+  destroyed() {
     for (const cacelWatcherHandle of this.watchers) {
       cacelWatcherHandle();
     }
