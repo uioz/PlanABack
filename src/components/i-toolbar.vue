@@ -12,6 +12,7 @@
 
   slots:
   default // 用于放置插槽右侧的内容
+  left // 用于放置插槽左侧的内容
 
   process:
 

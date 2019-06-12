@@ -28,7 +28,7 @@
     >
       <font-awesome-icon icon="times"/>
     </mu-button>
-    <mu-tooltip placement="left" content="回车完成编辑">
+    <!-- <mu-tooltip placement="left" content="回车完成编辑"> -->
       <mu-text-field
         v-model="inputText"
         @click.stop
@@ -39,7 +39,7 @@
         label-float
         :error-text="errorText"
       ></mu-text-field>
-    </mu-tooltip>
+    <!-- </mu-tooltip> -->
   </mu-paper>
 </template>
 <script>
