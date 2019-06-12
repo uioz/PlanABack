@@ -1,13 +1,12 @@
 export const urls = {
-  login: '/login',
-  logout:'/logout',
+  login: '/api/login',
+  logout:'/api/logout',
   base: '/api/assets',
   state:'/api/state',
-  model:'/model',
-  // speciality:'/assest/speciality',
+  model:'/api/model',
   source:{
-    upload:'/source',
-    fetch:'/source',
+    upload:'/api/source',
+    fetch:'/api/source',
   },
   config:{
     force:'/api/open/force',
@@ -25,7 +24,7 @@ export const urls = {
     management:'/api/users'
   },
   build:{
-    notice:'/specialties/broadcast'
+    notice:'/api/specialties/broadcast'
   }
 }
 

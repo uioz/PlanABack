@@ -27,13 +27,13 @@
       style="display:none;"
       @change="handleFileChange"
     >
-    <mu-dialog title="Dialog" width="360" :open.sync="resultDialogOpen">
+    <mu-dialog title="上传结果" width="360" :open.sync="resultDialogOpen">
       <p>
         总数据量:
         <span>{{ total }}</span>
       </p>
       <p>
-        实际使用量:
+        有效录入量:
         <span>{{ real }}</span>
       </p>
       <template #actions>
@@ -98,6 +98,7 @@ export default {
             const { real, total } = response.data.data;
             this.real = real;
             this.total = total;
+            this.resultDialogOpen = true;
           }
         })
         .finally(() => this.afterFetch());
