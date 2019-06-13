@@ -36,19 +36,9 @@ export default new Vuex.Store({
       state.userData = undefined;
       userData.clear();
     },
-    /**
-     * 设置跳转码
-     * @param {Object} state 
-     * @param {Number} code 错误代码
-     */
-    setErrorCode(state, code) {
-      state.errorCode = code;
-    },
-    /**
-     * 清空内部的错误码
-     */
-    clearErrorCode(state) {
-      state.errorCode = 0;
+    clearServerInfo(state){
+      state.baseInfo = undefined;
+      baseInfo.clear();
     },
     /**
      * 调用后触发全局的进度加载后修改内部的Progressing状态
@@ -147,7 +137,7 @@ export default new Vuex.Store({
       });
 
       commit('clearUserData');
-
+      
       if (result) {
         return true;
       } else {

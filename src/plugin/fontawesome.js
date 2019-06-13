@@ -30,7 +30,11 @@ import {
   faTrashAlt,
   faIdCard,
   faEye,
-  faExclamationCircle
+  faExclamationCircle,
+  faHourglassStart,
+  faHourglassEnd,
+  faStopwatch,
+  faLaptop
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -64,7 +68,11 @@ library.add(
   faTrashAlt,
   faIdCard,
   faEye,
-  faExclamationCircle
+  faExclamationCircle,
+  faHourglassStart,
+  faHourglassEnd,
+  faStopwatch,
+  faLaptop
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);

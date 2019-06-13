@@ -48,7 +48,7 @@
   </mu-appbar>
 </template>
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "i-navbar",
@@ -56,8 +56,8 @@ export default {
     drawerClick: Boolean
   },
   computed: {
-    ...mapState(["baseInfo","userData"]),
-    ...mapGetters(['isLogin']),
+    ...mapState(["baseInfo", "userData"]),
+    ...mapGetters(["isLogin"]),
     params() {
       return this.$route.path;
     }
@@ -84,10 +84,14 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["requestLogout"]),
+    ...mapMutations(["clearServerInfo"]),
+    ...mapActions(["requestLogout", "requestBaseInfo"]),
     async handleLogout() {
       this.logoutLock = true;
       if (await this.requestLogout()) {
+        this.clearServerInfo();
+        await this.requestBaseInfo();
+
         this.$router.replace("/login");
       }
       this.logoutLock = false;

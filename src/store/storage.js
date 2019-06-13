@@ -36,7 +36,7 @@ class LocalStoreHelper {
    * 清空所有的数据
    */
   clear(){
-    return window[this.storeType].removeItem(USER_DATA_NAME);
+    return window[this.storeType].removeItem(this.itemName);
   }
 
 }

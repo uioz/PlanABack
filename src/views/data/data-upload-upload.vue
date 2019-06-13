@@ -74,14 +74,14 @@ export default {
     },
     makeFormData,
     handleFileChange(event) {
-      this.fetch(this.makeFormData(event.srcElement.files[0]));
+      this.fetch(this.makeFormData(event.srcElement.files[0]),event);
     },
     beforeFetch() {
       this.fetching = true;
       this.real = this.total = 0;
       this.progressStart();
     },
-    fetch(data) {
+    fetch(data,event) {
       if (this.fetching) {
         return;
       }
@@ -101,7 +101,10 @@ export default {
             this.resultDialogOpen = true;
           }
         })
-        .finally(() => this.afterFetch());
+        .finally(() => {
+          this.afterFetch();
+          event.srcElement.value = '';
+        });
     },
     afterFetch() {
       this.fetching = false;

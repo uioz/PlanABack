@@ -61,7 +61,7 @@ export default {
       this.fetch(this.makeUrl(), this.makeQuery());
     },
     makeUrl() {
-      const baseUrl = "/source/json/";
+      const baseUrl = "/api/source/json/";
       return (
         baseUrl +
         `${this.selectDate.getFullYear()}/${this.pageIndex * 20 - 19}/to/${this
