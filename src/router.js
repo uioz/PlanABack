@@ -10,16 +10,12 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      meta: {
-        isLogin: true
-      },
       component: Index
     },
     {
       path: '/login',
       meta: {
         fullContent: true,
-        isLogin: false
       },
       component: () => import(/* webpackChunkName: "login" */ './views/login/login.vue')
     },
@@ -31,7 +27,6 @@ const router = new Router({
         {
           path: 'model',
           meta: {
-            isLogin: true,
             activeTabName: 'model'
           },
           component: () => import(/* webpackChunkName: "build-model" */ './views/build/build-model.vue')
@@ -39,7 +34,6 @@ const router = new Router({
         {
           path: 'notice',
           meta: {
-            isLogin: true,
             activeTabName: 'notice'
           },
           component: () => import(/* webpackChunkName: "build-notice" */ './views/build/build-notice.vue')
@@ -47,7 +41,6 @@ const router = new Router({
         {
           path: 'preview',
           meta: {
-            isLogin: true,
             activeTabName: 'preview'
           },
           component: () => import(/* webpackChunkName: "build-preview" */ './views/build/build-preview.vue')
@@ -57,12 +50,11 @@ const router = new Router({
     {
       path: '/data',
       component: () => import(/* webpackChunkName: "data" */ './views/data/data.vue'),
-      redirect:'/data/upload',
+      redirect: '/data/upload',
       children: [
         {
           path: 'upload',
           meta: {
-            isLogin: true,
             activeTabName: 'upload'
           },
           component: () => import(/* webpackChunkName: "data-upload" */ './views/data/data-upload.vue')
@@ -70,7 +62,6 @@ const router = new Router({
         {
           path: 'download',
           meta: {
-            isLogin: true,
             activeTabName: 'download'
           },
           component: () => import(/* webpackChunkName: "data-download" */ './views/data/data-download.vue')
@@ -78,7 +69,6 @@ const router = new Router({
         {
           path: 'preview',
           meta: {
-            isLogin: true,
             activeTabName: 'preview'
           },
           component: () => import(/* webpackChunkName: "data-preview" */ './views/data/data-preview.vue')
@@ -86,14 +76,13 @@ const router = new Router({
       ]
     },
     {
-      path:'/config',
+      path: '/config',
       component: () => import(/* webpackChunkName: "config" */ './views/config/config.vue'),
       redirect: '/config/switch',
-      children:[
+      children: [
         {
           path: 'switch',
           meta: {
-            isLogin: true,
             activeTabName: 'switch'
           },
           component: () => import(/* webpackChunkName: "config-switch" */ './views/config/config-switch.vue')
@@ -101,7 +90,6 @@ const router = new Router({
         {
           path: 'static',
           meta: {
-            isLogin: true,
             activeTabName: 'static'
           },
           component: () => import(/* webpackChunkName: "config-static" */ './views/config/config-static.vue')
@@ -109,7 +97,6 @@ const router = new Router({
         {
           path: 'message',
           meta: {
-            isLogin: true,
             activeTabName: 'message'
           },
           component: () => import(/* webpackChunkName: "config-message" */ './views/config/config-message.vue')
@@ -117,23 +104,21 @@ const router = new Router({
       ]
     },
     {
-      path:'/privilege',
+      path: '/privilege',
       component: () => import(/* webpackChunkName: "privilege" */ './views/privilege/privilege.vue'),
       redirect: '/privilege/members',
-      children:[
+      children: [
         {
-          path:'/privilege/members',
-          meta:{
-            isLogin: true,
-            activeTabName:'members'
+          path: '/privilege/members',
+          meta: {
+            activeTabName: 'members'
           },
           component: () => import(/* webpackChunkName: "privilege-members" */ './views/privilege/privilege-members.vue')
         },
         {
-          path:'/privilege/management',
-          meta:{
-            isLogin: true,
-            activeTabName:'management'
+          path: '/privilege/management',
+          meta: {
+            activeTabName: 'management'
           },
           component: () => import(/* webpackChunkName: "privilege-management" */ './views/privilege/privilege-management.vue')
         },
@@ -163,10 +148,6 @@ router.beforeEach((to, from, next) => {
 
   const meta = to.meta;
 
-  if ('isLogin' in meta && meta.isLogin !== Store.getters.isLogin) {
-    return next('/auth/login');
-  }
-
   if (meta.fullContent) {
     if (!from.meta.fullContent) {
       Store.commit('fullContent', true);
@@ -175,7 +156,19 @@ router.beforeEach((to, from, next) => {
 
   Store.commit('progressStart');
 
-  return next();
+  // 未登录的跳转到登录页面
+  if (!Store.getters.isLogin) {
+
+    // 忽略登陆页面的跳转
+    if (to.path === '/login') {
+      return next();
+    }
+
+    return next('/login');
+  } else {
+    return next();
+  }
+
 
 });
 

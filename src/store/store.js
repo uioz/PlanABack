@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import requests, { urlRouter } from "../request/request.js";
-import { baseInfo,userData } from "./storage.js";
+import { baseInfo, userData } from "./storage.js";
 import Progress from "../plugin/museprogress.js";
 import { easyAssign } from "../utils/public";
 
@@ -10,29 +10,29 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production', // see https://vuex.vuejs.org/zh/guide/strict.html#%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%8F%91%E5%B8%83%E7%8E%AF%E5%A2%83
   state: {
-    baseInfo:baseInfo.get(),
+    baseInfo: baseInfo.get(),
     userData: userData.get(),
     fullContent: false, // 屏蔽导航和侧边栏
     Progressing: false, // 是否在progress状态
     errorCode: 0,
-    specalties:[] // 所有的顶级专业范围
+    specalties: [] // 所有的顶级专业范围
   },
-  getters:{
-    isLogin(state){
+  getters: {
+    isLogin(state) {
       return !!state.userData;
     },
-    hasGotInfo(state){
+    hasGotInfo(state) {
       return !!state.baseInfo;
     }
   },
   mutations: {
-    updateSpecalties(state,specaltiesArr){
+    updateSpecalties(state, specaltiesArr) {
       state.specalties = specaltiesArr;
     },
-    compareData(state,{target,data}){
-      state[target] = easyAssign({},data,true);
+    compareData(state, { target, data }) {
+      state[target] = easyAssign({}, data, true);
     },
-    clearUserData(state){
+    clearUserData(state) {
       state.userData = undefined;
       userData.clear();
     },
@@ -77,7 +77,7 @@ export default new Vuex.Store({
      * @param {Object} state 
      * @param {Boolean} full 全面显示的状态
      */
-    fullContent(state,full){
+    fullContent(state, full) {
       state.fullContent = !!full;
     }
   },
@@ -91,7 +91,7 @@ export default new Vuex.Store({
      * @param {Object} data 登录需要数据
      * @returns {Boolean} 是否登录成功
      */
-    async requestLogin({dispatch,commit},data){
+    async requestLogin({ dispatch, commit }, data) {
 
       // TODO response 进行拦截
       // 当响应过期的时候
@@ -101,10 +101,10 @@ export default new Vuex.Store({
         data,
       });
 
-      if(response){
+      if (response) {
         const data = response.data.data;
-        commit('compareData',{
-          target:'userData',
+        commit('compareData', {
+          target: 'userData',
           data
         });
         userData.update(data);
@@ -117,20 +117,22 @@ export default new Vuex.Store({
     /**
      * 拉取服务器基本公开信息
      */
-    async requestBaseInfo({dispatch,commit}){
+    async requestBaseInfo({ dispatch, commit, state }) {
 
-      const response = await dispatch('get',{
-        target:'base'
+      const response = await dispatch('get', {
+        target: 'base'
       });
 
-      if(response){
+      if (response) {
         const data = response.data.data;
-        commit('compareData',{
-          target:'baseInfo',
+        commit('compareData', {
+          target: 'baseInfo',
           data
         });
         baseInfo.update(data);
       }
+
+      return response.data.data;
 
     },
     /**
@@ -138,42 +140,42 @@ export default new Vuex.Store({
      * 登出成功返回true,  
      * 反之返回false.  
      */
-    async requestLogout({dispatch,commit}){
-      
-      const result = await dispatch('get',{
-        target:'logout'
+    async requestLogout({ dispatch, commit }) {
+
+      const result = await dispatch('get', {
+        target: 'logout'
       });
 
       commit('clearUserData');
 
-      if(result){
+      if (result) {
         return true;
-      }else{
+      } else {
         return false;
       }
 
     },
-    async requestSpecalties({dispatch,commit}){
+    async requestSpecalties({ dispatch, commit }) {
 
-      let 
+      let
         tryTime = 3,
         response;
 
-      while (tryTime --) {
+      while (tryTime--) {
 
         response = await dispatch('get', {
           target: `/api/specalties`,
         });
 
-        if(response){
+        if (response) {
           break;
         }
 
       }
 
-      if(response){
+      if (response) {
         commit('updateSpecalties', response.data.data);
-      }else{
+      } else {
         // TODO 提示网络错误无法获取该年份的专业信息
       }
 

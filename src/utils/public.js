@@ -49,3 +49,39 @@ export function makeFormData(files) {
   return formData;
 
 }
+
+export function runningTime(unixTime){
+
+  const result = [];
+
+  const day = Math.floor(unixTime / 86400000);
+
+  if(day > 0){
+    result.push(`${day}天`);
+    unixTime = unixTime - (day * 86400000);
+  }
+
+  const hour = Math.floor(unixTime / 3600000);
+
+  if(hour > 0 ){
+    result.push(`${hour}小时`);
+    unixTime = unixTime - (hour * 3600000);
+  }
+
+  const minute = Math.floor(unixTime / 60000);
+
+  if(minute > 0){
+    result.push(`${minute}分钟`);
+    unixTime = unixTime - (minute * 60000);
+  }
+
+  const second = Math.floor(unixTime / 1000);
+
+  if (second > 0){
+    result.push(`${second}秒`);
+    unixTime = unixTime - (second * 60000);
+  }
+
+  return result.join('-');
+
+}

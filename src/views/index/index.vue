@@ -34,7 +34,8 @@
       <index-info :source="fetchData"></index-info>
     </template>
     <template #right-area>
-      <index-total></index-total>
+      <!-- TODO 暂时隐藏统计信息 -->
+      <!-- <index-total></index-total> -->
     </template>
   </index-layout>
 </template>

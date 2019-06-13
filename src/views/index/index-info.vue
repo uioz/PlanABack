@@ -17,6 +17,7 @@
 </template>
 <script>
 import timeAgo from "../../plugin/timeago.js";
+import { runningTime } from "../../utils/public.js";
 
 export default {
   name: "index-info",
@@ -31,7 +32,11 @@ export default {
       }
 
       if(key === 'lastLoginTime'){
-        return timeAgo(value)
+        return timeAgo(value);
+      }
+
+      if(key === 'runingTime'){
+        return runningTime(value);
       }
       
       return new Date(value).toLocaleString();
@@ -56,7 +61,7 @@ export default {
         case 'endTime':
         return '服务器结束时间';
         case 'runingTime':
-        return '服务器运行时间';
+        return '服务器运行时长';
       }
     },
     getIcon(){

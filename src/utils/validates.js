@@ -67,4 +67,4 @@ export const range = (min = 1, max = 16) => (str) => {
  * 运行输入中英文常见的标点符号.  
  * @param {String} str 字符串
  */
-export const mulitRowText = str => /^[\u4E00-\u9FA5\w\n\r@,\.!\[\]\+\-\(\)，。！‘’“”{}'"　 ]*$/.test(str);
+export const mulitRowText = str => /^[\u4E00-\u9FA5\w\n\r@,\.!\[\]\+\-\(\)，。！‘’“”{}'"　 :：]*$/.test(str);
