@@ -88,11 +88,10 @@ export default {
     ...mapActions(["requestLogout", "requestBaseInfo"]),
     async handleLogout() {
       this.logoutLock = true;
+      this.$router.replace("/login");
       if (await this.requestLogout()) {
         this.clearServerInfo();
         await this.requestBaseInfo();
-
-        this.$router.replace("/login");
       }
       this.logoutLock = false;
     },

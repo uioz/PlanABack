@@ -6,6 +6,7 @@ import Store from "./store/store.js";
 Vue.use(Router);
 
 const router = new Router({
+  base:'/management/', // TODO 管理路径在 /management/ 下
   mode: 'history',
   routes: [
     {

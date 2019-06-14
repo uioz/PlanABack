@@ -63,7 +63,7 @@ export default {
       let a = document.createElement('a');
 
       a.href = this.downloadLink;
-      a.target = '_self';
+      a.target = '_blank';
       a.click();
 
       a = null;
